@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Jenkins Install]]></title>
+    <url>%2F2019%2F03%2F21%2FJenkins%20Install%2F</url>
+    <content type="text"><![CDATA[Install Steps 1.Install JDK 2.安装 Jenkins 仓库 12wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.reporpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key 3.安装 Jenkins 12yum install jenkins -y配置文件地址 /etc/sysconfig/jenkins 4.启动 jenkins 1systemctl start jenkins 5.查看初始化密码 1cat /var/lib/jenkins/secrets/initialAdminPassword 6.访问地址 1http://10.0.96.102:8080/ 7.配置Jdk、Maven ​ 配置JDK、Maven地址 ​ 安装maven Integration 插件 8.安装Git 1yum install git ​ 配置Git地址以及安装Git-Client插件 9.安装GitLab、GitLab Hook插件 10.配置全局凭据（拉取代码私钥） 11.shell启动springboot jar脚本 1234567891011121314151617181920#!/bin/bash# jenkins工作目录project_path=/var/lib/jenkins/workspace/eurekacd $&#123;project_path&#125;# 打包mvn clean package -Dmaven.test.skip=true jar_path=/var/lib/jenkins/workspace/eureka/target/jar_name=eureka-server-0.0.1-SNAPSHOT.jarcd $&#123;jar_path&#125;# 获取运行的进程idpid=`ps -ef|grep eureka |grep -v grep |awk &apos;&#123;print $2&#125;&apos;`echo $&#123;pid&#125;# 杀死进程kill -9 $&#123;pid&#125;# 启动服务BUILD_ID=dontKillMe nohup java -jar $&#123;jar_name&#125; &amp; War部署 1.下载jenkins.war文件,官网地址:http://jenkins-ci.org/，注意选择最新版本Long-Term Support Release 2.访问地址[http://IP:8080/jenkins/] 3.查看初始密码 1cat /root/.jenkins/secrets/initialAdminPassword 4.配置Jdk、Maven ​ 配置JDK、Maven地址 ​ 安装maven Integration 插件 5.安装Git 1yum install git ​ 配置Git地址以及安装Git-Client插件 6.安装GitLab、GitLab Hook插件 7.配置全局凭据（拉取代码私钥） 8.shell启动springboot jar脚本 123456789101112131415161718192021#!/bin/bash# jenkins工作目录project_path=/root/.jenkins/workspace/eurekacd $&#123;project_path&#125;# 打包mvn clean package -Dmaven.test.skip=true jar_path=/root/.jenkins/workspace/eureka/target/jar_name=eureka-server-0.0.1-SNAPSHOT.jarcd $&#123;jar_path&#125;# 获取运行的进程idpid=`ps -ef|grep eureka |grep -v grep |awk &apos;&#123;print $2&#125;&apos;`echo $&#123;pid&#125;# 杀死进程kill -9 $&#123;pid&#125;# 启动服务BUILD_ID=dontKillMe nohup java -jar $&#123;jar_name&#125; &amp;# 注意 BUILD_ID=dontKillMe 不加的话 会启动完成直接关闭服务]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[缘]]></title>
     <url>%2F2019%2F03%2F21%2Frongrong%2F</url>
     <content type="text"><![CDATA[那天遇见，就是缘分]]></content>
