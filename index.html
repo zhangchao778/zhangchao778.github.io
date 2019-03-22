@@ -300,7 +300,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mr.zhang">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/minguo.jpeg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -312,9 +312,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/21/Jenkins Install/" itemprop="url">Jenkins Install</a></h1>
+          <h1 class="post-title" itemprop="name headline">Jenkins Install</h1>
         
 
         <div class="post-meta">
@@ -347,6 +345,7 @@
 
           
           
+	  
 
           
 
@@ -363,23 +362,49 @@
       
 
       
-        
-          
-          
-Install Steps
+        <blockquote>
+<p>Install Steps</p>
+</blockquote>
+<p>1.Install JDK</p>
+<p>2.安装 Jenkins 仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo</span><br><span class="line">rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key</span><br></pre></td></tr></table></figure>
+<p>3.安装 Jenkins</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install jenkins -y</span><br><span class="line">配置文件地址 /etc/sysconfig/jenkins</span><br></pre></td></tr></table></figure>
+<p>4.启动 jenkins</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start jenkins</span><br></pre></td></tr></table></figure>
+<p>5.查看初始化密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /var/lib/jenkins/secrets/initialAdminPassword</span><br></pre></td></tr></table></figure>
+<p>6.访问地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://10.0.96.102:8080/</span><br></pre></td></tr></table></figure>
+<p>7.配置Jdk、Maven</p>
+<p>​    配置JDK、Maven地址</p>
+<p>​    安装maven Integration 插件</p>
+<p>8.安装Git</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install git</span><br></pre></td></tr></table></figure>
+<p>​    配置Git地址以及安装Git-Client插件</p>
+<p>9.安装GitLab、GitLab Hook插件</p>
+<p>10.配置全局凭据（拉取代码私钥）</p>
+<p>11.shell启动springboot jar脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># jenkins工作目录</span><br><span class="line">project_path=/var/lib/jenkins/workspace/eureka</span><br><span class="line">cd $&#123;project_path&#125;</span><br><span class="line"># 打包</span><br><span class="line">mvn clean package -Dmaven.test.skip=true </span><br><span class="line"></span><br><span class="line">jar_path=/var/lib/jenkins/workspace/eureka/target/</span><br><span class="line"></span><br><span class="line">jar_name=eureka-server-0.0.1-SNAPSHOT.jar</span><br><span class="line"></span><br><span class="line">cd $&#123;jar_path&#125;</span><br><span class="line"># 杀死进程</span><br><span class="line">ps -ef|grep eureka |grep -v grep |awk &apos;&#123;print $2&#125;&apos;|xargs kill -9</span><br><span class="line"></span><br><span class="line"># 启动服务</span><br><span class="line">BUILD_ID=dontKillMe nohup java -jar $&#123;jar_name&#125; &amp;</span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p>War部署</p>
+</blockquote>
+<p>1.下载jenkins.war文件,官网地址:<a href="http://jenkins-ci.org/，注意选择最新版本Long-Term" target="_blank" rel="noopener">http://jenkins-ci.org/，注意选择最新版本Long-Term</a> Support Release</p>
+<p>2.访问地址[<a href="http://IP:8080/jenkins/]" target="_blank" rel="noopener">http://IP:8080/jenkins/]</a></p>
+<p>3.查看初始密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /root/.jenkins/secrets/initialAdminPassword</span><br></pre></td></tr></table></figure>
+<p>4.配置Jdk、Maven</p>
+<p>​    配置JDK、Maven地址</p>
+<p>​    安装maven Integration 插件</p>
+<p>5.安装Git</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install git</span><br></pre></td></tr></table></figure>
+<p>​    配置Git地址以及安装Git-Client插件</p>
+<p>6.安装GitLab、GitLab Hook插件</p>
+<p>7.配置全局凭据（拉取代码私钥）</p>
+<p>8.shell启动springboot jar脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># jenkins工作目录</span><br><span class="line">project_path=/root/.jenkins/workspace/eureka</span><br><span class="line">cd $&#123;project_path&#125;</span><br><span class="line"># 打包</span><br><span class="line">mvn clean package -Dmaven.test.skip=true </span><br><span class="line"></span><br><span class="line">jar_path=/root/.jenkins/workspace/eureka/target/</span><br><span class="line"></span><br><span class="line">jar_name=eureka-server-0.0.1-SNAPSHOT.jar</span><br><span class="line"></span><br><span class="line">cd $&#123;jar_path&#125;</span><br><span class="line"># 杀死进程</span><br><span class="line">ps -ef|grep eureka |grep -v grep |awk &apos;&#123;print $2&#125;&apos;|xargs kill -9</span><br><span class="line"></span><br><span class="line"># 启动服务</span><br><span class="line">BUILD_ID=dontKillMe nohup java -jar $&#123;jar_name&#125; &amp;</span><br><span class="line"># 注意 BUILD_ID=dontKillMe  不加的话 会启动完成直接关闭服务</span><br></pre></td></tr></table></figure>
 
-1.Install JDK
-2.安装 Jenkins 仓库
-12wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.reporpm --import ht
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/03/21/Jenkins Install/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
       
     </div>
     
@@ -396,12 +421,28 @@ Install Steps
       
 
       
+      
+      
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/16/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
 
       
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -430,7 +471,7 @@ Install Steps
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mr.zhang">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/minguo.jpeg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -442,9 +483,7 @@ Install Steps
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/16/hello-world/" itemprop="url">Hello World</a></h1>
+          <h1 class="post-title" itemprop="name headline">Hello World</h1>
         
 
         <div class="post-meta">
@@ -499,6 +538,7 @@ Install Steps
 
           
           
+	  
 
           
 
@@ -515,18 +555,16 @@ Install Steps
       
 
       
-        
-          
-          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/03/16/hello-world/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+
       
     </div>
     
@@ -541,14 +579,36 @@ Install Steps
 
     <footer class="post-footer">
       
-
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
       
 
       
+      
+      
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/21/Jenkins Install/" rel="prev" title="Jenkins Install">
+                Jenkins Install <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
-        <div class="post-eof"></div>
+
+      
       
     </footer>
   </div>
@@ -594,7 +654,7 @@ Install Steps
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="Mr.zhang">
+              <img class="site-author-image" itemprop="image" src="/images/minguo.jpeg" alt="Mr.zhang">
             
               <p class="site-author-name" itemprop="name">Mr.zhang</p>
               <p class="site-description motion-element" itemprop="description">那天遇见，就是缘分</p>
@@ -684,18 +744,7 @@ Install Steps
 
   
 </div>
-
-
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
-
+<div>Today is another Good Day</div>
 
 
 
