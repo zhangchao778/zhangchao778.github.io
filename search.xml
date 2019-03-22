@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[缘]]></title>
+    <url>%2F2019%2F03%2F21%2Frongrong%2F</url>
+    <content type="text"><![CDATA[那天遇见，就是缘分]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[test]]></title>
+    <url>%2F2019%2F03%2F16%2Ftest%2F</url>
+    <content type="text"><![CDATA[12345public JumpActivityCmd(String processInstanceId, String activityId, String jumpOrigin) &#123; this.activityId = activityId; this.processInstanceId = processInstanceId; this.jumpOrigin = jumpOrigin; &#125; Generate static files1$ hexo generate]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Hello World]]></title>
+    <url>%2F2019%2F03%2F16%2Fhello-world%2F</url>
+    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
+  </entry>
+</search>
