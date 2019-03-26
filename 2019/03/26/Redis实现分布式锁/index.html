@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="联系方式 Blog: http://zhangqichao.com">
+<meta name="description" content="分布式锁的实现方案  Spring早就提供了分布式锁的实现，早期，分布式锁的相关代码存在与Spring Cloud的子项目Spring Cloud Cluster中，后来被迁移到了Spring Integration中。 ​    Spring Cloud Cluster的GitHub：https://github.com/spring-cloud/spring-cloud-cluster/ ​">
 <meta name="keywords" content="key">
-<meta property="og:type" content="website">
-<meta property="og:title" content="自我介绍">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis实现分布式锁">
+<meta property="og:url" content="http://yoursite.com/2019/03/26/Redis实现分布式锁/index.html">
 <meta property="og:site_name" content="Mr.zhang&#39;s Blog">
-<meta property="og:description" content="联系方式 Blog: http://zhangqichao.com">
+<meta property="og:description" content="分布式锁的实现方案  Spring早就提供了分布式锁的实现，早期，分布式锁的相关代码存在与Spring Cloud的子项目Spring Cloud Cluster中，后来被迁移到了Spring Integration中。 ​    Spring Cloud Cluster的GitHub：https://github.com/spring-cloud/spring-cloud-cluster/ ​">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-22T06:12:55.168Z">
+<meta property="og:updated_time" content="2019-03-26T06:47:26.512Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="自我介绍">
-<meta name="twitter:description" content="联系方式 Blog: http://zhangqichao.com">
+<meta name="twitter:title" content="Redis实现分布式锁">
+<meta name="twitter:description" content="分布式锁的实现方案  Spring早就提供了分布式锁的实现，早期，分布式锁的相关代码存在与Spring Cloud的子项目Spring Cloud Cluster中，后来被迁移到了Spring Integration中。 ​    Spring Cloud Cluster的GitHub：https://github.com/spring-cloud/spring-cloud-cluster/ ​">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/about/">
+  <link rel="canonical" href="http://yoursite.com/2019/03/26/Redis实现分布式锁/">
 
 
 
 
 
-  <title>自我介绍 | Mr.zhang's Blog</title>
+  <title>Redis实现分布式锁 | Mr.zhang's Blog</title>
   
 
 
@@ -283,36 +283,167 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/Redis实现分布式锁/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.zhang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/minguo.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.zhang's Blog">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">自我介绍</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <h2 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h2><blockquote>
-<p>Blog: <a href="http://zhangqichao.com" target="_blank" rel="noopener">http://zhangqichao.com</a></p>
+          <h1 class="post-title" itemprop="name headline">Redis实现分布式锁</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-26T13:13:26+08:00">
+                2019-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+          
+	  
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>分布式锁的实现方案</p>
 </blockquote>
+<p><code>Spring</code>早就提供了分布式锁的实现，早期，分布式锁的相关代码存在与Spring Cloud的子项目Spring Cloud Cluster中，后来被迁移到了<code>Spring Integration</code>中。</p>
+<p>​    <code>Spring Cloud Cluster</code>的GitHub：<a href="https://github.com/spring-cloud/spring-cloud-cluster/" target="_blank" rel="noopener">https://github.com/spring-cloud/spring-cloud-cluster/</a></p>
+<p>​    <code>Spring Integration</code>的GitHub：<a href="https://github.com/spring-projects/spring-integration/" target="_blank" rel="noopener">https://github.com/spring-projects/spring-integration/</a></p>
+<p>官方对于<code>Spring Integration</code>的说法是 这是一个<code>企业集成模式</code>的实现。<code>Spring Cloud Stream</code>的底层也是<code>Spring Integration</code>。</p>
+<p><code>Spring Integration</code>提供了多种全局锁，现在我们在这里只介绍基于<code>Redis</code>的分布式锁</p>
+<blockquote>
+<p>基于<code>Spring Integration</code> 实现<code>Redis</code>的分布式锁</p>
+</blockquote>
+<p>1.依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-boot-starter-integration&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework.integration&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-integration-redis&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>2.<code>Redis</code>配置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  redis:</span><br><span class="line">    port: <span class="number">6379</span></span><br><span class="line">    host: localhost</span><br></pre></td></tr></table></figure>
+<p>3.<code>RedisLock</code>初始化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisLockConfiguration</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Bean</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> RedisLockRegistry <span class="title">redisLockRegistry</span><span class="params">(RedisConnectionFactory redisConnectionFactory)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> RedisLockRegistry(redisConnectionFactory, <span class="string">"RedisLockRegistry"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    <code>org.springframework.integration.redis.util.RedisLockRegistry</code>的注释详细描述了该类的特性以及使用方式。</p>
+<p>4.测试代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Mr.zhang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 1:43 PM 2019/3/26</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"redisLock"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisLockController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RedisLockRegistry redisLockRegistry;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"test"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        Lock lock = redisLockRegistry.obtain(<span class="string">"redisLock"</span>);</span><br><span class="line">        <span class="keyword">boolean</span> b1 = lock.tryLock(<span class="number">3</span>, TimeUnit.SECONDS);</span><br><span class="line">        log.info(<span class="string">"b1 is : &#123;&#125;"</span>, b1);</span><br><span class="line"></span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span> b2 = lock.tryLock(<span class="number">3</span>, TimeUnit.SECONDS);</span><br><span class="line">        log.info(<span class="string">"b2 is : &#123;&#125;"</span>, b2);</span><br><span class="line"></span><br><span class="line">        lock.unlock();</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>启动1个实例,访问 <code>http://localhost:8080/redisLock/test</code> ，会看到类似如下的日志</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2019-03-26 14:42:28.206  INFO 4913 --- [nio-8080-exec-1] c.r.lock.controller.RedisLockController  : b1 is : true</span><br><span class="line">2019-03-26 14:42:33.212  INFO 4913 --- [nio-8080-exec-1] c.r.lock.controller.RedisLockController  : b2 is : true</span><br></pre></td></tr></table></figure>
+<ul>
+<li>启动2个实例，并迅速访问两个实例的 <code>/test</code> 端点，会在第二个实例上看到类似如下日志</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[nio-8081-exec-1] c.r.lock.controller.RedisLockController  : b1 is : false</span><br><span class="line">[nio-8081-exec-1] c.r.lock.controller.RedisLockController  : b2 is : true</span><br><span class="line">[nio-8081-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() ...</span><br><span class="line"></span><br><span class="line">java.lang.IllegalStateException: You do not own lock at RedisLockRegistry:redisLock</span><br><span class="line">	at org.springframework.integration.redis.util.RedisLockRegistry$RedisLock.unlock(RedisLockRegistry.java:300) ~[spring-integration-redis-5.1.3.RELEASE.jar!/:5.1.3.RELEASE]</span><br><span class="line">	at com.redis.lock.controller.RedisLockController.test(RedisLockController.java:38) ~[classes!/:0.0.1-SNAPSHOT]</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_144]</span><br></pre></td></tr></table></figure>
+<p>​    说明第二个实例没有拿到锁，证明了分布式锁的存在</p>
+<p><a href="https://mp.weixin.qq.com/s/Mgy9Ar_wNh3Kr5ZcmdKF_Q" target="_blank" rel="noopener">参考地址</a></p>
 
-        
-      </div>
-      
-      
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/21/Jenkins Install/" rel="next" title="Jenkins Install">
+                <i class="fa fa-chevron-left"></i> Jenkins Install
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -345,17 +476,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -427,22 +549,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#联系方式"><span class="nav-number">1.</span> <span class="nav-text">联系方式</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
