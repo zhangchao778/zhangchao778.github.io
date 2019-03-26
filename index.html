@@ -295,6 +295,425 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/vi编辑器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.zhang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/minguo.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vi编辑器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-26T15:51:26+08:00">
+                2019-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/technology/" itemprop="url" rel="index">
+                    <span itemprop="name">technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+          
+	  
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>1、vi  文件名 </p>
+<p>2、输入 i 进入编辑模式 </p>
+<p>3、对文件进行编辑 </p>
+<p>4、Esc 退出编辑模式，进入命令模式 </p>
+<p>5、:wq  保存退出 </p>
+<p>​     :q!    退出但不保存 </p>
+<ul>
+<li><p><strong>配置 vimrc</strong></p>
+<p>当我最初使用 vim 的时候，我浪费了好多时间来缩进代码，我不知道通过修改 Vim 的 .vimrc 配置文件来实现代码缩进、语法高亮、显示行号等功能。</p>
+<p>在你的 Home 目录下创建一个 .vimrc 文件，添加下面的代码来设置行号、代码缩进等</p>
+<blockquote>
+<p>set number             # 显示行号 </p>
+<p>set autoindent         # 自动缩进 </p>
+<p>set nowrap             # 不换行</p>
+</blockquote>
+</li>
+<li><p><strong>不关闭终端退出编辑器</strong></p>
+<p>使用 Vim 编辑器保存并退出编辑状态是一件轻而易举的事，你只需记住按 ESC 键切换到正常模式，然后输入冒号(:)，之后输入 wq 即可实现保存并退出。</p>
+<blockquote>
+<p>:wq</p>
+</blockquote>
+<p>如果不想保存，则按 ESC 键切换到正常模式，然后输入冒号(:)，之后输入 q! 即可。</p>
+<blockquote>
+<p>:q!</p>
+</blockquote>
+</li>
+<li><p><strong>删除一行或多行</strong></p>
+<p>通过退格键(Backspace)来删除一行代码显然是太麻烦了。可以通过切换到正常模式(编辑模式下按 ESC 键)来进行操作</p>
+<blockquote>
+<p>dd ： (输入两次 d，下同)删除当前行；5dd ：删除当前行开始的5行； </p>
+<p>dG ：(先输入d，然后按 shift 键输入 g)删除当前行至最后一行的所以行。</p>
+</blockquote>
+</li>
+<li><p><strong>复制粘贴一块代码</strong></p>
+<p>你可能经常需要复制一行或一大块代码，使用 Vim 快捷键来实现此功能是非常简单的</p>
+<blockquote>
+<p>按 Esc 切换到正常模式；</p>
+<p>把光标移到你需要复制的代码行首； </p>
+<p>按 V 选择整行，可移动光标选择多行； </p>
+<p>按 d 剪切或按 y 复制选择的代码； </p>
+<p>移动光标到你需要粘贴的位置，按 p 粘贴代码到光标后的位置，或按 P 粘贴到光标前。</p>
+</blockquote>
+</li>
+<li><p><strong>撤销与重做</strong></p>
+<p>在使用 Vim 或其他编辑器的时候，你可能经常需要对某些修改进行撤销或重做。在 Vim 中，你可以切换到正常模式，按 u 来撤销操作，按 Ctrl+r 来重做</p>
+</li>
+<li><p><strong>搜索</strong></p>
+<p>搜索在很多时候都是一个非常重要的功能。在文件中搜索一个特定的词，可以切换到正常模式，然后输入斜线( / )，之后跟上要搜索的词，回车即可</p>
+<blockquote>
+<p>/word-to-be-searched</p>
+</blockquote>
+<p>按 n 显示下一个搜索结果，按 N 显示上一个搜索结果</p>
+</li>
+<li><p><strong>把外部文件读入 Vim</strong></p>
+<p>我开始使用 Vim 的时候，经常会打开一个文件、复制内容、关闭文件、打开另一个文件、然后粘贴进去复制到内容。其实 Vim 中读取另一个文件的内容非常方便。切换到正常模式，然后按 :read。使用此快捷键你不需要手动打开文件来复制内容</p>
+<blockquote>
+<p>:read readme.md</p>
+</blockquote>
+</li>
+<li><p><strong>把命令的结果读入 Vim</strong></p>
+<p>有时候你需要把某个命令的结果复制到 Vim 中，这在 Vim 也非常简单。切换到正常模式，然后输入 :read !command 即可把 command 的结果输入到 vim 中</p>
+<blockquote>
+<p>:read !ls -l</p>
+</blockquote>
+</li>
+<li><p><strong>切换到上次修改的位置</strong></p>
+<p>想知道你在文件中做的最后一次修改是在什么位置？切换到正常模式，输入 g; 来即可切换到上次修改的位置</p>
+</li>
+<li><p><strong>移动到文件顶部或底部</strong></p>
+<p>当需要移动到文件顶部或底部时，通过 j 或 k 来一行行的移动显得有点麻烦。Vim 提供了一个快捷键可直接实现此功能。切换到正常模式，输入 gg 返回文件顶部，输入 G 返回文件底部</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/26/Mysql-emoji表情/" rel="next" title="Mysql-emoji表情">
+                <i class="fa fa-chevron-left"></i> Mysql-emoji表情
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/Mysql-emoji表情/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.zhang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/minguo.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Mysql-emoji表情</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-26T15:30:26+08:00">
+                2019-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/technology/" itemprop="url" rel="index">
+                    <span itemprop="name">technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+          
+	  
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Mysql-emoji表情支持版本</p>
+</blockquote>
+<p>大于5.5.3的Mysql版本才开始支持emoji表情</p>
+<blockquote>
+<p>Mysql-emoji表情失败原因</p>
+</blockquote>
+<ul>
+<li>普通的字符串或者表情都是占位3个字节，使用utf8足够用了，但是移动端的表情符号占位是4个字节，普通的utf8就不够用了，为了应对无线互联网的机遇和挑战、避免 emoji 表情符号带来的问题、涉及无线相关的 MySQL 数据库建议都提前采用 utf8mb4 字符集。Mysql 5.5.3之前的版本，仅支持的utf8为3字节的，Mysql 5.5.3之后的版本支持utf8mb4为4字节的。</li>
+</ul>
+<blockquote>
+<p>Mysql配置修改</p>
+</blockquote>
+<ul>
+<li><p>修改mysql配置文件my.cnf（windows为my.ini） </p>
+<p>找到后请在以下三部分里添加如下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[client] </span><br><span class="line">default-character-set = utf8mb4 </span><br><span class="line">[mysql] </span><br><span class="line">default-character-set = utf8mb4 </span><br><span class="line">[mysqld] </span><br><span class="line">character-set-client-handshake = FALSE </span><br><span class="line">character-set-server = utf8mb4 </span><br><span class="line">collation-server = utf8mb4_unicode_ci </span><br><span class="line">init_connect=&apos;SET NAMES utf8mb4&apos;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>检查变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW VARIABLES WHERE Variable_name LIKE &apos;character_set_%&apos; OR Variable_name LIKE &apos;collation%&apos;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将数据库和已经建好的表也转换成utf8mb4</p>
+<p>1.更改数据库编码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER DATABASE caitu99 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;</span><br></pre></td></tr></table></figure>
+<p>2.更改表编码</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE TABLE_NAME CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/26/Redis实现分布式锁/" rel="next" title="Redis实现分布式锁">
+                <i class="fa fa-chevron-left"></i> Redis实现分布式锁
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/26/vi编辑器/" rel="prev" title="vi编辑器">
+                vi编辑器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/Redis实现分布式锁/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -334,6 +753,28 @@
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/technology/" itemprop="url" rel="index">
+                    <span itemprop="name">technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -407,6 +848,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+        </div>
+      
 
       
       
@@ -425,6 +872,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/26/Mysql-emoji表情/" rel="prev" title="Mysql-emoji表情">
+                Mysql-emoji表情 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -493,6 +944,28 @@
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/technology/" itemprop="url" rel="index">
+                    <span itemprop="name">technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -577,6 +1050,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/devOps/" rel="tag"># devOps</a>
+          
+        </div>
       
 
       
@@ -681,8 +1160,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/hello/" itemprop="url" rel="index">
+                    <span itemprop="name">hello</span>
                   </a>
                 </span>
 
@@ -744,7 +1223,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Java/" rel="tag"># Java</a>
+            <a href="/tags/hello/" rel="tag"># hello</a>
           
         </div>
       
@@ -830,7 +1309,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -841,7 +1320,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -852,7 +1331,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

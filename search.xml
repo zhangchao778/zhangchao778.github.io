@@ -1,24 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[vi编辑器]]></title>
+    <url>%2F2019%2F03%2F26%2Fvi%E7%BC%96%E8%BE%91%E5%99%A8%2F</url>
+    <content type="text"><![CDATA[1、vi 文件名 2、输入 i 进入编辑模式 3、对文件进行编辑 4、Esc 退出编辑模式，进入命令模式 5、:wq 保存退出 ​ :q! 退出但不保存 配置 vimrc 当我最初使用 vim 的时候，我浪费了好多时间来缩进代码，我不知道通过修改 Vim 的 .vimrc 配置文件来实现代码缩进、语法高亮、显示行号等功能。 在你的 Home 目录下创建一个 .vimrc 文件，添加下面的代码来设置行号、代码缩进等 set number # 显示行号 set autoindent # 自动缩进 set nowrap # 不换行 不关闭终端退出编辑器 使用 Vim 编辑器保存并退出编辑状态是一件轻而易举的事，你只需记住按 ESC 键切换到正常模式，然后输入冒号(:)，之后输入 wq 即可实现保存并退出。 :wq 如果不想保存，则按 ESC 键切换到正常模式，然后输入冒号(:)，之后输入 q! 即可。 :q! 删除一行或多行 通过退格键(Backspace)来删除一行代码显然是太麻烦了。可以通过切换到正常模式(编辑模式下按 ESC 键)来进行操作 dd ： (输入两次 d，下同)删除当前行；5dd ：删除当前行开始的5行； dG ：(先输入d，然后按 shift 键输入 g)删除当前行至最后一行的所以行。 复制粘贴一块代码 你可能经常需要复制一行或一大块代码，使用 Vim 快捷键来实现此功能是非常简单的 按 Esc 切换到正常模式； 把光标移到你需要复制的代码行首； 按 V 选择整行，可移动光标选择多行； 按 d 剪切或按 y 复制选择的代码； 移动光标到你需要粘贴的位置，按 p 粘贴代码到光标后的位置，或按 P 粘贴到光标前。 撤销与重做 在使用 Vim 或其他编辑器的时候，你可能经常需要对某些修改进行撤销或重做。在 Vim 中，你可以切换到正常模式，按 u 来撤销操作，按 Ctrl+r 来重做 搜索 搜索在很多时候都是一个非常重要的功能。在文件中搜索一个特定的词，可以切换到正常模式，然后输入斜线( / )，之后跟上要搜索的词，回车即可 /word-to-be-searched 按 n 显示下一个搜索结果，按 N 显示上一个搜索结果 把外部文件读入 Vim 我开始使用 Vim 的时候，经常会打开一个文件、复制内容、关闭文件、打开另一个文件、然后粘贴进去复制到内容。其实 Vim 中读取另一个文件的内容非常方便。切换到正常模式，然后按 :read。使用此快捷键你不需要手动打开文件来复制内容 :read readme.md 把命令的结果读入 Vim 有时候你需要把某个命令的结果复制到 Vim 中，这在 Vim 也非常简单。切换到正常模式，然后输入 :read !command 即可把 command 的结果输入到 vim 中 :read !ls -l 切换到上次修改的位置 想知道你在文件中做的最后一次修改是在什么位置？切换到正常模式，输入 g; 来即可切换到上次修改的位置 移动到文件顶部或底部 当需要移动到文件顶部或底部时，通过 j 或 k 来一行行的移动显得有点麻烦。Vim 提供了一个快捷键可直接实现此功能。切换到正常模式，输入 gg 返回文件顶部，输入 G 返回文件底部]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Mysql-emoji表情]]></title>
+    <url>%2F2019%2F03%2F26%2FMysql-emoji%E8%A1%A8%E6%83%85%2F</url>
+    <content type="text"><![CDATA[Mysql-emoji表情支持版本 大于5.5.3的Mysql版本才开始支持emoji表情 Mysql-emoji表情失败原因 普通的字符串或者表情都是占位3个字节，使用utf8足够用了，但是移动端的表情符号占位是4个字节，普通的utf8就不够用了，为了应对无线互联网的机遇和挑战、避免 emoji 表情符号带来的问题、涉及无线相关的 MySQL 数据库建议都提前采用 utf8mb4 字符集。Mysql 5.5.3之前的版本，仅支持的utf8为3字节的，Mysql 5.5.3之后的版本支持utf8mb4为4字节的。 Mysql配置修改 修改mysql配置文件my.cnf（windows为my.ini） 找到后请在以下三部分里添加如下内容 123456789[client] default-character-set = utf8mb4 [mysql] default-character-set = utf8mb4 [mysqld] character-set-client-handshake = FALSE character-set-server = utf8mb4 collation-server = utf8mb4_unicode_ci init_connect=&apos;SET NAMES utf8mb4&apos; 检查变量 1SHOW VARIABLES WHERE Variable_name LIKE &apos;character_set_%&apos; OR Variable_name LIKE &apos;collation%&apos;; 将数据库和已经建好的表也转换成utf8mb4 1.更改数据库编码 1ALTER DATABASE caitu99 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci; 2.更改表编码 1ALTER TABLE TABLE_NAME CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Redis实现分布式锁]]></title>
     <url>%2F2019%2F03%2F26%2FRedis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%2F</url>
     <content type="text"><![CDATA[分布式锁的实现方案 Spring早就提供了分布式锁的实现，早期，分布式锁的相关代码存在与Spring Cloud的子项目Spring Cloud Cluster中，后来被迁移到了Spring Integration中。 ​ Spring Cloud Cluster的GitHub：https://github.com/spring-cloud/spring-cloud-cluster/ ​ Spring Integration的GitHub：https://github.com/spring-projects/spring-integration/ 官方对于Spring Integration的说法是 这是一个企业集成模式的实现。Spring Cloud Stream的底层也是Spring Integration。 Spring Integration提供了多种全局锁，现在我们在这里只介绍基于Redis的分布式锁 基于Spring Integration 实现Redis的分布式锁 1.依赖 123456789101112&lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-integration&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt; &lt;groupId&gt;org.springframework.integration&lt;/groupId&gt; &lt;artifactId&gt;spring-integration-redis&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;&lt;/dependency&gt; 2.Redis配置 1234spring: redis: port: 6379 host: localhost 3.RedisLock初始化 1234567@Configurationpublic class RedisLockConfiguration &#123; @Bean public RedisLockRegistry redisLockRegistry(RedisConnectionFactory redisConnectionFactory) &#123; return new RedisLockRegistry(redisConnectionFactory, "RedisLockRegistry"); &#125;&#125; ​ org.springframework.integration.redis.util.RedisLockRegistry的注释详细描述了该类的特性以及使用方式。 4.测试代码 12345678910111213141516171819202122232425262728/** * @author Mr.zhang * @description * @date 1:43 PM 2019/3/26 */@Slf4j@RestController@RequestMapping("redisLock")public class RedisLockController &#123; @Autowired private RedisLockRegistry redisLockRegistry; @GetMapping("test") public void test() throws InterruptedException &#123; Lock lock = redisLockRegistry.obtain("redisLock"); boolean b1 = lock.tryLock(3, TimeUnit.SECONDS); log.info("b1 is : &#123;&#125;", b1); TimeUnit.SECONDS.sleep(5); boolean b2 = lock.tryLock(3, TimeUnit.SECONDS); log.info("b2 is : &#123;&#125;", b2); lock.unlock(); lock.unlock(); &#125;&#125; 启动1个实例,访问 http://localhost:8080/redisLock/test ，会看到类似如下的日志 122019-03-26 14:42:28.206 INFO 4913 --- [nio-8080-exec-1] c.r.lock.controller.RedisLockController : b1 is : true2019-03-26 14:42:33.212 INFO 4913 --- [nio-8080-exec-1] c.r.lock.controller.RedisLockController : b2 is : true 启动2个实例，并迅速访问两个实例的 /test 端点，会在第二个实例上看到类似如下日志 12345678[nio-8081-exec-1] c.r.lock.controller.RedisLockController : b1 is : false[nio-8081-exec-1] c.r.lock.controller.RedisLockController : b2 is : true[nio-8081-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet] : Servlet.service() ...java.lang.IllegalStateException: You do not own lock at RedisLockRegistry:redisLock at org.springframework.integration.redis.util.RedisLockRegistry$RedisLock.unlock(RedisLockRegistry.java:300) ~[spring-integration-redis-5.1.3.RELEASE.jar!/:5.1.3.RELEASE] at com.redis.lock.controller.RedisLockController.test(RedisLockController.java:38) ~[classes!/:0.0.1-SNAPSHOT] at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_144] ​ 说明第二个实例没有拿到锁，证明了分布式锁的存在 参考地址]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Jenkins Install]]></title>
     <url>%2F2019%2F03%2F21%2FJenkins%20Install%2F</url>
     <content type="text"><![CDATA[Jenkins 安装步骤 Install Steps 1.Install JDK 2.安装 Jenkins 仓库 12wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.reporpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key 3.安装 Jenkins 12yum install jenkins -y配置文件地址 /etc/sysconfig/jenkins 4.启动 jenkins 1systemctl start jenkins 5.查看初始化密码 1cat /var/lib/jenkins/secrets/initialAdminPassword 6.访问地址 1http://10.0.96.102:8080/ 7.配置Jdk、Maven ​ 配置JDK、Maven地址 ​ 安装maven Integration 插件 8.安装Git 1yum install git ​ 配置Git地址以及安装Git-Client插件 9.安装GitLab、GitLab Hook插件 10.配置全局凭据（拉取代码私钥） 11.shell启动springboot jar脚本 1234567891011121314151617#!/bin/bash# jenkins工作目录project_path=/var/lib/jenkins/workspace/eurekacd $&#123;project_path&#125;# 打包mvn clean package -Dmaven.test.skip=true jar_path=/var/lib/jenkins/workspace/eureka/target/jar_name=eureka-server-0.0.1-SNAPSHOT.jarcd $&#123;jar_path&#125;# 杀死进程ps -ef|grep eureka |grep -v grep |awk &apos;&#123;print $2&#125;&apos;|xargs kill -9# 启动服务BUILD_ID=dontKillMe nohup java -jar $&#123;jar_name&#125; &amp; War部署 1.下载jenkins.war文件,官网地址:http://jenkins-ci.org/ 注意选择最新版本Long-Term Support Release 2.访问地址http://IP:8080/jenkins/ 3.查看初始密码 1cat /root/.jenkins/secrets/initialAdminPassword 4.配置Jdk、Maven ​ 配置JDK、Maven地址 ​ 安装maven Integration 插件 5.安装Git 1yum install git ​ 配置Git地址以及安装Git-Client插件 6.安装GitLab、GitLab Hook插件 7.配置全局凭据（拉取代码私钥） 8.shell启动springboot jar脚本 123456789101112131415161718#!/bin/bash# jenkins工作目录project_path=/root/.jenkins/workspace/eurekacd $&#123;project_path&#125;# 打包mvn clean package -Dmaven.test.skip=true jar_path=/root/.jenkins/workspace/eureka/target/jar_name=eureka-server-0.0.1-SNAPSHOT.jarcd $&#123;jar_path&#125;# 杀死进程ps -ef|grep eureka |grep -v grep |awk &apos;&#123;print $2&#125;&apos;|xargs kill -9# 启动服务BUILD_ID=dontKillMe nohup java -jar $&#123;jar_name&#125; &amp;# 注意 BUILD_ID=dontKillMe 不加的话 会启动完成直接关闭服务]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>devOps</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Hello World]]></title>
     <url>%2F2019%2F03%2F16%2Fhello-world%2F</url>
     <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
       <categories>
-        <category>Java</category>
+        <category>hello</category>
       </categories>
       <tags>
-        <tag>Java</tag>
+        <tag>hello</tag>
       </tags>
   </entry>
 </search>
