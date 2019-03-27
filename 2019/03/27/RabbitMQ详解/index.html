@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Mr.zhang&#39;s Blog">
 <meta property="og:description" content="分布式消息中间件场景介绍  ​    背景 ​    使用过分布式中间件的人都知道，程序员使用起来并不复杂，常用的客户端 API 就那么几个，比我们日常编写程序时用到的 API 要少得多。但是分布式中间件在中小研发团队中使用得并不多，为什么会这样呢？ ​    原因是中间件的职责相对单一，客户端的使用虽然简单，但整个环境搭起来却不容易。 ​    场景介绍 ​    1、 业务系统往往要求响应能">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-27T01:19:29.946Z">
+<meta property="og:updated_time" content="2019-03-27T02:31:30.091Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RabbitMQ 详解">
 <meta name="twitter:description" content="分布式消息中间件场景介绍  ​    背景 ​    使用过分布式中间件的人都知道，程序员使用起来并不复杂，常用的客户端 API 就那么几个，比我们日常编写程序时用到的 API 要少得多。但是分布式中间件在中小研发团队中使用得并不多，为什么会这样呢？ ​    原因是中间件的职责相对单一，客户端的使用虽然简单，但整个环境搭起来却不容易。 ​    场景介绍 ​    1、 业务系统往往要求响应能">
@@ -409,21 +409,27 @@
 <p>​    <strong>权限管理</strong>：灵活的用户角色权限管理，Virtual Host 是权限控制的最小粒度。</p>
 <p>​    <strong>插件系统</strong>：支持各种丰富的插件扩展，同时也支持自定义插件，其中最常用的插件是 Web 管理工具 RabbitMQ_Management</p>
 <blockquote>
-<p>RabbitMQ 6种用法介绍</p>
+<p>RabbitMQ 5种用法介绍</p>
 </blockquote>
-<p>​    RabbitMQ共有6种使用方式，即单对单、单对多、发布订阅模式、按路由规则发送接收、主题、RPC（即远程存储调用）</p>
+<p>​    RabbitMQ共有5种使用方式，即单对单、单对多、发布订阅模式、按路由规则发送接收、主题</p>
 <p>​    1、<strong>单对单</strong>：单发送，单接收</p>
 <p>​        适用于一个生产者，一个消费者的情况</p>
 <p>​    2、<strong>单对多</strong>：单发送，多接收</p>
 <p>​        适用于只有一个生产者，多个消费者，如分布式的任务派发</p>
-<p>​    3、<strong>发布订阅模式</strong>：</p>
-<p>​    </p>
+<p>​    3、<strong>发布订阅模式</strong>：单发送，多接收</p>
+<p>​        一个生产者发送消息，多个消费者获取消息（同样的消息），包括一个生产者，一个交换机，多个队列，多个消费者。</p>
+<p>​        <code>思路解读</code></p>
+<p>​        &gt; 一个生产者，多个消费者</p>
+<p>​        &gt; 每一个消费者都有自己的一个队列</p>
+<p>​        &gt; 生产者没有直接发消息到队列中，而是发送到交换机        </p>
+<p>​        &gt; 每个消费者的队列都绑定到交换机上</p>
+<p>​        &gt; 消息通过交换机到达每个消费者的队列    </p>
+<p>​        <code>注意：交换机没有存储消息功能，如果消息发送到没有绑定消费队列的交换机，消息则丢失</code></p>
 <p>​    4、<strong>按路由规则发送接收</strong>：</p>
+<p>​        生产者发送消息到交换机并指定一个路由key，消费者队列绑定到交换机时要制定路由key（key匹配就能接受消息，key不匹配就不能接受消息），例如：我们可以把路由key设置为insert ，那么消费者队列key指定包含insert才可以接收消息，消费者队列key定义为update或者delete就不能接收消息。很好的控制了更新，插入和删除的操作。</p>
 <p>​    5、<strong>主题</strong>：</p>
 <p>​        Exchange Type 为 topic，发送消息时，需要指定交换机及Routing Key，消费者的消息队列绑定到该交换机并匹配到Routing Key实现消息的订阅，订阅后则可接收消息。只有消费者队列绑定到该交换机且指定的Routing Key符合匹配规则，才能收到消息。</p>
 <p>​        其中Routing Key可以设置成通配符，如：<em> 或 #（</em> 表示匹配Routing Key中的某个单词，# 表示任意的Routing Key的消息都能被收到）。如果Routing Key由多个单词组成，则单词之间用 . 来分隔。</p>
-<p>​    6、<strong>RPC</strong>（即远程存储调用）：</p>
-<p>​    </p>
 <p>​    <strong>命名规范</strong></p>
 <p>​        交换机名的命名建议</p>
 <p>​        Ex{AppID}.{自定义 ExchangeName}，队列名的命名建议：MQ{AppID}.{自定义 QueueName}</p>
