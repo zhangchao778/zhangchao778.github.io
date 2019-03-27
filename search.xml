@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[RabbitMQ]]></title>
-    <url>%2F2019%2F03%2F26%2FRabbitMQ%2F</url>
-    <content type="text"><![CDATA[安装 ​ 由于RabbitMQ是基于Erlang语言开发，所以在安装RabbitMQ之前，需要先安装Erlang，RabbitMQ官网已经为我们提供了Erlang的安装包 Erlang下载地址：http://www.rabbitmq.com/releases/erlang/ 下载的Erlang安装包为: erlang-19.0.4-1.el7.centos.x86_64.rpm RabbitMQ下载地址：https://www.rabbitmq.com/download.html 下载的RabbitMQ安装包为：rabbitmq-server-3.6.8-1.el7.noarch.rpm 1.安装Erlang 1yum install erlang-19.0.4-1.el7.centos.x86_64.rpm ​ 测试Erlang是否安装成功 1erl -version ​ 出现以下信息则表示安装成功 1Erlang (SMP,ASYNC_THREADS,HIPE) (BEAM) emulator version 8.0.3 2.安装RabbitMQ 1yum install rabbitmq-server-3.6.8-1.el7.noarch.rpm ​ 运行RabbitMQ 1service rabbitmq-server start ​ 停止RabbitMQ 1service rabbitmq-server stop 用户配置 添加用户 1rabbitmqctl add_user admin admin 添加管理员权限 1rabbitmqctl set_user_tags admin administrator 修改密码 1rabbitmqctl add_user admin youpassword 设置权限 1rabbitmqctl set_permissions -p '/' admin '.' '.' '.' 查看服务状态 1service rabbitmq-server status 启用WEB管理 启动web插件 1rabbitmq-plugins enable rabbitmq_management 访问地址http://IP:15672/ 删除guest用户 1rabbitmqctl delete_user guest 由于guest用户被限制，只能通过localhost访问，因此我们需要新建一个用户，并授予管理员权限 添加Web访问权限注意：rabbitmq从3.3.0开始禁止使用guest/guest权限通过除localhost外的访问。如果想使用guest/guest通过远程机器访问，需要在rabbitmq配置文件中(/etc/rabbitmq/rabbitmq.config)中设置loopback_users为[],配置文件不存在创建即可。 添加配置 1[&#123;rabbit, [&#123;loopback_users, [&quot;admin&quot;]&#125;]&#125;]]]></content>
+    <title><![CDATA[RabbitMQ 详解]]></title>
+    <url>%2F2019%2F03%2F27%2FRabbitMQ%E8%AF%A6%E8%A7%A3%2F</url>
+    <content type="text"><![CDATA[分布式消息中间件场景介绍 ​ 背景 ​ 使用过分布式中间件的人都知道，程序员使用起来并不复杂，常用的客户端 API 就那么几个，比我们日常编写程序时用到的 API 要少得多。但是分布式中间件在中小研发团队中使用得并不多，为什么会这样呢？ ​ 原因是中间件的职责相对单一，客户端的使用虽然简单，但整个环境搭起来却不容易。 ​ 场景介绍 ​ 1、 业务系统往往要求响应能力特别强，能够起到削峰填谷的作用 ​ 2、解耦：如果一个系统挂了，则不会影响另外个系统的继续运行 ​ 3、业务系统往往有对消息的高可靠要求，以及有对复杂功能如 Ack 的要求 ​ 4、增强业务系统的异步处理能力，减少甚至几乎不可能出现并发现象 使用消息队列，就好比为了防汛而建葛洲坝，有大量数据的堆积能力，然后可靠地进行异步输出 ​ RabbitMQ介绍 ​ RabbitMQ 是基于 AMQP 实现的一个开源消息组件，主要用于在分布式系统中存储转发消息，由因高性能、高可用以及高扩展而出名的 Erlang 语言写成 ​ 其中，AMQP（Advanced Message Queuing Protocol，即高级消息队列协议），是一个异步消息传递所使用的应用层协议规范，为面向消息的中间件设计 ​ RabbitMQ 特点 ​ 高可靠：RabbitMQ 提供了多种多样的特性让你在可靠性和性能之间做出权衡，包括持久化、发送应答、发布确认以及高可用性。 ​ 高可用队列：支持跨机器集群，支持队列安全镜像备份，消息的生产者与消费者不论哪一方出现问题，均不会影响消息的正常发出与接收。 ​ 灵活的路由：所有的消息都会通过路由器转发到各个消息队列中，RabbitMQ 内建了几个常用的路由器，并且可以通过路由器的组合以及自定义路由器插件来完成复杂的路由功能。 ​ 支持多客户端：对主流开发语言（如：Python、Ruby、.NET、Java、C、PHP、ActionScript 等）都有客户端实现。 ​ 集群：本地网络内的多个 Server 可以聚合在一起，共同组成一个逻辑上的 broker。 ​ 扩展性：支持负载均衡，动态增减服务器简单方便。 ​ 权限管理：灵活的用户角色权限管理，Virtual Host 是权限控制的最小粒度。 ​ 插件系统：支持各种丰富的插件扩展，同时也支持自定义插件，其中最常用的插件是 Web 管理工具 RabbitMQ_Management RabbitMQ 6种用法介绍 ​ RabbitMQ共有6种使用方式，即单对单、单对多、发布订阅模式、按路由规则发送接收、主题、RPC（即远程存储调用） ​ 1、单对单：单发送，单接收 ​ 适用于一个生产者，一个消费者的情况 ​ 2、单对多：单发送，多接收 ​ 适用于只有一个生产者，多个消费者，如分布式的任务派发 ​ 3、发布订阅模式： ​ ​ 4、按路由规则发送接收： ​ 5、主题： ​ Exchange Type 为 topic，发送消息时，需要指定交换机及Routing Key，消费者的消息队列绑定到该交换机并匹配到Routing Key实现消息的订阅，订阅后则可接收消息。只有消费者队列绑定到该交换机且指定的Routing Key符合匹配规则，才能收到消息。 ​ 其中Routing Key可以设置成通配符，如： 或 #（ 表示匹配Routing Key中的某个单词，# 表示任意的Routing Key的消息都能被收到）。如果Routing Key由多个单词组成，则单词之间用 . 来分隔。 ​ 6、RPC（即远程存储调用）： ​ ​ 命名规范 ​ 交换机名的命名建议 ​ Ex{AppID}.{自定义 ExchangeName}，队列名的命名建议：MQ{AppID}.{自定义 QueueName} ​]]></content>
       <categories>
         <category>technology</category>
       </categories>
@@ -12,25 +12,14 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[vi编辑器]]></title>
-    <url>%2F2019%2F03%2F26%2Fvi%E7%BC%96%E8%BE%91%E5%99%A8%2F</url>
-    <content type="text"><![CDATA[1、vi 文件名 2、输入 i 进入编辑模式 3、对文件进行编辑 4、Esc 退出编辑模式，进入命令模式 5、:wq 保存退出 ​ :q! 退出但不保存 配置 vimrc 当我最初使用 vim 的时候，我浪费了好多时间来缩进代码，我不知道通过修改 Vim 的 .vimrc 配置文件来实现代码缩进、语法高亮、显示行号等功能。 在你的 Home 目录下创建一个 .vimrc 文件，添加下面的代码来设置行号、代码缩进等 set number # 显示行号 set autoindent # 自动缩进 set nowrap # 不换行 不关闭终端退出编辑器 使用 Vim 编辑器保存并退出编辑状态是一件轻而易举的事，你只需记住按 ESC 键切换到正常模式，然后输入冒号(:)，之后输入 wq 即可实现保存并退出。 :wq 如果不想保存，则按 ESC 键切换到正常模式，然后输入冒号(:)，之后输入 q! 即可。 :q! 删除一行或多行 通过退格键(Backspace)来删除一行代码显然是太麻烦了。可以通过切换到正常模式(编辑模式下按 ESC 键)来进行操作 dd ： (输入两次 d，下同)删除当前行；5dd ：删除当前行开始的5行； dG ：(先输入d，然后按 shift 键输入 g)删除当前行至最后一行的所以行。 复制粘贴一块代码 你可能经常需要复制一行或一大块代码，使用 Vim 快捷键来实现此功能是非常简单的 按 Esc 切换到正常模式； 把光标移到你需要复制的代码行首； 按 V 选择整行，可移动光标选择多行； 按 d 剪切或按 y 复制选择的代码； 移动光标到你需要粘贴的位置，按 p 粘贴代码到光标后的位置，或按 P 粘贴到光标前。 撤销与重做 在使用 Vim 或其他编辑器的时候，你可能经常需要对某些修改进行撤销或重做。在 Vim 中，你可以切换到正常模式，按 u 来撤销操作，按 Ctrl+r 来重做 搜索 搜索在很多时候都是一个非常重要的功能。在文件中搜索一个特定的词，可以切换到正常模式，然后输入斜线( / )，之后跟上要搜索的词，回车即可 /word-to-be-searched 按 n 显示下一个搜索结果，按 N 显示上一个搜索结果 把外部文件读入 Vim 我开始使用 Vim 的时候，经常会打开一个文件、复制内容、关闭文件、打开另一个文件、然后粘贴进去复制到内容。其实 Vim 中读取另一个文件的内容非常方便。切换到正常模式，然后按 :read。使用此快捷键你不需要手动打开文件来复制内容 :read readme.md 把命令的结果读入 Vim 有时候你需要把某个命令的结果复制到 Vim 中，这在 Vim 也非常简单。切换到正常模式，然后输入 :read !command 即可把 command 的结果输入到 vim 中 :read !ls -l 切换到上次修改的位置 想知道你在文件中做的最后一次修改是在什么位置？切换到正常模式，输入 g; 来即可切换到上次修改的位置 移动到文件顶部或底部 当需要移动到文件顶部或底部时，通过 j 或 k 来一行行的移动显得有点麻烦。Vim 提供了一个快捷键可直接实现此功能。切换到正常模式，输入 gg 返回文件顶部，输入 G 返回文件底部]]></content>
+    <title><![CDATA[RabbitMQ Install]]></title>
+    <url>%2F2019%2F03%2F26%2FRabbitMQ%20Install%2F</url>
+    <content type="text"><![CDATA[安装 ​ 由于RabbitMQ是基于Erlang语言开发，所以在安装RabbitMQ之前，需要先安装Erlang，RabbitMQ官网已经为我们提供了Erlang的安装包 Erlang下载地址：http://www.rabbitmq.com/releases/erlang/ 下载的Erlang安装包为: erlang-19.0.4-1.el7.centos.x86_64.rpm RabbitMQ下载地址：https://www.rabbitmq.com/download.html 下载的RabbitMQ安装包为：rabbitmq-server-3.6.8-1.el7.noarch.rpm 1.安装Erlang 1yum install erlang-19.0.4-1.el7.centos.x86_64.rpm ​ 测试Erlang是否安装成功 1erl -version ​ 出现以下信息则表示安装成功 1Erlang (SMP,ASYNC_THREADS,HIPE) (BEAM) emulator version 8.0.3 2.安装RabbitMQ 1yum install rabbitmq-server-3.6.8-1.el7.noarch.rpm ​ 运行RabbitMQ 1service rabbitmq-server start ​ 停止RabbitMQ 1service rabbitmq-server stop 用户配置 添加用户 1rabbitmqctl add_user admin admin 添加管理员权限 1rabbitmqctl set_user_tags admin administrator 修改密码 1rabbitmqctl add_user admin youpassword 设置权限 1rabbitmqctl set_permissions -p '/' admin '.' '.' '.' 查看服务状态 1service rabbitmq-server status 启用WEB管理 启动web插件 1rabbitmq-plugins enable rabbitmq_management 访问地址http://IP:15672/ 删除guest用户 1rabbitmqctl delete_user guest 由于guest用户被限制，只能通过localhost访问，因此我们需要新建一个用户，并授予管理员权限 添加Web访问权限注意：rabbitmq从3.3.0开始禁止使用guest/guest权限通过除localhost外的访问。如果想使用guest/guest通过远程机器访问，需要在rabbitmq配置文件中(/etc/rabbitmq/rabbitmq.config)中设置loopback_users为[],配置文件不存在创建即可。 添加配置 1[&#123;rabbit, [&#123;loopback_users, [&quot;admin&quot;]&#125;]&#125;]]]></content>
       <categories>
         <category>technology</category>
       </categories>
       <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Mysql-emoji表情]]></title>
-    <url>%2F2019%2F03%2F26%2FMysql-emoji%E8%A1%A8%E6%83%85%2F</url>
-    <content type="text"><![CDATA[Mysql-emoji表情支持版本 大于5.5.3的Mysql版本才开始支持emoji表情 Mysql-emoji表情失败原因 普通的字符串或者表情都是占位3个字节，使用utf8足够用了，但是移动端的表情符号占位是4个字节，普通的utf8就不够用了，为了应对无线互联网的机遇和挑战、避免 emoji 表情符号带来的问题、涉及无线相关的 MySQL 数据库建议都提前采用 utf8mb4 字符集。Mysql 5.5.3之前的版本，仅支持的utf8为3字节的，Mysql 5.5.3之后的版本支持utf8mb4为4字节的。 Mysql配置修改 修改mysql配置文件my.cnf（windows为my.ini） 找到后请在以下三部分里添加如下内容 123456789[client] default-character-set = utf8mb4 [mysql] default-character-set = utf8mb4 [mysqld] character-set-client-handshake = FALSE character-set-server = utf8mb4 collation-server = utf8mb4_unicode_ci init_connect=&apos;SET NAMES utf8mb4&apos; 检查变量 1SHOW VARIABLES WHERE Variable_name LIKE &apos;character_set_%&apos; OR Variable_name LIKE &apos;collation%&apos;; 将数据库和已经建好的表也转换成utf8mb4 1.更改数据库编码 1ALTER DATABASE caitu99 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci; 2.更改表编码 1ALTER TABLE TABLE_NAME CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;]]></content>
-      <categories>
-        <category>technology</category>
-      </categories>
-      <tags>
-        <tag>mysql</tag>
+        <tag>java</tag>
       </tags>
   </entry>
   <entry>
@@ -56,8 +45,30 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[Mysql-emoji表情]]></title>
+    <url>%2F2018%2F09%2F26%2FMysql-emoji%E8%A1%A8%E6%83%85%2F</url>
+    <content type="text"><![CDATA[Mysql-emoji表情支持版本 大于5.5.3的Mysql版本才开始支持emoji表情 Mysql-emoji表情失败原因 普通的字符串或者表情都是占位3个字节，使用utf8足够用了，但是移动端的表情符号占位是4个字节，普通的utf8就不够用了，为了应对无线互联网的机遇和挑战、避免 emoji 表情符号带来的问题、涉及无线相关的 MySQL 数据库建议都提前采用 utf8mb4 字符集。Mysql 5.5.3之前的版本，仅支持的utf8为3字节的，Mysql 5.5.3之后的版本支持utf8mb4为4字节的。 Mysql配置修改 修改mysql配置文件my.cnf（windows为my.ini） 找到后请在以下三部分里添加如下内容 123456789[client] default-character-set = utf8mb4 [mysql] default-character-set = utf8mb4 [mysqld] character-set-client-handshake = FALSE character-set-server = utf8mb4 collation-server = utf8mb4_unicode_ci init_connect=&apos;SET NAMES utf8mb4&apos; 检查变量 1SHOW VARIABLES WHERE Variable_name LIKE &apos;character_set_%&apos; OR Variable_name LIKE &apos;collation%&apos;; 将数据库和已经建好的表也转换成utf8mb4 1.更改数据库编码 1ALTER DATABASE caitu99 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci; 2.更改表编码 1ALTER TABLE TABLE_NAME CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[vi编辑器]]></title>
+    <url>%2F2018%2F05%2F26%2Fvi%E7%BC%96%E8%BE%91%E5%99%A8%2F</url>
+    <content type="text"><![CDATA[1、vi 文件名 2、输入 i 进入编辑模式 3、对文件进行编辑 4、Esc 退出编辑模式，进入命令模式 5、:wq 保存退出 ​ :q! 退出但不保存 配置 vimrc 当我最初使用 vim 的时候，我浪费了好多时间来缩进代码，我不知道通过修改 Vim 的 .vimrc 配置文件来实现代码缩进、语法高亮、显示行号等功能。 在你的 Home 目录下创建一个 .vimrc 文件，添加下面的代码来设置行号、代码缩进等 set number # 显示行号 set autoindent # 自动缩进 set nowrap # 不换行 不关闭终端退出编辑器 使用 Vim 编辑器保存并退出编辑状态是一件轻而易举的事，你只需记住按 ESC 键切换到正常模式，然后输入冒号(:)，之后输入 wq 即可实现保存并退出。 :wq 如果不想保存，则按 ESC 键切换到正常模式，然后输入冒号(:)，之后输入 q! 即可。 :q! 删除一行或多行 通过退格键(Backspace)来删除一行代码显然是太麻烦了。可以通过切换到正常模式(编辑模式下按 ESC 键)来进行操作 dd ： (输入两次 d，下同)删除当前行；5dd ：删除当前行开始的5行； dG ：(先输入d，然后按 shift 键输入 g)删除当前行至最后一行的所以行。 复制粘贴一块代码 你可能经常需要复制一行或一大块代码，使用 Vim 快捷键来实现此功能是非常简单的 按 Esc 切换到正常模式； 把光标移到你需要复制的代码行首； 按 V 选择整行，可移动光标选择多行； 按 d 剪切或按 y 复制选择的代码； 移动光标到你需要粘贴的位置，按 p 粘贴代码到光标后的位置，或按 P 粘贴到光标前。 撤销与重做 在使用 Vim 或其他编辑器的时候，你可能经常需要对某些修改进行撤销或重做。在 Vim 中，你可以切换到正常模式，按 u 来撤销操作，按 Ctrl+r 来重做 搜索 搜索在很多时候都是一个非常重要的功能。在文件中搜索一个特定的词，可以切换到正常模式，然后输入斜线( / )，之后跟上要搜索的词，回车即可 /word-to-be-searched 按 n 显示下一个搜索结果，按 N 显示上一个搜索结果 把外部文件读入 Vim 我开始使用 Vim 的时候，经常会打开一个文件、复制内容、关闭文件、打开另一个文件、然后粘贴进去复制到内容。其实 Vim 中读取另一个文件的内容非常方便。切换到正常模式，然后按 :read。使用此快捷键你不需要手动打开文件来复制内容 :read readme.md 把命令的结果读入 Vim 有时候你需要把某个命令的结果复制到 Vim 中，这在 Vim 也非常简单。切换到正常模式，然后输入 :read !command 即可把 command 的结果输入到 vim 中 :read !ls -l 切换到上次修改的位置 想知道你在文件中做的最后一次修改是在什么位置？切换到正常模式，输入 g; 来即可切换到上次修改的位置 移动到文件顶部或底部 当需要移动到文件顶部或底部时，通过 j 或 k 来一行行的移动显得有点麻烦。Vim 提供了一个快捷键可直接实现此功能。切换到正常模式，输入 gg 返回文件顶部，输入 G 返回文件底部]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Hello World]]></title>
-    <url>%2F2019%2F03%2F16%2Fhello-world%2F</url>
+    <url>%2F2018%2F03%2F26%2Fhello-world%2F</url>
     <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
       <categories>
         <category>hello</category>
