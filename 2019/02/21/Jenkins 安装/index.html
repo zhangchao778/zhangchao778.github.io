@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="java,">
+  <meta name="keywords" content="devOps,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="分布式消息中间件场景介绍  ​    背景 ​    使用过分布式中间件的人都知道，程序员使用起来并不复杂，常用的客户端 API 就那么几个，比我们日常编写程序时用到的 API 要少得多。但是分布式中间件在中小研发团队中使用得并不多，为什么会这样呢？ ​    原因是中间件的职责相对单一，客户端的使用虽然简单，但整个环境搭起来却不容易。 ​    场景介绍 ​    1、业务系统往往要求响应能力">
-<meta name="keywords" content="java">
+<meta name="description" content="Jenkins 安装步骤 安装步骤  1.Install JDK 2.安装 Jenkins 仓库 12wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.reporpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.k">
+<meta name="keywords" content="devOps">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RabbitMQ 详解">
-<meta property="og:url" content="http://yoursite.com/2019/03/27/RabbitMQ详解/index.html">
+<meta property="og:title" content="Jenkins 安装">
+<meta property="og:url" content="http://yoursite.com/2019/02/21/Jenkins 安装/index.html">
 <meta property="og:site_name" content="Mr.zhang&#39;s Blog">
-<meta property="og:description" content="分布式消息中间件场景介绍  ​    背景 ​    使用过分布式中间件的人都知道，程序员使用起来并不复杂，常用的客户端 API 就那么几个，比我们日常编写程序时用到的 API 要少得多。但是分布式中间件在中小研发团队中使用得并不多，为什么会这样呢？ ​    原因是中间件的职责相对单一，客户端的使用虽然简单，但整个环境搭起来却不容易。 ​    场景介绍 ​    1、业务系统往往要求响应能力">
+<meta property="og:description" content="Jenkins 安装步骤 安装步骤  1.Install JDK 2.安装 Jenkins 仓库 12wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.reporpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.k">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-27T02:32:52.064Z">
+<meta property="og:updated_time" content="2019-03-27T02:43:33.513Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RabbitMQ 详解">
-<meta name="twitter:description" content="分布式消息中间件场景介绍  ​    背景 ​    使用过分布式中间件的人都知道，程序员使用起来并不复杂，常用的客户端 API 就那么几个，比我们日常编写程序时用到的 API 要少得多。但是分布式中间件在中小研发团队中使用得并不多，为什么会这样呢？ ​    原因是中间件的职责相对单一，客户端的使用虽然简单，但整个环境搭起来却不容易。 ​    场景介绍 ​    1、业务系统往往要求响应能力">
+<meta name="twitter:title" content="Jenkins 安装">
+<meta name="twitter:description" content="Jenkins 安装步骤 安装步骤  1.Install JDK 2.安装 Jenkins 仓库 12wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.reporpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.k">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/27/RabbitMQ详解/">
+  <link rel="canonical" href="http://yoursite.com/2019/02/21/Jenkins 安装/">
 
 
 
 
 
-  <title>RabbitMQ 详解 | Mr.zhang's Blog</title>
+  <title>Jenkins 安装 | Mr.zhang's Blog</title>
   
 
 
@@ -295,7 +295,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/27/RabbitMQ详解/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/21/Jenkins 安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mr.zhang">
@@ -312,7 +312,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">RabbitMQ 详解</h1>
+          <h1 class="post-title" itemprop="name headline">Jenkins 安装</h1>
         
 
         <div class="post-meta">
@@ -324,8 +324,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-27T09:13:26+08:00">
-                2019-03-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-21T13:27:26+08:00">
+                2019-02-21
               </time>
             
 
@@ -384,56 +384,48 @@
       
 
       
-        <blockquote>
-<p>分布式消息中间件场景介绍</p>
+        <h2 id="Jenkins-安装步骤"><a href="#Jenkins-安装步骤" class="headerlink" title="Jenkins 安装步骤"></a>Jenkins 安装步骤</h2><blockquote>
+<p>安装步骤</p>
 </blockquote>
-<p>​    <code>背景</code></p>
-<p>​    使用过分布式中间件的人都知道，程序员使用起来并不复杂，常用的客户端 API 就那么几个，比我们日常编写程序时用到的 API 要少得多。但是分布式中间件在中小研发团队中使用得并不多，为什么会这样呢？</p>
-<p>​    原因是中间件的职责相对单一，客户端的使用虽然简单，但整个环境搭起来却不容易。</p>
-<p>​    <code>场景介绍</code></p>
-<p>​    1、业务系统往往要求响应能力特别强，能够起到削峰填谷的作用</p>
-<p>​    2、解耦：如果一个系统挂了，则不会影响另外个系统的继续运行</p>
-<p>​    3、业务系统往往有对消息的高可靠要求，以及有对复杂功能如 Ack 的要求</p>
-<p>​    4、增强业务系统的异步处理能力，减少甚至几乎不可能出现并发现象</p>
-<p>使用消息队列，就好比为了防汛而建葛洲坝，有大量数据的堆积能力，然后可靠地进行异步输出</p>
-<p>​    <code>RabbitMQ介绍</code></p>
-<p>​    RabbitMQ 是基于 AMQP 实现的一个开源消息组件，主要用于在分布式系统中存储转发消息，由因高性能、高可用以及高扩展而出名的 Erlang 语言写成</p>
-<p>​    其中，AMQP（Advanced Message Queuing Protocol，即高级消息队列协议），是一个异步消息传递所使用的应用层协议规范，为面向消息的中间件设计</p>
-<p>​    <code>RabbitMQ 特点</code></p>
-<p>​    <strong>高可靠</strong>：RabbitMQ 提供了多种多样的特性让你在可靠性和性能之间做出权衡，包括持久化、发送应答、发布确认以及高可用性。</p>
-<p>​    <strong>高可用队列</strong>：支持跨机器集群，支持队列安全镜像备份，消息的生产者与消费者不论哪一方出现问题，均不会影响消息的正常发出与接收。</p>
-<p>​    <strong>灵活的路由</strong>：所有的消息都会通过路由器转发到各个消息队列中，RabbitMQ 内建了几个常用的路由器，并且可以通过路由器的组合以及自定义路由器插件来完成复杂的路由功能。</p>
-<p>​    <strong>支持多客户端</strong>：对主流开发语言（如：Python、Ruby、.NET、Java、C、PHP、ActionScript 等）都有客户端实现。</p>
-<p>​    <strong>集群</strong>：本地网络内的多个 Server 可以聚合在一起，共同组成一个逻辑上的 broker。</p>
-<p>​    <strong>扩展性</strong>：支持负载均衡，动态增减服务器简单方便。</p>
-<p>​    <strong>权限管理</strong>：灵活的用户角色权限管理，Virtual Host 是权限控制的最小粒度。</p>
-<p>​    <strong>插件系统</strong>：支持各种丰富的插件扩展，同时也支持自定义插件，其中最常用的插件是 Web 管理工具 RabbitMQ_Management</p>
+<p>1.Install JDK</p>
+<p>2.安装 Jenkins 仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo</span><br><span class="line">rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key</span><br></pre></td></tr></table></figure>
+<p>3.安装 Jenkins</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install jenkins -y</span><br><span class="line">配置文件地址 /etc/sysconfig/jenkins</span><br></pre></td></tr></table></figure>
+<p>4.启动 jenkins</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start jenkins</span><br></pre></td></tr></table></figure>
+<p>5.查看初始化密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /var/lib/jenkins/secrets/initialAdminPassword</span><br></pre></td></tr></table></figure>
+<p>6.访问地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://10.0.96.102:8080/</span><br></pre></td></tr></table></figure>
+<p>7.配置Jdk、Maven</p>
+<p>​    配置JDK、Maven地址</p>
+<p>​    安装maven Integration 插件</p>
+<p>8.安装Git</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install git</span><br></pre></td></tr></table></figure>
+<p>​    配置Git地址以及安装Git-Client插件</p>
+<p>9.安装GitLab、GitLab Hook插件</p>
+<p>10.配置全局凭据（拉取代码私钥）</p>
+<p>11.shell启动springboot jar脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># jenkins工作目录</span><br><span class="line">project_path=/var/lib/jenkins/workspace/eureka</span><br><span class="line">cd $&#123;project_path&#125;</span><br><span class="line"># 打包</span><br><span class="line">mvn clean package -Dmaven.test.skip=true </span><br><span class="line"></span><br><span class="line">jar_path=/var/lib/jenkins/workspace/eureka/target/</span><br><span class="line"></span><br><span class="line">jar_name=eureka-server-0.0.1-SNAPSHOT.jar</span><br><span class="line"></span><br><span class="line">cd $&#123;jar_path&#125;</span><br><span class="line"># 杀死进程</span><br><span class="line">ps -ef|grep eureka |grep -v grep |awk &apos;&#123;print $2&#125;&apos;|xargs kill -9</span><br><span class="line"></span><br><span class="line"># 启动服务</span><br><span class="line">BUILD_ID=dontKillMe nohup java -jar $&#123;jar_name&#125; &amp;</span><br></pre></td></tr></table></figure>
+<hr>
 <blockquote>
-<p>RabbitMQ 5种用法介绍</p>
+<p>War部署</p>
 </blockquote>
-<p>​    RabbitMQ共有5种使用方式，即单对单、单对多、发布订阅模式、按路由规则发送接收、主题</p>
-<p>​    1、<strong>单对单</strong>：单发送，单接收</p>
-<p>​        适用于一个生产者，一个消费者的情况</p>
-<p>​    2、<strong>单对多</strong>：单发送，多接收</p>
-<p>​        适用于只有一个生产者，多个消费者，如分布式的任务派发</p>
-<p>​    3、<strong>发布订阅模式</strong>：单发送，多接收</p>
-<p>​        一个生产者发送消息，多个消费者获取消息（同样的消息），包括一个生产者，一个交换机，多个队列，多个消费者。</p>
-<p>​        <code>思路解读</code></p>
-<p>​        &gt; 一个生产者，多个消费者</p>
-<p>​        &gt; 每一个消费者都有自己的一个队列</p>
-<p>​        &gt; 生产者没有直接发消息到队列中，而是发送到交换机        </p>
-<p>​        &gt; 每个消费者的队列都绑定到交换机上</p>
-<p>​        &gt; 消息通过交换机到达每个消费者的队列    </p>
-<p>​        <code>注意：交换机没有存储消息功能，如果消息发送到没有绑定消费队列的交换机，消息则丢失</code></p>
-<p>​    4、<strong>按路由规则发送接收</strong>：</p>
-<p>​        生产者发送消息到交换机并指定一个路由key，消费者队列绑定到交换机时要制定路由key（key匹配就能接受消息，key不匹配就不能接受消息），例如：我们可以把路由key设置为insert ，那么消费者队列key指定包含insert才可以接收消息，消费者队列key定义为update或者delete就不能接收消息。很好的控制了更新，插入和删除的操作。</p>
-<p>​    5、<strong>主题</strong>：</p>
-<p>​        Exchange Type 为 topic，发送消息时，需要指定交换机及Routing Key，消费者的消息队列绑定到该交换机并匹配到Routing Key实现消息的订阅，订阅后则可接收消息。只有消费者队列绑定到该交换机且指定的Routing Key符合匹配规则，才能收到消息。</p>
-<p>​        其中Routing Key可以设置成通配符，如：<em> 或 #（</em> 表示匹配Routing Key中的某个单词，# 表示任意的Routing Key的消息都能被收到）。如果Routing Key由多个单词组成，则单词之间用 . 来分隔。</p>
-<p>​    <strong>命名规范</strong></p>
-<p>​        交换机名的命名建议</p>
-<p>​        Ex{AppID}.{自定义 ExchangeName}，队列名的命名建议：MQ{AppID}.{自定义 QueueName}</p>
-<p>​    </p>
+<p>1.下载jenkins.war文件,官网地址:<a href="http://jenkins-ci.org/" target="_blank" rel="noopener">http://jenkins-ci.org/</a> 注意选择最新版本Long-Term Support Release</p>
+<p>2.访问地址<a href="http://IP:8080/jenkins/" target="_blank" rel="noopener">http://IP:8080/jenkins/</a></p>
+<p>3.查看初始密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /root/.jenkins/secrets/initialAdminPassword</span><br></pre></td></tr></table></figure>
+<p>4.配置Jdk、Maven</p>
+<p>​    配置JDK、Maven地址</p>
+<p>​    安装maven Integration 插件</p>
+<p>5.安装Git</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install git</span><br></pre></td></tr></table></figure>
+<p>​    配置Git地址以及安装Git-Client插件</p>
+<p>6.安装GitLab、GitLab Hook插件</p>
+<p>7.配置全局凭据（拉取代码私钥）</p>
+<p>8.shell启动springboot jar脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># jenkins工作目录</span><br><span class="line">project_path=/root/.jenkins/workspace/eureka</span><br><span class="line">cd $&#123;project_path&#125;</span><br><span class="line"># 打包</span><br><span class="line">mvn clean package -Dmaven.test.skip=true </span><br><span class="line"></span><br><span class="line">jar_path=/root/.jenkins/workspace/eureka/target/</span><br><span class="line"></span><br><span class="line">jar_name=eureka-server-0.0.1-SNAPSHOT.jar</span><br><span class="line"></span><br><span class="line">cd $&#123;jar_path&#125;</span><br><span class="line"># 杀死进程</span><br><span class="line">ps -ef|grep eureka |grep -v grep |awk &apos;&#123;print $2&#125;&apos;|xargs kill -9</span><br><span class="line"></span><br><span class="line"># 启动服务</span><br><span class="line">BUILD_ID=dontKillMe nohup java -jar $&#123;jar_name&#125; &amp;</span><br><span class="line"># 注意 BUILD_ID=dontKillMe  不加的话 会启动完成直接关闭服务</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -451,7 +443,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"># java</a>
+            <a href="/tags/devOps/" rel="tag"># devOps</a>
           
         </div>
       
@@ -464,8 +456,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/26/RabbitMQ 安装/" rel="next" title="RabbitMQ 安装">
-                <i class="fa fa-chevron-left"></i> RabbitMQ 安装
+              <a href="/2018/09/26/Mysql-emoji表情/" rel="next" title="Mysql-emoji表情">
+                <i class="fa fa-chevron-left"></i> Mysql-emoji表情
               </a>
             
           </div>
@@ -473,6 +465,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/23/Redis实现分布式锁/" rel="prev" title="Redis实现分布式锁">
+                Redis实现分布式锁 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -524,8 +520,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -542,7 +547,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -597,6 +602,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Jenkins-安装步骤"><span class="nav-number">1.</span> <span class="nav-text">Jenkins 安装步骤</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

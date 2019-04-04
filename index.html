@@ -295,7 +295,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/27/RabbitMQ详解/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/27/SpringBoot 整合 RabbitMQ/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mr.zhang">
@@ -312,7 +312,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">RabbitMQ 详解</h1>
+          <h1 class="post-title" itemprop="name headline">SpringBoot整合RabbitMQ</h1>
         
 
         <div class="post-meta">
@@ -324,7 +324,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-27T09:13:26+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-27T11:03:26+08:00">
                 2019-03-27
               </time>
             
@@ -384,56 +384,15 @@
       
 
       
-        <blockquote>
-<p>分布式消息中间件场景介绍</p>
+        <p><code>RabbitMQ支持持久化（MQ down或者MQ所在的服务器down了，消息不会丢失的机制）</code></p>
+<h2 id="整合步骤"><a href="#整合步骤" class="headerlink" title="整合步骤"></a>整合步骤</h2><blockquote>
+<p>添加依赖</p>
 </blockquote>
-<p>​    <code>背景</code></p>
-<p>​    使用过分布式中间件的人都知道，程序员使用起来并不复杂，常用的客户端 API 就那么几个，比我们日常编写程序时用到的 API 要少得多。但是分布式中间件在中小研发团队中使用得并不多，为什么会这样呢？</p>
-<p>​    原因是中间件的职责相对单一，客户端的使用虽然简单，但整个环境搭起来却不容易。</p>
-<p>​    <code>场景介绍</code></p>
-<p>​    1、业务系统往往要求响应能力特别强，能够起到削峰填谷的作用</p>
-<p>​    2、解耦：如果一个系统挂了，则不会影响另外个系统的继续运行</p>
-<p>​    3、业务系统往往有对消息的高可靠要求，以及有对复杂功能如 Ack 的要求</p>
-<p>​    4、增强业务系统的异步处理能力，减少甚至几乎不可能出现并发现象</p>
-<p>使用消息队列，就好比为了防汛而建葛洲坝，有大量数据的堆积能力，然后可靠地进行异步输出</p>
-<p>​    <code>RabbitMQ介绍</code></p>
-<p>​    RabbitMQ 是基于 AMQP 实现的一个开源消息组件，主要用于在分布式系统中存储转发消息，由因高性能、高可用以及高扩展而出名的 Erlang 语言写成</p>
-<p>​    其中，AMQP（Advanced Message Queuing Protocol，即高级消息队列协议），是一个异步消息传递所使用的应用层协议规范，为面向消息的中间件设计</p>
-<p>​    <code>RabbitMQ 特点</code></p>
-<p>​    <strong>高可靠</strong>：RabbitMQ 提供了多种多样的特性让你在可靠性和性能之间做出权衡，包括持久化、发送应答、发布确认以及高可用性。</p>
-<p>​    <strong>高可用队列</strong>：支持跨机器集群，支持队列安全镜像备份，消息的生产者与消费者不论哪一方出现问题，均不会影响消息的正常发出与接收。</p>
-<p>​    <strong>灵活的路由</strong>：所有的消息都会通过路由器转发到各个消息队列中，RabbitMQ 内建了几个常用的路由器，并且可以通过路由器的组合以及自定义路由器插件来完成复杂的路由功能。</p>
-<p>​    <strong>支持多客户端</strong>：对主流开发语言（如：Python、Ruby、.NET、Java、C、PHP、ActionScript 等）都有客户端实现。</p>
-<p>​    <strong>集群</strong>：本地网络内的多个 Server 可以聚合在一起，共同组成一个逻辑上的 broker。</p>
-<p>​    <strong>扩展性</strong>：支持负载均衡，动态增减服务器简单方便。</p>
-<p>​    <strong>权限管理</strong>：灵活的用户角色权限管理，Virtual Host 是权限控制的最小粒度。</p>
-<p>​    <strong>插件系统</strong>：支持各种丰富的插件扩展，同时也支持自定义插件，其中最常用的插件是 Web 管理工具 RabbitMQ_Management</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-boot-starter-amqp&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>RabbitMQ 5种用法介绍</p>
+<p>配置</p>
 </blockquote>
-<p>​    RabbitMQ共有5种使用方式，即单对单、单对多、发布订阅模式、按路由规则发送接收、主题</p>
-<p>​    1、<strong>单对单</strong>：单发送，单接收</p>
-<p>​        适用于一个生产者，一个消费者的情况</p>
-<p>​    2、<strong>单对多</strong>：单发送，多接收</p>
-<p>​        适用于只有一个生产者，多个消费者，如分布式的任务派发</p>
-<p>​    3、<strong>发布订阅模式</strong>：单发送，多接收</p>
-<p>​        一个生产者发送消息，多个消费者获取消息（同样的消息），包括一个生产者，一个交换机，多个队列，多个消费者。</p>
-<p>​        <code>思路解读</code></p>
-<p>​        &gt; 一个生产者，多个消费者</p>
-<p>​        &gt; 每一个消费者都有自己的一个队列</p>
-<p>​        &gt; 生产者没有直接发消息到队列中，而是发送到交换机        </p>
-<p>​        &gt; 每个消费者的队列都绑定到交换机上</p>
-<p>​        &gt; 消息通过交换机到达每个消费者的队列    </p>
-<p>​        <code>注意：交换机没有存储消息功能，如果消息发送到没有绑定消费队列的交换机，消息则丢失</code></p>
-<p>​    4、<strong>按路由规则发送接收</strong>：</p>
-<p>​        生产者发送消息到交换机并指定一个路由key，消费者队列绑定到交换机时要制定路由key（key匹配就能接受消息，key不匹配就不能接受消息），例如：我们可以把路由key设置为insert ，那么消费者队列key指定包含insert才可以接收消息，消费者队列key定义为update或者delete就不能接收消息。很好的控制了更新，插入和删除的操作。</p>
-<p>​    5、<strong>主题</strong>：</p>
-<p>​        Exchange Type 为 topic，发送消息时，需要指定交换机及Routing Key，消费者的消息队列绑定到该交换机并匹配到Routing Key实现消息的订阅，订阅后则可接收消息。只有消费者队列绑定到该交换机且指定的Routing Key符合匹配规则，才能收到消息。</p>
-<p>​        其中Routing Key可以设置成通配符，如：<em> 或 #（</em> 表示匹配Routing Key中的某个单词，# 表示任意的Routing Key的消息都能被收到）。如果Routing Key由多个单词组成，则单词之间用 . 来分隔。</p>
-<p>​    <strong>命名规范</strong></p>
-<p>​        交换机名的命名建议</p>
-<p>​        Ex{AppID}.{自定义 ExchangeName}，队列名的命名建议：MQ{AppID}.{自定义 QueueName}</p>
-<p>​    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  rabbitmq:</span><br><span class="line">    host: 10.0.96.102 # MQ部署IP</span><br><span class="line">    port: 5672  # MQ应用端口 不是web端口</span><br><span class="line">    username: admin</span><br><span class="line">    password: admin</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -464,7 +423,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/26/RabbitMQ 安装/" rel="next" title="RabbitMQ 安装">
+              <a href="/2019/03/27/RabbitMQ 安装/" rel="next" title="RabbitMQ 安装">
                 <i class="fa fa-chevron-left"></i> RabbitMQ 安装
               </a>
             
@@ -502,7 +461,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/RabbitMQ 安装/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/27/RabbitMQ 安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mr.zhang">
@@ -531,8 +490,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-26T18:13:26+08:00">
-                2019-03-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-27T09:13:26+08:00">
+                2019-03-27
               </time>
             
 
@@ -682,7 +641,380 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/26/Redis实现分布式锁/" rel="next" title="Redis实现分布式锁">
+              <a href="/2019/03/26/RabbitMQ详解/" rel="next" title="RabbitMQ 详解">
+                <i class="fa fa-chevron-left"></i> RabbitMQ 详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/27/SpringBoot 整合 RabbitMQ/" rel="prev" title="SpringBoot整合RabbitMQ">
+                SpringBoot整合RabbitMQ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/RabbitMQ详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.zhang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/minguo.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RabbitMQ 详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-26T15:13:26+08:00">
+                2019-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/technology/" itemprop="url" rel="index">
+                    <span itemprop="name">technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+          
+	  
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>分布式消息中间件场景介绍</p>
+</blockquote>
+<p>​    <code>背景</code></p>
+<p>​    使用过分布式中间件的人都知道，程序员使用起来并不复杂，常用的客户端 API 就那么几个，比我们日常编写程序时用到的 API 要少得多。但是分布式中间件在中小研发团队中使用得并不多，为什么会这样呢？</p>
+<p>​    原因是中间件的职责相对单一，客户端的使用虽然简单，但整个环境搭起来却不容易。</p>
+<p>​    <code>场景介绍</code></p>
+<p>​    1、业务系统往往要求响应能力特别强，能够起到削峰填谷的作用</p>
+<p>​    2、解耦：如果一个系统挂了，则不会影响另外个系统的继续运行</p>
+<p>​    3、业务系统往往有对消息的高可靠要求，以及有对复杂功能如 Ack 的要求</p>
+<p>​    4、增强业务系统的异步处理能力，减少甚至几乎不可能出现并发现象</p>
+<p>使用消息队列，就好比为了防汛而建葛洲坝，有大量数据的堆积能力，然后可靠地进行异步输出</p>
+<p>​    <code>RabbitMQ介绍</code></p>
+<p>​    RabbitMQ 是基于 AMQP 实现的一个开源消息组件，主要用于在分布式系统中存储转发消息，由因高性能、高可用以及高扩展而出名的 Erlang 语言写成</p>
+<p>​    其中，AMQP（Advanced Message Queuing Protocol，即高级消息队列协议），是一个异步消息传递所使用的应用层协议规范，为面向消息的中间件设计</p>
+<p>​    <code>RabbitMQ 特点</code></p>
+<p>​    <strong>高可靠</strong>：RabbitMQ 提供了多种多样的特性让你在可靠性和性能之间做出权衡，包括持久化、发送应答、发布确认以及高可用性。</p>
+<p>​    <strong>高可用队列</strong>：支持跨机器集群，支持队列安全镜像备份，消息的生产者与消费者不论哪一方出现问题，均不会影响消息的正常发出与接收。</p>
+<p>​    <strong>灵活的路由</strong>：所有的消息都会通过路由器转发到各个消息队列中，RabbitMQ 内建了几个常用的路由器，并且可以通过路由器的组合以及自定义路由器插件来完成复杂的路由功能。</p>
+<p>​    <strong>支持多客户端</strong>：对主流开发语言（如：Python、Ruby、.NET、Java、C、PHP、ActionScript 等）都有客户端实现。</p>
+<p>​    <strong>集群</strong>：本地网络内的多个 Server 可以聚合在一起，共同组成一个逻辑上的 broker。</p>
+<p>​    <strong>扩展性</strong>：支持负载均衡，动态增减服务器简单方便。</p>
+<p>​    <strong>权限管理</strong>：灵活的用户角色权限管理，Virtual Host 是权限控制的最小粒度。</p>
+<p>​    <strong>插件系统</strong>：支持各种丰富的插件扩展，同时也支持自定义插件，其中最常用的插件是 Web 管理工具 RabbitMQ_Management</p>
+<blockquote>
+<p>RabbitMQ 5种用法介绍</p>
+</blockquote>
+<p>​    RabbitMQ共有5种使用方式，即单对单、单对多、发布订阅模式、按路由规则发送接收、主题</p>
+<p>​    1、<strong>单对单</strong>：单发送，单接收</p>
+<p>​        适用于一个生产者，一个消费者的情况</p>
+<p>​    2、<strong>单对多</strong>：单发送，多接收</p>
+<p>​        适用于只有一个生产者，多个消费者，如分布式的任务派发</p>
+<p>​    3、<strong>发布订阅模式</strong>：单发送，多接收</p>
+<p>​        一个生产者发送消息，多个消费者获取消息（同样的消息），包括一个生产者，一个交换机，多个队列，多个消费者。</p>
+<p>​        <code>思路解读</code></p>
+<p>​        &gt; 一个生产者，多个消费者</p>
+<p>​        &gt; 每一个消费者都有自己的一个队列</p>
+<p>​        &gt; 生产者没有直接发消息到队列中，而是发送到交换机        </p>
+<p>​        &gt; 每个消费者的队列都绑定到交换机上</p>
+<p>​        &gt; 消息通过交换机到达每个消费者的队列    </p>
+<p>​        <code>注意：交换机没有存储消息功能，如果消息发送到没有绑定消费队列的交换机，消息则丢失</code></p>
+<p>​    4、<strong>按路由规则发送接收</strong>：</p>
+<p>​        生产者发送消息到交换机并指定一个路由key，消费者队列绑定到交换机时要制定路由key（key匹配就能接受消息，key不匹配就不能接受消息），例如：我们可以把路由key设置为insert ，那么消费者队列key指定包含insert才可以接收消息，消费者队列key定义为update或者delete就不能接收消息。很好的控制了更新，插入和删除的操作。</p>
+<p>​    5、<strong>主题</strong>：</p>
+<p>​        Exchange Type 为 topic，发送消息时，需要指定交换机及Routing Key，消费者的消息队列绑定到该交换机并匹配到Routing Key实现消息的订阅，订阅后则可接收消息。只有消费者队列绑定到该交换机且指定的Routing Key符合匹配规则，才能收到消息。</p>
+<p>​        其中Routing Key可以设置成通配符，如：* 或 #（* 表示匹配Routing Key中的某个单词，# 表示任意的Routing Key的消息都能被收到）。如果Routing Key由多个单词组成，则单词之间用 . 来分隔。</p>
+<p>​    <strong>命名规范</strong></p>
+<p>​        交换机名的命名建议</p>
+<p>​        Ex{AppID}.{自定义 ExchangeName}，队列名的命名建议：MQ{AppID}.{自定义 QueueName}</p>
+<p>​    </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/26/RocketMQ/" rel="next" title="RocketMQ">
+                <i class="fa fa-chevron-left"></i> RocketMQ
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/27/RabbitMQ 安装/" rel="prev" title="RabbitMQ 安装">
+                RabbitMQ 安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/RocketMQ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.zhang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/minguo.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RocketMQ</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-26T15:13:26+08:00">
+                2019-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/technology/" itemprop="url" rel="index">
+                    <span itemprop="name">technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+          
+	  
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="rocketmq-java-客户端调用No-route-info-of-this-topic错误-原因版本不一致"><a href="#rocketmq-java-客户端调用No-route-info-of-this-topic错误-原因版本不一致" class="headerlink" title="rocketmq java 客户端调用No route info of this topic错误(原因版本不一致)"></a>rocketmq java 客户端调用No route info of this topic错误(原因版本不一致)</h1><p><a href="https://blog.csdn.net/whhwkm/article/details/81783322" target="_blank" rel="noopener">https://blog.csdn.net/whhwkm/article/details/81783322</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/23/Redis实现分布式锁/" rel="next" title="Redis实现分布式锁">
                 <i class="fa fa-chevron-left"></i> Redis实现分布式锁
               </a>
             
@@ -692,7 +1024,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/27/RabbitMQ详解/" rel="prev" title="RabbitMQ 详解">
+              <a href="/2019/03/26/RabbitMQ详解/" rel="prev" title="RabbitMQ 详解">
                 RabbitMQ 详解 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -724,7 +1056,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/Redis实现分布式锁/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/23/Redis实现分布式锁/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mr.zhang">
@@ -753,8 +1085,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-26T13:13:26+08:00">
-                2019-03-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-23T13:10:24+08:00">
+                2019-03-23
               </time>
             
 
@@ -873,7 +1205,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/21/Jenkins 安装/" rel="next" title="Jenkins 安装">
+              <a href="/2019/02/21/Jenkins 安装/" rel="next" title="Jenkins 安装">
                 <i class="fa fa-chevron-left"></i> Jenkins 安装
               </a>
             
@@ -883,8 +1215,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/26/RabbitMQ 安装/" rel="prev" title="RabbitMQ 安装">
-                RabbitMQ 安装 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/03/26/RocketMQ/" rel="prev" title="RocketMQ">
+                RocketMQ <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -915,7 +1247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/21/Jenkins 安装/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/21/Jenkins 安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mr.zhang">
@@ -944,8 +1276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-21T13:27:26+08:00">
-                2019-03-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-21T13:27:26+08:00">
+                2019-02-21
               </time>
             
 
@@ -1086,7 +1418,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/26/Redis实现分布式锁/" rel="prev" title="Redis实现分布式锁">
+              <a href="/2019/03/23/Redis实现分布式锁/" rel="prev" title="Redis实现分布式锁">
                 Redis实现分布式锁 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -1276,7 +1608,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/21/Jenkins 安装/" rel="prev" title="Jenkins 安装">
+              <a href="/2019/02/21/Jenkins 安装/" rel="prev" title="Jenkins 安装">
                 Jenkins 安装 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -1742,7 +2074,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

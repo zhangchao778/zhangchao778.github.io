@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="devOps,">
+  <meta name="keywords" content="java,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Jenkins 安装步骤 安装步骤  1.Install JDK 2.安装 Jenkins 仓库 12wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.reporpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.k">
-<meta name="keywords" content="devOps">
+<meta name="description" content="安装  ​    由于RabbitMQ是基于Erlang语言开发，所以在安装RabbitMQ之前，需要先安装Erlang，RabbitMQ官网已经为我们提供了Erlang的安装包  Erlang下载地址：http://www.rabbitmq.com/releases/erlang/ 下载的Erlang安装包为:  erlang-19.0.4-1.el7.centos.x86_64.rpm  R">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Jenkins 安装">
-<meta property="og:url" content="http://yoursite.com/2019/03/21/Jenkins 安装/index.html">
+<meta property="og:title" content="RabbitMQ 安装">
+<meta property="og:url" content="http://yoursite.com/2019/03/27/RabbitMQ 安装/index.html">
 <meta property="og:site_name" content="Mr.zhang&#39;s Blog">
-<meta property="og:description" content="Jenkins 安装步骤 安装步骤  1.Install JDK 2.安装 Jenkins 仓库 12wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.reporpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.k">
+<meta property="og:description" content="安装  ​    由于RabbitMQ是基于Erlang语言开发，所以在安装RabbitMQ之前，需要先安装Erlang，RabbitMQ官网已经为我们提供了Erlang的安装包  Erlang下载地址：http://www.rabbitmq.com/releases/erlang/ 下载的Erlang安装包为:  erlang-19.0.4-1.el7.centos.x86_64.rpm  R">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-27T02:37:03.643Z">
+<meta property="og:updated_time" content="2019-03-27T02:43:50.534Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jenkins 安装">
-<meta name="twitter:description" content="Jenkins 安装步骤 安装步骤  1.Install JDK 2.安装 Jenkins 仓库 12wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.reporpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.k">
+<meta name="twitter:title" content="RabbitMQ 安装">
+<meta name="twitter:description" content="安装  ​    由于RabbitMQ是基于Erlang语言开发，所以在安装RabbitMQ之前，需要先安装Erlang，RabbitMQ官网已经为我们提供了Erlang的安装包  Erlang下载地址：http://www.rabbitmq.com/releases/erlang/ 下载的Erlang安装包为:  erlang-19.0.4-1.el7.centos.x86_64.rpm  R">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/21/Jenkins 安装/">
+  <link rel="canonical" href="http://yoursite.com/2019/03/27/RabbitMQ 安装/">
 
 
 
 
 
-  <title>Jenkins 安装 | Mr.zhang's Blog</title>
+  <title>RabbitMQ 安装 | Mr.zhang's Blog</title>
   
 
 
@@ -295,7 +295,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/21/Jenkins 安装/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/27/RabbitMQ 安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mr.zhang">
@@ -312,7 +312,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Jenkins 安装</h1>
+          <h1 class="post-title" itemprop="name headline">RabbitMQ 安装</h1>
         
 
         <div class="post-meta">
@@ -324,8 +324,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-21T13:27:26+08:00">
-                2019-03-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-27T09:13:26+08:00">
+                2019-03-27
               </time>
             
 
@@ -384,48 +384,67 @@
       
 
       
-        <h2 id="Jenkins-安装步骤"><a href="#Jenkins-安装步骤" class="headerlink" title="Jenkins 安装步骤"></a>Jenkins 安装步骤</h2><blockquote>
-<p>安装步骤</p>
+        <blockquote>
+<p>安装</p>
 </blockquote>
-<p>1.Install JDK</p>
-<p>2.安装 Jenkins 仓库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo</span><br><span class="line">rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key</span><br></pre></td></tr></table></figure>
-<p>3.安装 Jenkins</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install jenkins -y</span><br><span class="line">配置文件地址 /etc/sysconfig/jenkins</span><br></pre></td></tr></table></figure>
-<p>4.启动 jenkins</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start jenkins</span><br></pre></td></tr></table></figure>
-<p>5.查看初始化密码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /var/lib/jenkins/secrets/initialAdminPassword</span><br></pre></td></tr></table></figure>
-<p>6.访问地址</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://10.0.96.102:8080/</span><br></pre></td></tr></table></figure>
-<p>7.配置Jdk、Maven</p>
-<p>​    配置JDK、Maven地址</p>
-<p>​    安装maven Integration 插件</p>
-<p>8.安装Git</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install git</span><br></pre></td></tr></table></figure>
-<p>​    配置Git地址以及安装Git-Client插件</p>
-<p>9.安装GitLab、GitLab Hook插件</p>
-<p>10.配置全局凭据（拉取代码私钥）</p>
-<p>11.shell启动springboot jar脚本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># jenkins工作目录</span><br><span class="line">project_path=/var/lib/jenkins/workspace/eureka</span><br><span class="line">cd $&#123;project_path&#125;</span><br><span class="line"># 打包</span><br><span class="line">mvn clean package -Dmaven.test.skip=true </span><br><span class="line"></span><br><span class="line">jar_path=/var/lib/jenkins/workspace/eureka/target/</span><br><span class="line"></span><br><span class="line">jar_name=eureka-server-0.0.1-SNAPSHOT.jar</span><br><span class="line"></span><br><span class="line">cd $&#123;jar_path&#125;</span><br><span class="line"># 杀死进程</span><br><span class="line">ps -ef|grep eureka |grep -v grep |awk &apos;&#123;print $2&#125;&apos;|xargs kill -9</span><br><span class="line"></span><br><span class="line"># 启动服务</span><br><span class="line">BUILD_ID=dontKillMe nohup java -jar $&#123;jar_name&#125; &amp;</span><br></pre></td></tr></table></figure>
-<hr>
+<p>​    由于RabbitMQ是基于Erlang语言开发，所以在安装RabbitMQ之前，需要先安装Erlang，RabbitMQ官网已经为我们提供了Erlang的安装包</p>
+<ul>
+<li><p>Erlang下载地址：<a href="http://www.rabbitmq.com/releases/erlang/" target="_blank" rel="noopener">http://www.rabbitmq.com/releases/erlang/</a></p>
+<p>下载的Erlang安装包为:  <code>erlang-19.0.4-1.el7.centos.x86_64.rpm</code></p>
+</li>
+<li><p>RabbitMQ下载地址：<a href="https://www.rabbitmq.com/download.html" target="_blank" rel="noopener">https://www.rabbitmq.com/download.html</a></p>
+<p>下载的RabbitMQ安装包为：<code>rabbitmq-server-3.6.8-1.el7.noarch.rpm</code></p>
+</li>
+</ul>
+<p>1.安装Erlang</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install erlang-19.0.4-1.el7.centos.x86_64.rpm</span><br></pre></td></tr></table></figure>
+<p>​    测试Erlang是否安装成功</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">erl -version</span><br></pre></td></tr></table></figure>
+<p>​    出现以下信息则表示安装成功</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Erlang (SMP,ASYNC_THREADS,HIPE) (BEAM) emulator version 8.0.3</span><br></pre></td></tr></table></figure>
+<p>2.安装RabbitMQ</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install rabbitmq-server-3.6.8-1.el7.noarch.rpm</span><br></pre></td></tr></table></figure>
+<p>​    运行RabbitMQ</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service rabbitmq-server start</span><br></pre></td></tr></table></figure>
+<p>​    停止RabbitMQ</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service rabbitmq-server stop</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>War部署</p>
+<p>用户配置</p>
 </blockquote>
-<p>1.下载jenkins.war文件,官网地址:<a href="http://jenkins-ci.org/" target="_blank" rel="noopener">http://jenkins-ci.org/</a> 注意选择最新版本Long-Term Support Release</p>
-<p>2.访问地址<a href="http://IP:8080/jenkins/" target="_blank" rel="noopener">http://IP:8080/jenkins/</a></p>
-<p>3.查看初始密码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /root/.jenkins/secrets/initialAdminPassword</span><br></pre></td></tr></table></figure>
-<p>4.配置Jdk、Maven</p>
-<p>​    配置JDK、Maven地址</p>
-<p>​    安装maven Integration 插件</p>
-<p>5.安装Git</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install git</span><br></pre></td></tr></table></figure>
-<p>​    配置Git地址以及安装Git-Client插件</p>
-<p>6.安装GitLab、GitLab Hook插件</p>
-<p>7.配置全局凭据（拉取代码私钥）</p>
-<p>8.shell启动springboot jar脚本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># jenkins工作目录</span><br><span class="line">project_path=/root/.jenkins/workspace/eureka</span><br><span class="line">cd $&#123;project_path&#125;</span><br><span class="line"># 打包</span><br><span class="line">mvn clean package -Dmaven.test.skip=true </span><br><span class="line"></span><br><span class="line">jar_path=/root/.jenkins/workspace/eureka/target/</span><br><span class="line"></span><br><span class="line">jar_name=eureka-server-0.0.1-SNAPSHOT.jar</span><br><span class="line"></span><br><span class="line">cd $&#123;jar_path&#125;</span><br><span class="line"># 杀死进程</span><br><span class="line">ps -ef|grep eureka |grep -v grep |awk &apos;&#123;print $2&#125;&apos;|xargs kill -9</span><br><span class="line"></span><br><span class="line"># 启动服务</span><br><span class="line">BUILD_ID=dontKillMe nohup java -jar $&#123;jar_name&#125; &amp;</span><br><span class="line"># 注意 BUILD_ID=dontKillMe  不加的话 会启动完成直接关闭服务</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>添加用户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl add_user admin admin</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加管理员权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl set_user_tags admin administrator</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改密码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl add_user admin youpassword</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl  set_permissions  -p  '/'  admin '.' '.' '.'</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看服务状态</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service rabbitmq-server status</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>启用WEB管理</p>
+</blockquote>
+<ul>
+<li><p>启动web插件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmq-plugins enable rabbitmq_management</span><br></pre></td></tr></table></figure>
+<p>访问地址<a href="http://IP:15672/" target="_blank" rel="noopener">http://IP:15672/</a></p>
+</li>
+<li><p>删除guest用户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl delete_user guest</span><br></pre></td></tr></table></figure>
+<p>由于guest用户被限制，只能通过localhost访问，因此我们需要新建一个用户，并授予管理员权限</p>
+</li>
+<li><p>添加Web访问权限<br>注意：rabbitmq从3.3.0开始禁止使用guest/guest权限通过除localhost外的访问。如果想使用guest/guest通过远程机器访问，需要在rabbitmq配置文件中(/etc/rabbitmq/rabbitmq.config)中设置loopback_users为[],配置文件不存在创建即可。</p>
+<p>添加配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#123;rabbit, [&#123;loopback_users, [&quot;admin&quot;]&#125;]&#125;]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 
       
     </div>
@@ -443,7 +462,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/devOps/" rel="tag"># devOps</a>
+            <a href="/tags/java/" rel="tag"># java</a>
           
         </div>
       
@@ -456,8 +475,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/09/26/Mysql-emoji表情/" rel="next" title="Mysql-emoji表情">
-                <i class="fa fa-chevron-left"></i> Mysql-emoji表情
+              <a href="/2019/03/26/RabbitMQ详解/" rel="next" title="RabbitMQ 详解">
+                <i class="fa fa-chevron-left"></i> RabbitMQ 详解
               </a>
             
           </div>
@@ -466,8 +485,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/26/Redis实现分布式锁/" rel="prev" title="Redis实现分布式锁">
-                Redis实现分布式锁 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/03/27/SpringBoot 整合 RabbitMQ/" rel="prev" title="SpringBoot整合RabbitMQ">
+                SpringBoot整合RabbitMQ <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -520,17 +539,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -547,7 +557,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -602,22 +612,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Jenkins-安装步骤"><span class="nav-number">1.</span> <span class="nav-text">Jenkins 安装步骤</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
