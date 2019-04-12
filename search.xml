@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Jar debug 启动]]></title>
+    <url>%2F2019%2F04%2F02%2FJar%20debug%E5%90%AF%E5%8A%A8%2F</url>
+    <content type="text"><![CDATA[debug启动脚本1java -jar -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 ***.jar debug]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[SpringBoot整合RabbitMQ]]></title>
     <url>%2F2019%2F03%2F27%2FSpringBoot%20%E6%95%B4%E5%90%88%20RabbitMQ%2F</url>
     <content type="text"><![CDATA[RabbitMQ支持持久化（MQ down或者MQ所在的服务器down了，消息不会丢失的机制） 整合步骤 添加依赖 1234&lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-amqp&lt;/artifactId&gt;&lt;/dependency&gt; 配置 123456spring: rabbitmq: host: 10.0.96.102 # MQ部署IP port: 5672 # MQ应用端口 不是web端口 username: admin password: admin]]></content>
