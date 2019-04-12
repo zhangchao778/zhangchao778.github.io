@@ -83,7 +83,7 @@
 <meta name="keywords" content="key">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Mr.zhang&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/tags/java/index.html">
+<meta property="og:url" content="http://yoursite.com/tags/Java/index.html">
 <meta property="og:site_name" content="Mr.zhang&#39;s Blog">
 <meta property="og:description" content="那天遇见，便是缘分">
 <meta property="og:locale" content="zh-Hans">
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/java/">
+  <link rel="canonical" href="http://yoursite.com/tags/Java/">
 
 
 
 
 
-  <title>标签: java | Mr.zhang's Blog</title>
+  <title>标签: Java | Mr.zhang's Blog</title>
   
 
 
@@ -287,7 +287,7 @@
 
     <div id="posts" class="posts-collapse">
       <div class="collection-title">
-        <h1>java<small>标签</small>
+        <h1>Java<small>标签</small>
         </h1>
       </div>
 
@@ -299,121 +299,17 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2019/03/27/SpringBoot 整合 RabbitMQ/" itemprop="url">
+            <a class="post-title-link" href="/2019/04/02/Jar debug启动/" itemprop="url">
               
-                <span itemprop="name">SpringBoot整合RabbitMQ</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-27T11:03:26+08:00" content="2019-03-27">
-          03-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/03/27/RabbitMQ 安装/" itemprop="url">
-              
-                <span itemprop="name">RabbitMQ 安装</span>
+                <span itemprop="name">Jar debug 启动</span>
               
             </a>
         
       </h2>
 
       <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-27T09:13:26+08:00" content="2019-03-27">
-          03-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/03/26/RocketMQ/" itemprop="url">
-              
-                <span itemprop="name">RocketMQ</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-26T15:13:26+08:00" content="2019-03-26">
-          03-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/03/26/RabbitMQ详解/" itemprop="url">
-              
-                <span itemprop="name">RabbitMQ 详解</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-26T15:13:26+08:00" content="2019-03-26">
-          03-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/03/23/Redis实现分布式锁/" itemprop="url">
-              
-                <span itemprop="name">Redis实现分布式锁</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-23T13:10:24+08:00" content="2019-03-23">
-          03-23
+        <time class="post-time" itemprop="dateCreated" datetime="2019-04-02T13:27:26+08:00" content="2019-04-02">
+          04-02
         </time>
       </div>
 
@@ -475,7 +371,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -950,6 +846,98 @@
                     searchTextCount: searchTextCount,
                     hitCount: hitCount,
                     id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+             id: resultItems.length
                   });
                 }
               })
