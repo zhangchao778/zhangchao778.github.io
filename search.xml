@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[Docker 私服]]></title>
     <url>%2F2019%2F04%2F13%2FDocker%20%20%E7%A7%81%E6%9C%8D%2F</url>
-    <content type="text"><![CDATA[Harbor搭建Docker 私服 https://blog.51cto.com/11093860/2117805]]></content>
+    <content type="text"><![CDATA[Harbor搭建Docker 私服 https://blog.51cto.com/11093860/2117805 1.安装docker-compose 1sudo pip install docker-compose 2.下载Harbor包 https://github.com/vmware/harbor/releases 安装有两种方式，一种是off-line ，一种是on-line，即离线和在线安装，离线安装需要下载的安装包较大，在线安装下载的安装包很小，课题根据自己的情况选择 3.解压，进入安装包 12tar -zxvf harbor*.tgzcd harbor 4.修改配置文件 1vim docker-compose.yml 1vim harbor.cfg 5.执行./prepare,更新一下配置文件 1sudo ./prepare 6.执行./install.sh，开始安装并启动 1sudo ./install.sh 7.在火狐浏览器中访问测试，此处的用户名默认为admin，密码在habor.cfg中，可以自己设 地址 IP/harbor/sign-in/]]></content>
       <categories>
         <category>technology</category>
       </categories>

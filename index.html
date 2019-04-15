@@ -386,6 +386,24 @@
       
         <p>Harbor搭建Docker 私服</p>
 <p><a href="https://blog.51cto.com/11093860/2117805" target="_blank" rel="noopener">https://blog.51cto.com/11093860/2117805</a></p>
+<p>1.安装docker-compose</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install docker-compose</span><br></pre></td></tr></table></figure>
+<p>2.下载Harbor包</p>
+<p><a href="https://github.com/vmware/harbor/releases" target="_blank" rel="noopener">https://github.com/vmware/harbor/releases</a></p>
+<p>安装有两种方式，一种是off-line ，一种是on-line，即离线和在线安装，离线安装需要下载的安装包较大，在线安装下载的安装包很小，课题根据自己的情况选择</p>
+<p>3.解压，进入安装包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf harbor*.tgz</span><br><span class="line">cd harbor</span><br></pre></td></tr></table></figure>
+<p>4.修改配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim docker-compose.yml</span><br></pre></td></tr></table></figure>
+<p><img src="http://qiniu.zhangqichao.com//1555299587586.png" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim harbor.cfg</span><br></pre></td></tr></table></figure>
+<p><img src="http://qiniu.zhangqichao.com//1555299651208.png" alt></p>
+<p>5.执行./prepare,更新一下配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo  ./prepare</span><br></pre></td></tr></table></figure>
+<p>6.执行./install.sh，开始安装并启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./install.sh</span><br></pre></td></tr></table></figure>
+<p>7.在火狐浏览器中访问测试，此处的用户名默认为admin，密码在habor.cfg中，可以自己设</p>
+<p>地址 <code>IP/harbor/sign-in/</code></p>
 
       
     </div>
