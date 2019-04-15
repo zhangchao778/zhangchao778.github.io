@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title><![CDATA[Docker 私服]]></title>
-    <url>%2F2019%2F04%2F13%2FDocker%20%20%E7%A7%81%E6%9C%8D%2F</url>
+    <url>%2F2019%2F04%2F15%2FDocker%20%20%E7%A7%81%E6%9C%8D%2F</url>
     <content type="text"><![CDATA[Harbor搭建Docker 私服 https://blog.51cto.com/11093860/2117805 1.安装docker-compose 1sudo pip install docker-compose 2.下载Harbor包 https://github.com/vmware/harbor/releases 安装有两种方式，一种是off-line ，一种是on-line，即离线和在线安装，离线安装需要下载的安装包较大，在线安装下载的安装包很小，课题根据自己的情况选择 3.解压，进入安装包 12tar -zxvf harbor*.tgzcd harbor 4.修改配置文件 1vim docker-compose.yml 1vim harbor.cfg 5.执行./prepare,更新一下配置文件 1sudo ./prepare 6.执行./install.sh，开始安装并启动 1sudo ./install.sh 7.在火狐浏览器中访问测试，此处的用户名默认为admin，密码在habor.cfg中，可以自己设 地址 IP/harbor/sign-in/]]></content>
       <categories>
         <category>technology</category>
@@ -12,25 +12,14 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Docker 常用命令]]></title>
-    <url>%2F2019%2F04%2F11%2FDocker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%2F</url>
-    <content type="text"><![CDATA[查看正在运行的容器 1docker ps 查询项目 1sudo docker ps -a |grep 项目 进入容器 1sudo docker exec -it 项目名 bash 查看本地镜像 1docker images 查看指定容器的某个确定端口映射到宿主机的端口号 1docker port ID/NAMES 查看web应用程序的日志 1docker logs -f ID/NAMES 查看web应用程序容器内部运行的进程 1docker top ID/NAMES 已经停止的容器，可以使用命令 docker start 来启动 1docker start ID/NAMES 停止web应用程序容器 1docker stop ID/NAMES 查询最后一次创建的容器 1docker ps -l 删除不需要的容器 删除容器时，容器必须是停止状态，否则报错 1docker rm ID/NAMES 获取新镜像 1docker pull 名:版本（ubuntu:13.10） 查找镜像 1docker search 名 启动容器并进入容器 1docker run -t -i 名 /bin/bash]]></content>
+    <title><![CDATA[Redis实现分布式锁]]></title>
+    <url>%2F2019%2F03%2F28%2FRedis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%2F</url>
+    <content type="text"><![CDATA[分布式锁的实现方案 Spring早就提供了分布式锁的实现，早期，分布式锁的相关代码存在与Spring Cloud的子项目Spring Cloud Cluster中，后来被迁移到了Spring Integration中。 ​ Spring Cloud Cluster的GitHub：https://github.com/spring-cloud/spring-cloud-cluster/ ​ Spring Integration的GitHub：https://github.com/spring-projects/spring-integration/ 官方对于Spring Integration的说法是 这是一个企业集成模式的实现。Spring Cloud Stream的底层也是Spring Integration。 Spring Integration提供了多种全局锁，现在我们在这里只介绍基于Redis的分布式锁 基于Spring Integration 实现Redis的分布式锁 1.依赖 123456789101112&lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-integration&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt; &lt;groupId&gt;org.springframework.integration&lt;/groupId&gt; &lt;artifactId&gt;spring-integration-redis&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;&lt;/dependency&gt; 2.Redis配置 1234spring: redis: port: 6379 host: localhost 3.RedisLock初始化 1234567@Configurationpublic class RedisLockConfiguration &#123; @Bean public RedisLockRegistry redisLockRegistry(RedisConnectionFactory redisConnectionFactory) &#123; return new RedisLockRegistry(redisConnectionFactory, "RedisLockRegistry"); &#125;&#125; ​ org.springframework.integration.redis.util.RedisLockRegistry的注释详细描述了该类的特性以及使用方式。 4.测试代码 12345678910111213141516171819202122232425262728/** * @author Mr.zhang * @description * @date 1:43 PM 2019/3/26 */@Slf4j@RestController@RequestMapping("redisLock")public class RedisLockController &#123; @Autowired private RedisLockRegistry redisLockRegistry; @GetMapping("test") public void test() throws InterruptedException &#123; Lock lock = redisLockRegistry.obtain("redisLock"); boolean b1 = lock.tryLock(3, TimeUnit.SECONDS); log.info("b1 is : &#123;&#125;", b1); TimeUnit.SECONDS.sleep(5); boolean b2 = lock.tryLock(3, TimeUnit.SECONDS); log.info("b2 is : &#123;&#125;", b2); lock.unlock(); lock.unlock(); &#125;&#125; 启动1个实例,访问 http://localhost:8080/redisLock/test ，会看到类似如下的日志 122019-03-26 14:42:28.206 INFO 4913 --- [nio-8080-exec-1] c.r.lock.controller.RedisLockController : b1 is : true2019-03-26 14:42:33.212 INFO 4913 --- [nio-8080-exec-1] c.r.lock.controller.RedisLockController : b2 is : true 启动2个实例，并迅速访问两个实例的 /test 端点，会在第二个实例上看到类似如下日志 12345678[nio-8081-exec-1] c.r.lock.controller.RedisLockController : b1 is : false[nio-8081-exec-1] c.r.lock.controller.RedisLockController : b2 is : true[nio-8081-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet] : Servlet.service() ...java.lang.IllegalStateException: You do not own lock at RedisLockRegistry:redisLock at org.springframework.integration.redis.util.RedisLockRegistry$RedisLock.unlock(RedisLockRegistry.java:300) ~[spring-integration-redis-5.1.3.RELEASE.jar!/:5.1.3.RELEASE] at com.redis.lock.controller.RedisLockController.test(RedisLockController.java:38) ~[classes!/:0.0.1-SNAPSHOT] at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_144] ​ 说明第二个实例没有拿到锁，证明了分布式锁的存在 参考地址]]></content>
       <categories>
         <category>technology</category>
       </categories>
       <tags>
-        <tag>devOps</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Jar debug 启动]]></title>
-    <url>%2F2019%2F04%2F02%2FJar%20debug%E5%90%AF%E5%8A%A8%2F</url>
-    <content type="text"><![CDATA[debug启动脚本1java -jar -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 ***.jar debug]]></content>
-      <categories>
-        <category>technology</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
+        <tag>java</tag>
       </tags>
   </entry>
   <entry>
@@ -56,17 +45,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[RabbitMQ 详解]]></title>
-    <url>%2F2019%2F03%2F26%2FRabbitMQ%E8%AF%A6%E8%A7%A3%2F</url>
-    <content type="text"><![CDATA[分布式消息中间件场景介绍 ​ 背景 ​ 使用过分布式中间件的人都知道，程序员使用起来并不复杂，常用的客户端 API 就那么几个，比我们日常编写程序时用到的 API 要少得多。但是分布式中间件在中小研发团队中使用得并不多，为什么会这样呢？ ​ 原因是中间件的职责相对单一，客户端的使用虽然简单，但整个环境搭起来却不容易。 ​ 场景介绍 ​ 1、业务系统往往要求响应能力特别强，能够起到削峰填谷的作用 ​ 2、解耦：如果一个系统挂了，则不会影响另外个系统的继续运行 ​ 3、业务系统往往有对消息的高可靠要求，以及有对复杂功能如 Ack 的要求 ​ 4、增强业务系统的异步处理能力，减少甚至几乎不可能出现并发现象 使用消息队列，就好比为了防汛而建葛洲坝，有大量数据的堆积能力，然后可靠地进行异步输出 ​ RabbitMQ介绍 ​ RabbitMQ 是基于 AMQP 实现的一个开源消息组件，主要用于在分布式系统中存储转发消息，由因高性能、高可用以及高扩展而出名的 Erlang 语言写成 ​ 其中，AMQP（Advanced Message Queuing Protocol，即高级消息队列协议），是一个异步消息传递所使用的应用层协议规范，为面向消息的中间件设计 ​ RabbitMQ 特点 ​ 高可靠：RabbitMQ 提供了多种多样的特性让你在可靠性和性能之间做出权衡，包括持久化、发送应答、发布确认以及高可用性。 ​ 高可用队列：支持跨机器集群，支持队列安全镜像备份，消息的生产者与消费者不论哪一方出现问题，均不会影响消息的正常发出与接收。 ​ 灵活的路由：所有的消息都会通过路由器转发到各个消息队列中，RabbitMQ 内建了几个常用的路由器，并且可以通过路由器的组合以及自定义路由器插件来完成复杂的路由功能。 ​ 支持多客户端：对主流开发语言（如：Python、Ruby、.NET、Java、C、PHP、ActionScript 等）都有客户端实现。 ​ 集群：本地网络内的多个 Server 可以聚合在一起，共同组成一个逻辑上的 broker。 ​ 扩展性：支持负载均衡，动态增减服务器简单方便。 ​ 权限管理：灵活的用户角色权限管理，Virtual Host 是权限控制的最小粒度。 ​ 插件系统：支持各种丰富的插件扩展，同时也支持自定义插件，其中最常用的插件是 Web 管理工具 RabbitMQ_Management RabbitMQ 5种用法介绍 ​ RabbitMQ共有5种使用方式，即单对单、单对多、发布订阅模式、按路由规则发送接收、主题 ​ 1、单对单：单发送，单接收 ​ 适用于一个生产者，一个消费者的情况 ​ 2、单对多：单发送，多接收 ​ 适用于只有一个生产者，多个消费者，如分布式的任务派发 ​ 3、发布订阅模式：单发送，多接收 ​ 一个生产者发送消息，多个消费者获取消息（同样的消息），包括一个生产者，一个交换机，多个队列，多个消费者。 ​ 思路解读 ​ &gt; 一个生产者，多个消费者 ​ &gt; 每一个消费者都有自己的一个队列 ​ &gt; 生产者没有直接发消息到队列中，而是发送到交换机 ​ &gt; 每个消费者的队列都绑定到交换机上 ​ &gt; 消息通过交换机到达每个消费者的队列 ​ 注意：交换机没有存储消息功能，如果消息发送到没有绑定消费队列的交换机，消息则丢失 ​ 4、按路由规则发送接收： ​ 生产者发送消息到交换机并指定一个路由key，消费者队列绑定到交换机时要制定路由key（key匹配就能接受消息，key不匹配就不能接受消息），例如：我们可以把路由key设置为insert ，那么消费者队列key指定包含insert才可以接收消息，消费者队列key定义为update或者delete就不能接收消息。很好的控制了更新，插入和删除的操作。 ​ 5、主题： ​ Exchange Type 为 topic，发送消息时，需要指定交换机及Routing Key，消费者的消息队列绑定到该交换机并匹配到Routing Key实现消息的订阅，订阅后则可接收消息。只有消费者队列绑定到该交换机且指定的Routing Key符合匹配规则，才能收到消息。 ​ 其中Routing Key可以设置成通配符，如：* 或 #（* 表示匹配Routing Key中的某个单词，# 表示任意的Routing Key的消息都能被收到）。如果Routing Key由多个单词组成，则单词之间用 . 来分隔。 ​ 命名规范 ​ 交换机名的命名建议 ​ Ex{AppID}.{自定义 ExchangeName}，队列名的命名建议：MQ{AppID}.{自定义 QueueName} ​]]></content>
-      <categories>
-        <category>technology</category>
-      </categories>
-      <tags>
-        <tag>java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[RocketMQ]]></title>
     <url>%2F2019%2F03%2F26%2FRocketMQ%2F</url>
     <content type="text"><![CDATA[rocketmq java 客户端调用No route info of this topic错误(原因版本不一致)https://blog.csdn.net/whhwkm/article/details/81783322]]></content>
@@ -78,9 +56,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Redis实现分布式锁]]></title>
-    <url>%2F2019%2F03%2F23%2FRedis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%2F</url>
-    <content type="text"><![CDATA[分布式锁的实现方案 Spring早就提供了分布式锁的实现，早期，分布式锁的相关代码存在与Spring Cloud的子项目Spring Cloud Cluster中，后来被迁移到了Spring Integration中。 ​ Spring Cloud Cluster的GitHub：https://github.com/spring-cloud/spring-cloud-cluster/ ​ Spring Integration的GitHub：https://github.com/spring-projects/spring-integration/ 官方对于Spring Integration的说法是 这是一个企业集成模式的实现。Spring Cloud Stream的底层也是Spring Integration。 Spring Integration提供了多种全局锁，现在我们在这里只介绍基于Redis的分布式锁 基于Spring Integration 实现Redis的分布式锁 1.依赖 123456789101112&lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-integration&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt; &lt;groupId&gt;org.springframework.integration&lt;/groupId&gt; &lt;artifactId&gt;spring-integration-redis&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;&lt;/dependency&gt; 2.Redis配置 1234spring: redis: port: 6379 host: localhost 3.RedisLock初始化 1234567@Configurationpublic class RedisLockConfiguration &#123; @Bean public RedisLockRegistry redisLockRegistry(RedisConnectionFactory redisConnectionFactory) &#123; return new RedisLockRegistry(redisConnectionFactory, "RedisLockRegistry"); &#125;&#125; ​ org.springframework.integration.redis.util.RedisLockRegistry的注释详细描述了该类的特性以及使用方式。 4.测试代码 12345678910111213141516171819202122232425262728/** * @author Mr.zhang * @description * @date 1:43 PM 2019/3/26 */@Slf4j@RestController@RequestMapping("redisLock")public class RedisLockController &#123; @Autowired private RedisLockRegistry redisLockRegistry; @GetMapping("test") public void test() throws InterruptedException &#123; Lock lock = redisLockRegistry.obtain("redisLock"); boolean b1 = lock.tryLock(3, TimeUnit.SECONDS); log.info("b1 is : &#123;&#125;", b1); TimeUnit.SECONDS.sleep(5); boolean b2 = lock.tryLock(3, TimeUnit.SECONDS); log.info("b2 is : &#123;&#125;", b2); lock.unlock(); lock.unlock(); &#125;&#125; 启动1个实例,访问 http://localhost:8080/redisLock/test ，会看到类似如下的日志 122019-03-26 14:42:28.206 INFO 4913 --- [nio-8080-exec-1] c.r.lock.controller.RedisLockController : b1 is : true2019-03-26 14:42:33.212 INFO 4913 --- [nio-8080-exec-1] c.r.lock.controller.RedisLockController : b2 is : true 启动2个实例，并迅速访问两个实例的 /test 端点，会在第二个实例上看到类似如下日志 12345678[nio-8081-exec-1] c.r.lock.controller.RedisLockController : b1 is : false[nio-8081-exec-1] c.r.lock.controller.RedisLockController : b2 is : true[nio-8081-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet] : Servlet.service() ...java.lang.IllegalStateException: You do not own lock at RedisLockRegistry:redisLock at org.springframework.integration.redis.util.RedisLockRegistry$RedisLock.unlock(RedisLockRegistry.java:300) ~[spring-integration-redis-5.1.3.RELEASE.jar!/:5.1.3.RELEASE] at com.redis.lock.controller.RedisLockController.test(RedisLockController.java:38) ~[classes!/:0.0.1-SNAPSHOT] at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_144] ​ 说明第二个实例没有拿到锁，证明了分布式锁的存在 参考地址]]></content>
+    <title><![CDATA[RabbitMQ 详解]]></title>
+    <url>%2F2019%2F03%2F26%2FRabbitMQ%E8%AF%A6%E8%A7%A3%2F</url>
+    <content type="text"><![CDATA[分布式消息中间件场景介绍 ​ 背景 ​ 使用过分布式中间件的人都知道，程序员使用起来并不复杂，常用的客户端 API 就那么几个，比我们日常编写程序时用到的 API 要少得多。但是分布式中间件在中小研发团队中使用得并不多，为什么会这样呢？ ​ 原因是中间件的职责相对单一，客户端的使用虽然简单，但整个环境搭起来却不容易。 ​ 场景介绍 ​ 1、业务系统往往要求响应能力特别强，能够起到削峰填谷的作用 ​ 2、解耦：如果一个系统挂了，则不会影响另外个系统的继续运行 ​ 3、业务系统往往有对消息的高可靠要求，以及有对复杂功能如 Ack 的要求 ​ 4、增强业务系统的异步处理能力，减少甚至几乎不可能出现并发现象 使用消息队列，就好比为了防汛而建葛洲坝，有大量数据的堆积能力，然后可靠地进行异步输出 ​ RabbitMQ介绍 ​ RabbitMQ 是基于 AMQP 实现的一个开源消息组件，主要用于在分布式系统中存储转发消息，由因高性能、高可用以及高扩展而出名的 Erlang 语言写成 ​ 其中，AMQP（Advanced Message Queuing Protocol，即高级消息队列协议），是一个异步消息传递所使用的应用层协议规范，为面向消息的中间件设计 ​ RabbitMQ 特点 ​ 高可靠：RabbitMQ 提供了多种多样的特性让你在可靠性和性能之间做出权衡，包括持久化、发送应答、发布确认以及高可用性。 ​ 高可用队列：支持跨机器集群，支持队列安全镜像备份，消息的生产者与消费者不论哪一方出现问题，均不会影响消息的正常发出与接收。 ​ 灵活的路由：所有的消息都会通过路由器转发到各个消息队列中，RabbitMQ 内建了几个常用的路由器，并且可以通过路由器的组合以及自定义路由器插件来完成复杂的路由功能。 ​ 支持多客户端：对主流开发语言（如：Python、Ruby、.NET、Java、C、PHP、ActionScript 等）都有客户端实现。 ​ 集群：本地网络内的多个 Server 可以聚合在一起，共同组成一个逻辑上的 broker。 ​ 扩展性：支持负载均衡，动态增减服务器简单方便。 ​ 权限管理：灵活的用户角色权限管理，Virtual Host 是权限控制的最小粒度。 ​ 插件系统：支持各种丰富的插件扩展，同时也支持自定义插件，其中最常用的插件是 Web 管理工具 RabbitMQ_Management RabbitMQ 5种用法介绍 ​ RabbitMQ共有5种使用方式，即单对单、单对多、发布订阅模式、按路由规则发送接收、主题 ​ 1、单对单：单发送，单接收 ​ 适用于一个生产者，一个消费者的情况 ​ 2、单对多：单发送，多接收 ​ 适用于只有一个生产者，多个消费者，如分布式的任务派发 ​ 3、发布订阅模式：单发送，多接收 ​ 一个生产者发送消息，多个消费者获取消息（同样的消息），包括一个生产者，一个交换机，多个队列，多个消费者。 ​ 思路解读 ​ &gt; 一个生产者，多个消费者 ​ &gt; 每一个消费者都有自己的一个队列 ​ &gt; 生产者没有直接发消息到队列中，而是发送到交换机 ​ &gt; 每个消费者的队列都绑定到交换机上 ​ &gt; 消息通过交换机到达每个消费者的队列 ​ 注意：交换机没有存储消息功能，如果消息发送到没有绑定消费队列的交换机，消息则丢失 ​ 4、按路由规则发送接收： ​ 生产者发送消息到交换机并指定一个路由key，消费者队列绑定到交换机时要制定路由key（key匹配就能接受消息，key不匹配就不能接受消息），例如：我们可以把路由key设置为insert ，那么消费者队列key指定包含insert才可以接收消息，消费者队列key定义为update或者delete就不能接收消息。很好的控制了更新，插入和删除的操作。 ​ 5、主题： ​ Exchange Type 为 topic，发送消息时，需要指定交换机及Routing Key，消费者的消息队列绑定到该交换机并匹配到Routing Key实现消息的订阅，订阅后则可接收消息。只有消费者队列绑定到该交换机且指定的Routing Key符合匹配规则，才能收到消息。 ​ 其中Routing Key可以设置成通配符，如：* 或 #（* 表示匹配Routing Key中的某个单词，# 表示任意的Routing Key的消息都能被收到）。如果Routing Key由多个单词组成，则单词之间用 . 来分隔。 ​ 命名规范 ​ 交换机名的命名建议 ​ Ex{AppID}.{自定义 ExchangeName}，队列名的命名建议：MQ{AppID}.{自定义 QueueName} ​]]></content>
       <categories>
         <category>technology</category>
       </categories>
@@ -89,8 +67,30 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[Docker 常用命令]]></title>
+    <url>%2F2018%2F11%2F20%2FDocker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%2F</url>
+    <content type="text"><![CDATA[查看正在运行的容器 1docker ps 查询项目 1sudo docker ps -a |grep 项目 进入容器 1sudo docker exec -it 项目名 bash 查看本地镜像 1docker images 查看指定容器的某个确定端口映射到宿主机的端口号 1docker port ID/NAMES 查看web应用程序的日志 1docker logs -f ID/NAMES 查看web应用程序容器内部运行的进程 1docker top ID/NAMES 已经停止的容器，可以使用命令 docker start 来启动 1docker start ID/NAMES 停止web应用程序容器 1docker stop ID/NAMES 查询最后一次创建的容器 1docker ps -l 删除不需要的容器 删除容器时，容器必须是停止状态，否则报错 1docker rm ID/NAMES 获取新镜像 1docker pull 名:版本（ubuntu:13.10） 查找镜像 1docker search 名 启动容器并进入容器 1docker run -t -i 名 /bin/bash]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>devOps</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Jar debug 启动]]></title>
+    <url>%2F2018%2F10%2F16%2FJar%20debug%E5%90%AF%E5%8A%A8%2F</url>
+    <content type="text"><![CDATA[debug启动脚本1java -jar -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 ***.jar debug]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Jenkins 安装]]></title>
-    <url>%2F2019%2F02%2F21%2FJenkins%20%E5%AE%89%E8%A3%85%2F</url>
+    <url>%2F2018%2F09%2F19%2FJenkins%20%E5%AE%89%E8%A3%85%2F</url>
     <content type="text"><![CDATA[Jenkins 安装步骤 安装步骤 1.Install JDK 2.安装 Jenkins 仓库 12wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.reporpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key 3.安装 Jenkins 12yum install jenkins -y配置文件地址 /etc/sysconfig/jenkins 4.启动 jenkins 1systemctl start jenkins 5.查看初始化密码 1cat /var/lib/jenkins/secrets/initialAdminPassword 6.访问地址 1http://10.0.96.102:8080/ 7.配置Jdk、Maven ​ 配置JDK、Maven地址 ​ 安装maven Integration 插件 8.安装Git 1yum install git ​ 配置Git地址以及安装Git-Client插件 9.安装GitLab、GitLab Hook插件 10.配置全局凭据（拉取代码私钥） 11.shell启动springboot jar脚本 1234567891011121314151617#!/bin/bash# jenkins工作目录project_path=/var/lib/jenkins/workspace/eurekacd $&#123;project_path&#125;# 打包mvn clean package -Dmaven.test.skip=true jar_path=/var/lib/jenkins/workspace/eureka/target/jar_name=eureka-server-0.0.1-SNAPSHOT.jarcd $&#123;jar_path&#125;# 杀死进程ps -ef|grep eureka |grep -v grep |awk &apos;&#123;print $2&#125;&apos;|xargs kill -9# 启动服务BUILD_ID=dontKillMe nohup java -jar $&#123;jar_name&#125; &amp; War部署 1.下载jenkins.war文件,官网地址:http://jenkins-ci.org/ 注意选择最新版本Long-Term Support Release 2.访问地址http://IP:8080/jenkins/ 3.查看初始密码 1cat /root/.jenkins/secrets/initialAdminPassword 4.配置Jdk、Maven ​ 配置JDK、Maven地址 ​ 安装maven Integration 插件 5.安装Git 1yum install git ​ 配置Git地址以及安装Git-Client插件 6.安装GitLab、GitLab Hook插件 7.配置全局凭据（拉取代码私钥） 8.shell启动springboot jar脚本 123456789101112131415161718#!/bin/bash# jenkins工作目录project_path=/root/.jenkins/workspace/eurekacd $&#123;project_path&#125;# 打包mvn clean package -Dmaven.test.skip=true jar_path=/root/.jenkins/workspace/eureka/target/jar_name=eureka-server-0.0.1-SNAPSHOT.jarcd $&#123;jar_path&#125;# 杀死进程ps -ef|grep eureka |grep -v grep |awk &apos;&#123;print $2&#125;&apos;|xargs kill -9# 启动服务BUILD_ID=dontKillMe nohup java -jar $&#123;jar_name&#125; &amp;# 注意 BUILD_ID=dontKillMe 不加的话 会启动完成直接关闭服务]]></content>
       <categories>
         <category>technology</category>
@@ -101,13 +101,68 @@
   </entry>
   <entry>
     <title><![CDATA[Mysql-emoji表情]]></title>
-    <url>%2F2018%2F09%2F26%2FMysql-emoji%E8%A1%A8%E6%83%85%2F</url>
+    <url>%2F2018%2F09%2F03%2FMysql-emoji%E8%A1%A8%E6%83%85%2F</url>
     <content type="text"><![CDATA[Mysql-emoji表情支持版本 大于5.5.3的Mysql版本才开始支持emoji表情 Mysql-emoji表情失败原因 普通的字符串或者表情都是占位3个字节，使用utf8足够用了，但是移动端的表情符号占位是4个字节，普通的utf8就不够用了，为了应对无线互联网的机遇和挑战、避免 emoji 表情符号带来的问题、涉及无线相关的 MySQL 数据库建议都提前采用 utf8mb4 字符集。Mysql 5.5.3之前的版本，仅支持的utf8为3字节的，Mysql 5.5.3之后的版本支持utf8mb4为4字节的。 Mysql配置修改 修改mysql配置文件my.cnf（windows为my.ini） 找到后请在以下三部分里添加如下内容 123456789[client] default-character-set = utf8mb4 [mysql] default-character-set = utf8mb4 [mysqld] character-set-client-handshake = FALSE character-set-server = utf8mb4 collation-server = utf8mb4_unicode_ci init_connect=&apos;SET NAMES utf8mb4&apos; 检查变量 1SHOW VARIABLES WHERE Variable_name LIKE &apos;character_set_%&apos; OR Variable_name LIKE &apos;collation%&apos;; 将数据库和已经建好的表也转换成utf8mb4 1.更改数据库编码 1ALTER DATABASE caitu99 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci; 2.更改表编码 1ALTER TABLE TABLE_NAME CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;]]></content>
       <categories>
         <category>technology</category>
       </categories>
       <tags>
         <tag>mysql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JVM常用调试命令]]></title>
+    <url>%2F2018%2F08%2F06%2FJVM%E5%B8%B8%E7%94%A8%E8%B0%83%E8%AF%95%E5%91%BD%E4%BB%A4%2F</url>
+    <content type="text"><![CDATA[JVM常用调试命令 jps 虚拟机进程状况工具 1jps -v 输出虚拟机进程启动时jvm参数 包括 进程占用的端口号 jstat 虚拟机统计信息监视工具 1jstat -gcutil pid 1000 10 查询GC情况(1秒一次，统计10次) jmap java内存影像工具 1jmap -histo pid |grep xxx 根据端口号pid查询类实例信息 jstack java堆跟踪工具 1jstack -l pid 查看线程堆栈]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JVM内存参数设置]]></title>
+    <url>%2F2018%2F07%2F25%2FJVM%E5%86%85%E5%AD%98%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE%2F</url>
+    <content type="text"><![CDATA[JVM内存常用参数设置 堆内存 最大堆内存(新生代和老年代之和的最大值) -Xmx 最小堆内存(初始大小) -Xms 新生代大小 一般设置为整个堆内存的 1/3或者1/4 -Xmn等效于设置了-XX:NewSize与-XX:MaxNewSize相同大小 -XX:NewSize 设置新生代的初始大小 -XX:MaxNewSize设置新生代的最大值 ​ 设置不同的-XX:NewSize与-XX:MaxNewSize可能会导致内存震荡,以减少运行期间系统在内存申请上所花的开销 -XX:SurvivorRadio用来设置新生代eden空间与s0空间的比例关系 ​ s0与s1空间又分别称为from空间和to空间),并在Minor GC后会互换角色 ​ 常用比例eden:s0:s1 = 8:1:1 老年代大小 -XX:NewRadio用来设置老年代与新生代的比例(2:1/3:1) -Xss 用来设置线程栈的大小 方法区(持久代) HotSpot 虚拟机 -XX:MaxPermSize设置方法区的最大值;-XX:PermSize设置方法区的初始大小 ​ 一般设置为64MB已经可以满足绝大部分的应用程序工作,如果依然出现方法区溢出,可以将值设置为128MB若依然不能满足,则应该考虑优化程序设计]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JVM内存模型]]></title>
+    <url>%2F2018%2F07%2F12%2FJVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%2F</url>
+    <content type="text"><![CDATA[JVM内存模型 栈 ​ 栈分虚拟机栈和本地方法栈 ​ 栈用来存储Java的基本数据类型. Java指令代码(包括方法). 常量 Stack的内存管理是顺序分配的，而且定长,不存在内存回收的问题 堆 ​ 堆用来存储Java对象实例 实际上也是保存对象实例的属性值，属性的类型和对象本身的类型标记等Heap 则是随机分配内存，不定长度，存在内存分配和回收的问题 ​ 注意:对象实例在Heap 中分配好以后，需要在Stack中保存一个4字节的Heap 内存地址，用来定位该对象实例在Heap 中的位置，便于找到该对象实例 方法区 所有**线程共享**的内存区域 ​ 存储已被虚拟机加载的类信息.常量.静态变量，运行时的常量池也存于方法区中 程序计数器 ​ 当前线程所执行的字节码的行号指示器 ​ 执行的是java方法时,计数器记录的是正在执行的虚拟机字节码指令的地址. ​ 执行的是Native方法,计数器值为空 其中方法区和堆是线程共享的数据区；其他区域是线程隔离的数据区]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JVM类加载机制]]></title>
+    <url>%2F2018%2F06%2F21%2FJVM%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%2F</url>
+    <content type="text"><![CDATA[上级委托加载机制 1.整个JVM平台提供三层ClassLoader Bootstrap ClassLoader 主要加载JVM自身工作需要的类 ,完全由JVM控制,一个类加载工具,没有高一级的父类加载器,也没用子加载器 没有遵守ClassLoader加载规则 ExtClassLoader 标准扩展类加载器 没父 AppClassLoader 父类是ExtClassLoader classpath目录下的类都可以被这个加载器加载 注意: ​ 1.如果要实现自己的类加载器,不管你是直接实现抽象类ClassLoader,还是继承URLClassLoader类,或者其他子类,它的父加载器都是AppClassLoader. ​ 2.在应用中能提取到的顶层父类是ExtClassLoader 2.JVM加载.class文件的过程 找到 .class文件,并把该文件包含的字节码加载到内存中. 字节码验证,Class类数据结构分析及相应的内存分配和最后的符号表的链接 类中静态属性和初始化赋值,以及静态块的执行]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[JVM垃圾回收机制]]></title>
+    <url>%2F2018%2F06%2F02%2FJVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%2F</url>
+    <content type="text"><![CDATA[垃圾回收机制 堆分为 新生代(Young) 与 老年代(Old) Young区 分为Eden区和两个Survivor区 ​ 新创建的对象都在Eden区,当Eden区满后会触发Minor GC,把Eden区回收后仍然存活的对象复制到其中一个空的Survivor区; 同时,另一个Survivor区中存活的对象也复制到这个Survivor中,保证总有一个Survivor区是空的 Old区 ​ Young的Eden区满后会触发Minor GC,把Eden区回收后仍存活的对象放到Survivor区中,如果此时Survivor区仍然存不下这些存活的对象,GC收集器会把这些对象直接存放到Old区;如果在Survivor区中的对象足够老,也直接放到Old区.如果Old区也满了,则触发Full GC,回收整个堆内存 Perm区 ​ 存放的主要是类的Class对象, 垃圾回收也是由Full GC触发 垃圾回收算法 标记-清除算法 ​ 对于每个存活的对象,进行标记.标记完成,开始进行清理(未标记)不再存活的对象 ​ 缺点:产生过多碎片,导致内存不连续,分配大对象时,无法找到足够的内存触发gc，效率不是太高 复制算法 ​ 用于生存率较低的场景 把内存分为若干个区域,每次只使用其中一部分,对于存货的对象,copy到另一个区域,对于剩余的对象进行垃圾回收 ​ 缺点:造成内存浪费 ​ 优点: 无碎片 标记-整理算法 ​ 类似于标记清理,后续不是直接对对象进行清理,而是进行移动存活对象,边界外进行清除 JVM采用分代的垃圾回收算法 新生代 死的快,存活率低 采用 复制算法 Minor GC 老年代 存活长 采用标记清理 Full GC]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
       </tags>
   </entry>
   <entry>

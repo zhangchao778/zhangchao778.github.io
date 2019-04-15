@@ -295,6 +295,971 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/06/JVM常用调试命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.zhang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/minguo.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JVM常用调试命令</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-06T13:27:26+08:00">
+                2018-08-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/technology/" itemprop="url" rel="index">
+                    <span itemprop="name">technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+          
+	  
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>JVM常用调试命令</p>
+</blockquote>
+<ul>
+<li><p>jps  </p>
+<p>虚拟机进程状况工具</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jps -v</span><br></pre></td></tr></table></figure>
+<p> 输出虚拟机进程启动时jvm参数  包括 进程占用的端口号</p>
+</li>
+<li><p>jstat </p>
+<p>虚拟机统计信息监视工具</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstat -gcutil pid 1000 10</span><br></pre></td></tr></table></figure>
+<p>查询GC情况(1秒一次，统计10次)</p>
+</li>
+<li><p>jmap </p>
+<p>java内存影像工具</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmap -histo pid |grep xxx</span><br></pre></td></tr></table></figure>
+<p>根据端口号pid查询类实例信息</p>
+</li>
+<li><p>jstack</p>
+<p>java堆跟踪工具</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstack -l pid</span><br></pre></td></tr></table></figure>
+<p> 查看线程堆栈</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/25/JVM内存参数设置/" rel="next" title="JVM内存参数设置">
+                <i class="fa fa-chevron-left"></i> JVM内存参数设置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/03/Mysql-emoji表情/" rel="prev" title="Mysql-emoji表情">
+                Mysql-emoji表情 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/25/JVM内存参数设置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.zhang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/minguo.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JVM内存参数设置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-25T13:27:26+08:00">
+                2018-07-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/technology/" itemprop="url" rel="index">
+                    <span itemprop="name">technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+          
+	  
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>JVM内存常用参数设置</p>
+</blockquote>
+<ul>
+<li><p><strong>堆内存</strong></p>
+<p>最大堆内存(新生代和老年代之和的最大值)  <code>-Xmx</code></p>
+<p>最小堆内存(初始大小) <code>-Xms</code></p>
+<ul>
+<li><p><strong>新生代大小</strong></p>
+<p>一般设置为整个堆内存的 1/3或者1/4</p>
+<p><code>-Xmn</code>等效于设置了<code>-XX:NewSize</code>与<code>-XX:MaxNewSize</code>相同大小</p>
+<p><code>-XX:NewSize</code> 设置新生代的初始大小</p>
+<p><code>-XX:MaxNewSize</code>设置新生代的最大值</p>
+<p>​    设置不同的<code>-XX:NewSize</code>与<code>-XX:MaxNewSize</code>可能会导致内存震荡,以减少运行期间系统在内存申请上所花的开销</p>
+<p><code>-XX:SurvivorRadio</code>用来设置新生代eden空间与s0空间的比例关系</p>
+<p>​    s0与s1空间又分别称为from空间和to空间),并在Minor GC后会互换角色</p>
+<p>​    常用比例<code>eden:s0:s1 = 8:1:1</code></p>
+</li>
+<li><p><strong>老年代大小</strong></p>
+<p><code>-XX:NewRadio</code>用来设置老年代与新生代的比例<code>(2:1/3:1)</code></p>
+</li>
+</ul>
+<p><code>-Xss</code> 用来设置线程栈的大小</p>
+<ul>
+<li><p><strong>方法区(持久代)</strong></p>
+<p> HotSpot 虚拟机 <code>-XX:MaxPermSize</code>设置方法区的最大值;<code>-XX:PermSize</code>设置方法区的初始大小 </p>
+<p>​    一般设置为<code>64MB</code>已经可以满足绝大部分的应用程序工作,如果依然出现方法区溢出,可以将值设置为<code>128MB</code>若依然不能满足,则应该考虑优化程序设计</p>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/12/JVM内存模型/" rel="next" title="JVM内存模型">
+                <i class="fa fa-chevron-left"></i> JVM内存模型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/06/JVM常用调试命令/" rel="prev" title="JVM常用调试命令">
+                JVM常用调试命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/12/JVM内存模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.zhang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/minguo.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JVM内存模型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-12T13:27:26+08:00">
+                2018-07-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/technology/" itemprop="url" rel="index">
+                    <span itemprop="name">technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+          
+	  
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>JVM内存模型</p>
+</blockquote>
+<p><img src="http://qiniu.zhangqichao.com//1555315780760.png" alt></p>
+<ul>
+<li><p><strong>栈</strong></p>
+<p>​    栈分虚拟机栈和本地方法栈</p>
+<p>​    栈用来存储Java的<strong>基本数据类型</strong>. Java指令代码(包括方法). 常量 Stack的内存管理是顺序分配的，而且定长,不存在内存回收的问题</p>
+</li>
+<li><p><strong>堆</strong></p>
+<p>​    堆用来存储<strong>Java对象实例</strong>  实际上也是保存对象实例的属性值，属性的类型和对象本身的类型标记等Heap 则是随机分配内存，不定长度，存在内存分配和回收的问题</p>
+<p>​    <code>注意:对象实例在Heap 中分配好以后，需要在Stack中保存一个4字节的Heap 内存地址，用来定位该对象实例在Heap 中的位置，便于找到该对象实例</code></p>
+</li>
+<li><p><strong>方法区</strong></p>
+<pre><code>所有**线程共享**的内存区域
+</code></pre><p>​    存储已被虚拟机加载的<strong>类信息.常量.静态变量</strong>，运行时的<strong>常量池</strong>也存于方法区中</p>
+</li>
+<li><p><strong>程序计数器</strong></p>
+<p>​    当前线程所执行的字节码的行号指示器</p>
+<p>​    执行的是java方法时,计数器记录的是正在执行的虚拟机字节码指令的地址.</p>
+<p>​    执行的是Native方法,计数器值为空</p>
+<p><code>其中方法区和堆是线程共享的数据区；其他区域是线程隔离的数据区</code></p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/21/JVM类加载机制/" rel="next" title="JVM类加载机制">
+                <i class="fa fa-chevron-left"></i> JVM类加载机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/25/JVM内存参数设置/" rel="prev" title="JVM内存参数设置">
+                JVM内存参数设置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/21/JVM类加载机制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.zhang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/minguo.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JVM类加载机制</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-21T13:27:26+08:00">
+                2018-06-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/technology/" itemprop="url" rel="index">
+                    <span itemprop="name">technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+          
+	  
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><strong>上级委托加载机制</strong></p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>1.整个JVM平台提供三层ClassLoader</p>
+</blockquote>
+</blockquote>
+<ul>
+<li><p><code>Bootstrap ClassLoader</code></p>
+<p>主要加载JVM自身工作需要的类 ,完全由JVM控制,一个类加载工具,没有高一级的父类加载器,也没用子加载器   <strong>没有遵守<code>ClassLoader</code>加载规则</strong></p>
+</li>
+<li><p><code>ExtClassLoader</code>  </p>
+<p>标准扩展类加载器   没父</p>
+</li>
+<li><p><code>AppClassLoader</code></p>
+<p>父类是<code>ExtClassLoader</code>  classpath目录下的类都可以被这个加载器加载</p>
+</li>
+</ul>
+<p><strong>注意:</strong></p>
+<p>​    1.如果要实现自己的类加载器,不管你是直接实现抽象类ClassLoader,还是继承<code>URLClassLoader</code>类,或者其他子类,它的父加载器都是<code>AppClassLoader</code>. </p>
+<p>​    2.在应用中能提取到的顶层父类是<code>ExtClassLoader</code></p>
+<blockquote>
+<blockquote>
+<p>2.JVM加载.class文件的过程</p>
+</blockquote>
+</blockquote>
+<ul>
+<li>找到 .class文件,并把该文件包含的字节码加载到内存中.</li>
+<li>字节码验证,Class类数据结构分析及相应的内存分配和最后的符号表的链接</li>
+<li>类中静态属性和初始化赋值,以及静态块的执行</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/02/JVM垃圾回收机制/" rel="next" title="JVM垃圾回收机制">
+                <i class="fa fa-chevron-left"></i> JVM垃圾回收机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/12/JVM内存模型/" rel="prev" title="JVM内存模型">
+                JVM内存模型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/02/JVM垃圾回收机制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.zhang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/minguo.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JVM垃圾回收机制</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-02T13:27:26+08:00">
+                2018-06-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/technology/" itemprop="url" rel="index">
+                    <span itemprop="name">technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+          
+	  
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><strong>垃圾回收机制</strong></p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>堆分为 <strong>新生代(Young)</strong> 与 <strong>老年代(Old)</strong></p>
+</blockquote>
+</blockquote>
+<ul>
+<li><p><strong>Young区</strong> 分为<strong>Eden区</strong>和<strong>两个Survivor区</strong></p>
+<p>​    新创建的对象都在Eden区,当Eden区满后会触发<strong>Minor GC</strong>,把Eden区回收后仍然存活的对象复制到其中一个空的Survivor区; 同时,另一个Survivor区中存活的对象也复制到这个Survivor中,保证总有一个Survivor区是空的 </p>
+</li>
+<li><p><strong>Old区</strong></p>
+<p>​    Young的Eden区满后会触发Minor GC,把Eden区回收后仍存活的对象放到Survivor区中,如果此时Survivor区仍然存不下这些存活的对象,GC收集器会把这些对象直接存放到Old区;如果在Survivor区中的对象足够老,也直接放到Old区.如果Old区也满了,则触发<strong>Full GC</strong>,回收整个堆内存 </p>
+</li>
+<li><p><strong>Perm区</strong></p>
+</li>
+</ul>
+<p>​          存放的主要是类的Class对象,   <strong>垃圾回收</strong>也是由<strong>Full GC触发</strong> </p>
+<blockquote>
+<blockquote>
+<p>垃圾回收算法</p>
+</blockquote>
+</blockquote>
+<ul>
+<li><p><strong>标记-清除算法</strong></p>
+<p>​    对于每个存活的对象,进行标记.标记完成,开始进行清理(未标记)不再存活的对象</p>
+<p>​    缺点:产生过多碎片,导致内存不连续,分配大对象时,无法找到足够的内存触发gc，效率不是太高</p>
+</li>
+<li><p><strong>复制算法</strong></p>
+<p>​    用于生存率较低的场景</p>
+<pre><code>把内存分为若干个区域,每次只使用其中一部分,对于存货的对象,copy到另一个区域,对于剩余的对象进行垃圾回收
+</code></pre><p>​    缺点:造成内存浪费</p>
+<p>​       优点: 无碎片</p>
+</li>
+<li><p><strong>标记-整理算法</strong></p>
+<p>​    类似于标记清理,后续不是直接对对象进行清理,而是进行移动存活对象,边界外进行清除</p>
+</li>
+</ul>
+<blockquote>
+<blockquote>
+<p>JVM采用分代的垃圾回收算法</p>
+</blockquote>
+</blockquote>
+<ul>
+<li><code>新生代    死的快,存活率低 采用 复制算法  Minor GC</code></li>
+<li><code>老年代    存活长  采用标记清理  Full GC</code></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/26/vi编辑器/" rel="next" title="vi编辑器">
+                <i class="fa fa-chevron-left"></i> vi编辑器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/21/JVM类加载机制/" rel="prev" title="JVM类加载机制">
+                JVM类加载机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/26/vi编辑器/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -496,8 +1461,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/09/26/Mysql-emoji表情/" rel="prev" title="Mysql-emoji表情">
-                Mysql-emoji表情 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/06/02/JVM垃圾回收机制/" rel="prev" title="JVM垃圾回收机制">
+                JVM垃圾回收机制 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -733,7 +1698,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -755,7 +1720,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
