@@ -295,6 +295,232 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/17/SpringBoot整合Swagger2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.zhang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/minguo.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SpringBoot整合Swagger2</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-17T08:33:26+08:00">
+                2019-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/technology/" itemprop="url" rel="index">
+                    <span itemprop="name">technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+          
+	  
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>​    <code>如何构建一份合理高效的接口文档很重要，Swagger的出现可以完美解决了传统接口管理方式存在的痛点。以下介绍Spring Boot整合Swagger2的流程，连带填坑。</code></p>
+<blockquote>
+<h3 id="SpringBoot整合Swagger2"><a href="#SpringBoot整合Swagger2" class="headerlink" title="SpringBoot整合Swagger2"></a>SpringBoot整合Swagger2</h3></blockquote>
+<ul>
+<li><h3 id="引入相应的maven包"><a href="#引入相应的maven包" class="headerlink" title="引入相应的maven包"></a>引入相应的maven包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;io.springfox&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;springfox-swagger2&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;2.7.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;io.springfox&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;springfox-swagger-ui&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;2.7.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="编写Swagger2的配置类"><a href="#编写Swagger2的配置类" class="headerlink" title="编写Swagger2的配置类"></a>编写Swagger2的配置类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.swagger.demo.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.Api;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.builders.ApiInfoBuilder;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.builders.PathSelectors;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.builders.RequestHandlerSelectors;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.service.ApiInfo;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.spi.DocumentationType;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.spring.web.plugins.Docket;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.swagger2.annotations.EnableSwagger2;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Mr.zhang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span> swagger配置类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 9:06 AM 2019/4/17</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableSwagger</span>2</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Swagger2Config</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;swagger2.enable&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> enable;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Docket <span class="title">createRestApi</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2)</span><br><span class="line">                .groupName(<span class="string">"Demo模块"</span>)</span><br><span class="line">                .select()</span><br><span class="line">                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))</span><br><span class="line">                .paths(PathSelectors.regex(<span class="string">"/demo.*"</span>))</span><br><span class="line">                .build()</span><br><span class="line">                .apiInfo(apiInfo())</span><br><span class="line">                .enable(enable);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> ApiInfo <span class="title">apiInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ApiInfoBuilder()</span><br><span class="line">                .title(<span class="string">"Demo模块接口文档"</span>)</span><br><span class="line">                .description(<span class="string">"提供Demo模块文档"</span>)</span><br><span class="line">                .termsOfServiceUrl(<span class="string">"https://xingtian.github.io/trace.github.io/"</span>)</span><br><span class="line">                .version(<span class="string">"1.0"</span>)</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    注解<code>@EnableSwagger2</code>开启swagger2,apiInfo是接口文档的基本说明信息，包括标题、描述、服务网址、联系人、版本等信息。</p>
+<p>​    Docket创建，通过groupName进行分组，paths属性进行过滤，apis属性可以设置扫描包，或者通过注解的方式标识。</p>
+<p>​    enable属性主要用于控制是否生成接口文档，比如：生产环境不生成接口文档。</p>
+</li>
+<li><h3 id="Controller层类和方法添加相关注解"><a href="#Controller层类和方法添加相关注解" class="headerlink" title="Controller层类和方法添加相关注解"></a>Controller层类和方法添加相关注解</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.swagger.demo.web;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.swagger.demo.entity.ResultModel;</span><br><span class="line"><span class="keyword">import</span> com.swagger.demo.entity.User;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.Api;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiImplicitParam;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiImplicitParams;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiOperation;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Mr.zhang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span> Demo控制层</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 9:57 AM 2019/4/17</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/demo"</span>)</span><br><span class="line"><span class="meta">@Api</span>(tags = <span class="string">"demo模块"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/query/&#123;id&#125;"</span>)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(<span class="string">"通过ID查询"</span>)</span><br><span class="line">    <span class="meta">@ApiImplicitParam</span>(name = <span class="string">"id"</span>, value = <span class="string">"用户ID"</span>, required = <span class="keyword">true</span>, dataType = <span class="string">"int"</span>, paramType = <span class="string">"path"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResultModel&lt;User&gt; <span class="title">findById</span><span class="params">(@PathVariable <span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ResultModel.success(<span class="string">"id查询成功"</span>, <span class="keyword">new</span> User());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/query/ids"</span>)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(<span class="string">"通过ID列表查询"</span>)</span><br><span class="line">    <span class="keyword">public</span> ResultModel&lt;List&lt;User&gt;&gt; findByIdIn(<span class="keyword">int</span>[] ids) &#123;</span><br><span class="line">        <span class="keyword">return</span> ResultModel.success(<span class="string">"in查询成功"</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/query/user"</span>)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(<span class="string">"通过用户实体查询"</span>)</span><br><span class="line">    <span class="keyword">public</span> ResultModel&lt;List&lt;User&gt;&gt; findByUser(User user) &#123;</span><br><span class="line">        <span class="keyword">return</span> ResultModel.success(<span class="string">"通过实体查询成功"</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/query/all"</span>)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(<span class="string">"查询所有用户"</span>)</span><br><span class="line">    <span class="keyword">public</span> ResultModel&lt;List&lt;User&gt;&gt; findAll() &#123;</span><br><span class="line">        <span class="keyword">return</span> ResultModel.success(<span class="string">"全体查找成功"</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/query/username"</span>)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(<span class="string">"通过用户名称模糊查询"</span>)</span><br><span class="line">    <span class="meta">@ApiImplicitParam</span>(name = <span class="string">"userName"</span>, value = <span class="string">"用户名称"</span>)</span><br><span class="line">    <span class="keyword">public</span> ResultModel&lt;List&lt;User&gt;&gt; findByUserName(String userName) &#123;</span><br><span class="line">        <span class="keyword">return</span> ResultModel.success(<span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostMapping</span>(<span class="string">"/insert"</span>)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(<span class="string">"新增默认用户"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResultModel&lt;Integer&gt; <span class="title">insert</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        User user = <span class="keyword">new</span> User();</span><br><span class="line">        user.setUserName(<span class="string">"zhongshiwen"</span>);</span><br><span class="line">        user.setNickName(<span class="string">"zsw"</span>);</span><br><span class="line">        user.setRealName(<span class="string">"钟仕文"</span>);</span><br><span class="line">        user.setPassword(<span class="string">"zsw123456"</span>);</span><br><span class="line">        user.setGender(<span class="string">"男"</span>);</span><br><span class="line">        <span class="keyword">return</span> ResultModel.success(<span class="string">"新增用户成功"</span>, user.getId());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@PutMapping</span>(<span class="string">"/update"</span>)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(<span class="string">"更新用户信息"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResultModel&lt;Integer&gt; <span class="title">update</span><span class="params">(User user)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ResultModel.success(user.getId());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@PutMapping</span>(<span class="string">"/update/status"</span>)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(<span class="string">"更新单个用户状态"</span>)</span><br><span class="line">    <span class="meta">@ApiImplicitParams</span>(&#123;</span><br><span class="line">            <span class="meta">@ApiImplicitParam</span>(name = <span class="string">"id"</span>, value = <span class="string">"用户ID"</span>, required = <span class="keyword">true</span>),</span><br><span class="line">            <span class="meta">@ApiImplicitParam</span>(name = <span class="string">"status"</span>, value = <span class="string">"状态"</span>, required = <span class="keyword">true</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResultModel&lt;User&gt; <span class="title">updateStatus</span><span class="params">(<span class="keyword">int</span> id, <span class="keyword">byte</span> status)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ResultModel.success(<span class="keyword">new</span> User());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@DeleteMapping</span>(<span class="string">"/delete"</span>)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(<span class="string">"删除单个用户"</span>)</span><br><span class="line">    <span class="meta">@ApiImplicitParam</span>(value = <span class="string">"用户ID"</span>, required = <span class="keyword">true</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResultModel&lt;Integer&gt; <span class="title">delete</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ResultModel.success(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="返回对象ResultModel"><a href="#返回对象ResultModel" class="headerlink" title="返回对象ResultModel"></a>返回对象ResultModel</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.swagger.demo.entity;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiModel;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiModelProperty;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Mr.zhang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span> 返回对象</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 10:00 AM 2019/4/17</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@ApiModel</span>(description = <span class="string">"返回结果"</span>)</span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">ResultModel</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"是否成功: true or false"</span>)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> result;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"描述性原因"</span>)</span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"业务数据"</span>)</span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">ResultModel</span><span class="params">(<span class="keyword">boolean</span> result, String message, T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.result = result;</span><br><span class="line">        <span class="keyword">this</span>.message = message;</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span>&lt;T&gt; ResultModel&lt;T&gt; <span class="title">success</span><span class="params">(T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResultModel&lt;&gt;(<span class="keyword">true</span>, <span class="string">"SUCCESS"</span>, data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span>&lt;T&gt; ResultModel&lt;T&gt; <span class="title">success</span><span class="params">(String message, T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResultModel&lt;&gt;(<span class="keyword">true</span>, message, data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ResultModel <span class="title">failure</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResultModel&lt;&gt;(<span class="keyword">false</span>, <span class="string">"FAILURE"</span>, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ResultModel <span class="title">failure</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResultModel&lt;&gt;(<span class="keyword">false</span>, message, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="ApiModel属性对象"><a href="#ApiModel属性对象" class="headerlink" title="ApiModel属性对象"></a>ApiModel属性对象</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.swagger.demo.entity;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiModel;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiModelProperty;</span><br><span class="line"><span class="keyword">import</span> lombok.AllArgsConstructor;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="keyword">import</span> lombok.NoArgsConstructor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.time.LocalDate;</span><br><span class="line"><span class="keyword">import</span> java.time.LocalDateTime;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Mr.zhang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span> 用户表实体</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 10:03 AM 2019/4/17</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@ApiModel</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"用户ID"</span>) <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"账户名"</span>) <span class="keyword">private</span> String userName;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"用户昵称"</span>) <span class="keyword">private</span> String nickName;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"真实姓名"</span>) <span class="keyword">private</span> String realName;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"身份证号码"</span>) <span class="keyword">private</span> String identityCard;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"性别"</span>) <span class="keyword">private</span> String gender;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"出生日期"</span>) <span class="keyword">private</span> LocalDate birth;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"手机号码"</span>) <span class="keyword">private</span> String phone;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"邮箱"</span>) <span class="keyword">private</span> String email;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"密码"</span>) <span class="keyword">private</span> String password;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"用户头像地址"</span>) <span class="keyword">private</span> String logo;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"账户状态 0:正常; 1:冻结; 2:注销"</span>) <span class="keyword">private</span> Byte status;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"个性签名"</span>) <span class="keyword">private</span> String summary;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"用户所在区域码"</span>) <span class="keyword">private</span> String areaCode;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"注册时间"</span>) <span class="keyword">private</span> LocalDateTime registerTime;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"最近登录时间"</span>) <span class="keyword">private</span> LocalDateTime lastLoginTime;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Swagger2</code>几个重要注解</p>
+<p>@Api：用在请求的类上，表示对类的说明</p>
+<ul>
+<li><p>tags “说明该类的作用，可以在UI界面上看到的注解”</p>
+</li>
+<li><p>value “该参数没什么意义，在UI界面上也看到，所以不需要配置”</p>
+</li>
+</ul>
+<p>@ApiOperation：用在请求的方法上，说明方法的用途、作用</p>
+<ul>
+<li>value=”说明方法的用途、作用”</li>
+<li>notes=”方法的备注说明”</li>
+</ul>
+<p>@ApiImplicitParams：用在请求的方法上，表示一组参数说明 @ApiImplicitParam：用在@ApiImplicitParams注解中，指定一个请求参数的各个方面</p>
+<ul>
+<li><p>value：参数的汉字说明、解释</p>
+</li>
+<li><p>required：参数是否必须传</p>
+</li>
+<li><p>paramType： 参数放在哪个地方</p>
+<ul>
+<li>1.header –&gt; 请求参数的获取：@RequestHeader</li>
+<li>2.query –&gt; 请求参数的获取：@RequestParam</li>
+<li>3.path（用于restful接口）–&gt; 请求参数的获取：@PathVariable</li>
+<li>4.body（不常用）</li>
+<li>5.form（不常用）</li>
+</ul>
+</li>
+<li><p>dataType：参数类型，默认String，其它值dataType=”Integer”</p>
+</li>
+<li>defaultValue：参数的默认值</li>
+</ul>
+<p>@ApiResponses：用在请求的方法上，表示一组响应 @ApiResponse：用在@ApiResponses中，一般用于表达一个错误的响应信息</p>
+<ul>
+<li>code：数字，例如400</li>
+<li>message：信息，例如”请求参数没填好”</li>
+<li>response：抛出异常的类</li>
+</ul>
+<p>@ApiModel：主要有两种用途：</p>
+<ul>
+<li><p>用于响应类上，表示一个返回响应数据的信息</p>
+</li>
+<li><p>入参实体：使用@RequestBody这样的场景， 请求参数无法使用@ApiImplicitParam注解进行描述的时候</p>
+</li>
+</ul>
+<p>@ApiModelProperty：用在属性上，描述响应类的属性 最终呈现结果</p>
+</li>
+<li><h3 id="启动应用后，会自动生成页面"><a href="#启动应用后，会自动生成页面" class="headerlink" title="启动应用后，会自动生成页面"></a>启动应用后，会自动生成页面</h3><p>地址：<code>http://{root-path}/swagger-ui.html</code>（<a href="http://localhost:8080/swagger-ui.html" target="_blank" rel="noopener">http://localhost:8080/swagger-ui.html</a>）</p>
+<p>效果如下：</p>
+<p><img src="http://qiniu.zhangqichao.com//1555467598893.png" alt></p>
+<p><code>利用该文档可以在线测试接口</code></p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/15/Docker  私服/" rel="next" title="Docker 私服">
+                <i class="fa fa-chevron-left"></i> Docker 私服
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/15/Docker  私服/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -421,7 +647,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/devOps/" rel="tag"># devOps</a>
+            <a href="/tags/DevOps/" rel="tag"># DevOps</a>
           
         </div>
       
@@ -443,6 +669,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/17/SpringBoot整合Swagger2/" rel="prev" title="SpringBoot整合Swagger2">
+                SpringBoot整合Swagger2 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -608,7 +838,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"># java</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
           
         </div>
       
@@ -778,7 +1008,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"># java</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
           
         </div>
       
@@ -1000,7 +1230,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"># java</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
           
         </div>
       
@@ -1162,7 +1392,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"># java</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
           
         </div>
       
@@ -1373,7 +1603,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"># java</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
           
         </div>
       
@@ -1578,7 +1808,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/devOps/" rel="tag"># devOps</a>
+            <a href="/tags/DevOps/" rel="tag"># DevOps</a>
           
         </div>
       
@@ -1943,7 +2173,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/devOps/" rel="tag"># devOps</a>
+            <a href="/tags/DevOps/" rel="tag"># DevOps</a>
           
         </div>
       
@@ -1968,196 +2198,6 @@
             
               <a href="/2018/10/16/Jar debug启动/" rel="prev" title="Jar debug 启动">
                 Jar debug 启动 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/03/Mysql-emoji表情/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mr.zhang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/minguo.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">Mysql-emoji表情</h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T15:30:26+08:00">
-                2018-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/technology/" itemprop="url" rel="index">
-                    <span itemprop="name">technology</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-          
-	  
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <blockquote>
-<p>Mysql-emoji表情支持版本</p>
-</blockquote>
-<p>大于5.5.3的Mysql版本才开始支持emoji表情</p>
-<blockquote>
-<p>Mysql-emoji表情失败原因</p>
-</blockquote>
-<ul>
-<li>普通的字符串或者表情都是占位3个字节，使用utf8足够用了，但是移动端的表情符号占位是4个字节，普通的utf8就不够用了，为了应对无线互联网的机遇和挑战、避免 emoji 表情符号带来的问题、涉及无线相关的 MySQL 数据库建议都提前采用 utf8mb4 字符集。Mysql 5.5.3之前的版本，仅支持的utf8为3字节的，Mysql 5.5.3之后的版本支持utf8mb4为4字节的。</li>
-</ul>
-<blockquote>
-<p>Mysql配置修改</p>
-</blockquote>
-<ul>
-<li><p>修改mysql配置文件my.cnf（windows为my.ini） </p>
-<p>找到后请在以下三部分里添加如下内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[client] </span><br><span class="line">default-character-set = utf8mb4 </span><br><span class="line">[mysql] </span><br><span class="line">default-character-set = utf8mb4 </span><br><span class="line">[mysqld] </span><br><span class="line">character-set-client-handshake = FALSE </span><br><span class="line">character-set-server = utf8mb4 </span><br><span class="line">collation-server = utf8mb4_unicode_ci </span><br><span class="line">init_connect=&apos;SET NAMES utf8mb4&apos;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p>检查变量</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW VARIABLES WHERE Variable_name LIKE &apos;character_set_%&apos; OR Variable_name LIKE &apos;collation%&apos;;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>将数据库和已经建好的表也转换成utf8mb4</p>
-<p>1.更改数据库编码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER DATABASE caitu99 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;</span><br></pre></td></tr></table></figure>
-<p>2.更改表编码</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE TABLE_NAME CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/mysql/" rel="tag"># mysql</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/08/06/JVM常用调试命令/" rel="next" title="JVM常用调试命令">
-                <i class="fa fa-chevron-left"></i> JVM常用调试命令
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/19/Jenkins 安装/" rel="prev" title="Jenkins 安装">
-                Jenkins 安装 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -2227,7 +2267,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2249,7 +2289,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

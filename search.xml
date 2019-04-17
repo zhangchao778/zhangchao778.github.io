@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[SpringBoot整合Swagger2]]></title>
+    <url>%2F2019%2F04%2F17%2FSpringBoot%E6%95%B4%E5%90%88Swagger2%2F</url>
+    <content type="text"><![CDATA[​ 如何构建一份合理高效的接口文档很重要，Swagger的出现可以完美解决了传统接口管理方式存在的痛点。以下介绍Spring Boot整合Swagger2的流程，连带填坑。 SpringBoot整合Swagger2 引入相应的maven包1234567891011&lt;dependency&gt; &lt;groupId&gt;io.springfox&lt;/groupId&gt; &lt;artifactId&gt;springfox-swagger2&lt;/artifactId&gt; &lt;version&gt;2.7.0&lt;/version&gt;&lt;/dependency&gt;&lt;dependency&gt; &lt;groupId&gt;io.springfox&lt;/groupId&gt; &lt;artifactId&gt;springfox-swagger-ui&lt;/artifactId&gt; &lt;version&gt;2.7.0&lt;/version&gt;&lt;/dependency&gt; 编写Swagger2的配置类12345678910111213141516171819202122232425262728293031323334353637383940414243444546package com.swagger.demo.config;import io.swagger.annotations.Api;import org.springframework.beans.factory.annotation.Value;import org.springframework.context.annotation.Bean;import org.springframework.context.annotation.Configuration;import springfox.documentation.builders.ApiInfoBuilder;import springfox.documentation.builders.PathSelectors;import springfox.documentation.builders.RequestHandlerSelectors;import springfox.documentation.service.ApiInfo;import springfox.documentation.spi.DocumentationType;import springfox.documentation.spring.web.plugins.Docket;import springfox.documentation.swagger2.annotations.EnableSwagger2;/** * @author Mr.zhang * @description swagger配置类 * @date 9:06 AM 2019/4/17 */@Configuration@EnableSwagger2public class Swagger2Config &#123; @Value("$&#123;swagger2.enable&#125;") private boolean enable; @Bean public Docket createRestApi() &#123; return new Docket(DocumentationType.SWAGGER_2) .groupName("Demo模块") .select() .apis(RequestHandlerSelectors.withClassAnnotation(Api.class)) .paths(PathSelectors.regex("/demo.*")) .build() .apiInfo(apiInfo()) .enable(enable); &#125; private ApiInfo apiInfo() &#123; return new ApiInfoBuilder() .title("Demo模块接口文档") .description("提供Demo模块文档") .termsOfServiceUrl("https://xingtian.github.io/trace.github.io/") .version("1.0") .build(); &#125;&#125; ​ 注解@EnableSwagger2开启swagger2,apiInfo是接口文档的基本说明信息，包括标题、描述、服务网址、联系人、版本等信息。 ​ Docket创建，通过groupName进行分组，paths属性进行过滤，apis属性可以设置扫描包，或者通过注解的方式标识。 ​ enable属性主要用于控制是否生成接口文档，比如：生产环境不生成接口文档。 Controller层类和方法添加相关注解123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899package com.swagger.demo.web;import com.swagger.demo.entity.ResultModel;import com.swagger.demo.entity.User;import io.swagger.annotations.Api;import io.swagger.annotations.ApiImplicitParam;import io.swagger.annotations.ApiImplicitParams;import io.swagger.annotations.ApiOperation;import org.springframework.web.bind.annotation.*;import java.util.ArrayList;import java.util.List;/** * @author Mr.zhang * @description Demo控制层 * @date 9:57 AM 2019/4/17 */@RestController@RequestMapping("/demo")@Api(tags = "demo模块")public class DemoController &#123; @GetMapping("/query/&#123;id&#125;") @ApiOperation("通过ID查询") @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "int", paramType = "path") public ResultModel&lt;User&gt; findById(@PathVariable int id) &#123; return ResultModel.success("id查询成功", new User()); &#125; @GetMapping("/query/ids") @ApiOperation("通过ID列表查询") public ResultModel&lt;List&lt;User&gt;&gt; findByIdIn(int[] ids) &#123; return ResultModel.success("in查询成功", new ArrayList&lt;&gt;()); &#125; @GetMapping("/query/user") @ApiOperation("通过用户实体查询") public ResultModel&lt;List&lt;User&gt;&gt; findByUser(User user) &#123; return ResultModel.success("通过实体查询成功", new ArrayList&lt;&gt;()); &#125; @GetMapping("/query/all") @ApiOperation("查询所有用户") public ResultModel&lt;List&lt;User&gt;&gt; findAll() &#123; return ResultModel.success("全体查找成功", new ArrayList&lt;&gt;()); &#125; @GetMapping("/query/username") @ApiOperation("通过用户名称模糊查询") @ApiImplicitParam(name = "userName", value = "用户名称") public ResultModel&lt;List&lt;User&gt;&gt; findByUserName(String userName) &#123; return ResultModel.success(new ArrayList&lt;&gt;()); &#125; @PostMapping("/insert") @ApiOperation("新增默认用户") public ResultModel&lt;Integer&gt; insert() &#123; User user = new User(); user.setUserName("zhongshiwen"); user.setNickName("zsw"); user.setRealName("钟仕文"); user.setPassword("zsw123456"); user.setGender("男"); return ResultModel.success("新增用户成功", user.getId()); &#125; @PutMapping("/update") @ApiOperation("更新用户信息") public ResultModel&lt;Integer&gt; update(User user) &#123; return ResultModel.success(user.getId()); &#125; @PutMapping("/update/status") @ApiOperation("更新单个用户状态") @ApiImplicitParams(&#123; @ApiImplicitParam(name = "id", value = "用户ID", required = true), @ApiImplicitParam(name = "status", value = "状态", required = true) &#125;) public ResultModel&lt;User&gt; updateStatus(int id, byte status) &#123; return ResultModel.success(new User()); &#125; @DeleteMapping("/delete") @ApiOperation("删除单个用户") @ApiImplicitParam(value = "用户ID", required = true) public ResultModel&lt;Integer&gt; delete(int id) &#123; return ResultModel.success(id); &#125;&#125; 返回对象ResultModel12345678910111213141516171819202122232425262728293031323334353637383940414243444546package com.swagger.demo.entity;import io.swagger.annotations.ApiModel;import io.swagger.annotations.ApiModelProperty;import lombok.Data;/** * @author Mr.zhang * @description 返回对象 * @date 10:00 AM 2019/4/17 */@ApiModel(description = "返回结果")@Datapublic final class ResultModel&lt;T&gt; &#123; @ApiModelProperty("是否成功: true or false") private boolean result; @ApiModelProperty("描述性原因") private String message; @ApiModelProperty("业务数据") private T data; private ResultModel(boolean result, String message, T data) &#123; this.result = result; this.message = message; this.data = data; &#125; public static&lt;T&gt; ResultModel&lt;T&gt; success(T data) &#123; return new ResultModel&lt;&gt;(true, "SUCCESS", data); &#125; public static&lt;T&gt; ResultModel&lt;T&gt; success(String message, T data) &#123; return new ResultModel&lt;&gt;(true, message, data); &#125; public static ResultModel failure() &#123; return new ResultModel&lt;&gt;(false, "FAILURE", null); &#125; public static ResultModel failure(String message) &#123; return new ResultModel&lt;&gt;(false, message, null); &#125;&#125; ApiModel属性对象1234567891011121314151617181920212223242526272829303132333435363738package com.swagger.demo.entity;import io.swagger.annotations.ApiModel;import io.swagger.annotations.ApiModelProperty;import lombok.AllArgsConstructor;import lombok.Data;import lombok.NoArgsConstructor;import java.time.LocalDate;import java.time.LocalDateTime;/** * @author Mr.zhang * @description 用户表实体 * @date 10:03 AM 2019/4/17 */@Data@NoArgsConstructor@AllArgsConstructor@ApiModelpublic class User &#123; @ApiModelProperty("用户ID") private Integer id; @ApiModelProperty("账户名") private String userName; @ApiModelProperty("用户昵称") private String nickName; @ApiModelProperty("真实姓名") private String realName; @ApiModelProperty("身份证号码") private String identityCard; @ApiModelProperty("性别") private String gender; @ApiModelProperty("出生日期") private LocalDate birth; @ApiModelProperty("手机号码") private String phone; @ApiModelProperty("邮箱") private String email; @ApiModelProperty("密码") private String password; @ApiModelProperty("用户头像地址") private String logo; @ApiModelProperty("账户状态 0:正常; 1:冻结; 2:注销") private Byte status; @ApiModelProperty("个性签名") private String summary; @ApiModelProperty("用户所在区域码") private String areaCode; @ApiModelProperty("注册时间") private LocalDateTime registerTime; @ApiModelProperty("最近登录时间") private LocalDateTime lastLoginTime;&#125; Swagger2几个重要注解 @Api：用在请求的类上，表示对类的说明 tags “说明该类的作用，可以在UI界面上看到的注解” value “该参数没什么意义，在UI界面上也看到，所以不需要配置” @ApiOperation：用在请求的方法上，说明方法的用途、作用 value=”说明方法的用途、作用” notes=”方法的备注说明” @ApiImplicitParams：用在请求的方法上，表示一组参数说明 @ApiImplicitParam：用在@ApiImplicitParams注解中，指定一个请求参数的各个方面 value：参数的汉字说明、解释 required：参数是否必须传 paramType： 参数放在哪个地方 1.header –&gt; 请求参数的获取：@RequestHeader 2.query –&gt; 请求参数的获取：@RequestParam 3.path（用于restful接口）–&gt; 请求参数的获取：@PathVariable 4.body（不常用） 5.form（不常用） dataType：参数类型，默认String，其它值dataType=”Integer” defaultValue：参数的默认值 @ApiResponses：用在请求的方法上，表示一组响应 @ApiResponse：用在@ApiResponses中，一般用于表达一个错误的响应信息 code：数字，例如400 message：信息，例如”请求参数没填好” response：抛出异常的类 @ApiModel：主要有两种用途： 用于响应类上，表示一个返回响应数据的信息 入参实体：使用@RequestBody这样的场景， 请求参数无法使用@ApiImplicitParam注解进行描述的时候 @ApiModelProperty：用在属性上，描述响应类的属性 最终呈现结果 启动应用后，会自动生成页面地址：http://{root-path}/swagger-ui.html（http://localhost:8080/swagger-ui.html） 效果如下： 利用该文档可以在线测试接口]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Docker 私服]]></title>
     <url>%2F2019%2F04%2F15%2FDocker%20%20%E7%A7%81%E6%9C%8D%2F</url>
     <content type="text"><![CDATA[Harbor搭建Docker 私服 https://blog.51cto.com/11093860/2117805 1.安装docker-compose 1sudo pip install docker-compose 2.下载Harbor包 https://github.com/vmware/harbor/releases 安装有两种方式，一种是off-line ，一种是on-line，即离线和在线安装，离线安装需要下载的安装包较大，在线安装下载的安装包很小，课题根据自己的情况选择 3.解压，进入安装包 12tar -zxvf harbor*.tgzcd harbor 4.修改配置文件 1vim docker-compose.yml 1vim harbor.cfg 5.执行./prepare,更新一下配置文件 1sudo ./prepare 6.执行./install.sh，开始安装并启动 1sudo ./install.sh 7.在火狐浏览器中访问测试，此处的用户名默认为admin，密码在habor.cfg中，可以自己设 地址 IP/harbor/sign-in/]]></content>
@@ -8,7 +19,7 @@
         <category>technology</category>
       </categories>
       <tags>
-        <tag>devOps</tag>
+        <tag>DevOps</tag>
       </tags>
   </entry>
   <entry>
@@ -19,7 +30,7 @@
         <category>technology</category>
       </categories>
       <tags>
-        <tag>java</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -30,7 +41,7 @@
         <category>technology</category>
       </categories>
       <tags>
-        <tag>java</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -41,7 +52,7 @@
         <category>technology</category>
       </categories>
       <tags>
-        <tag>java</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -52,7 +63,7 @@
         <category>technology</category>
       </categories>
       <tags>
-        <tag>java</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -63,7 +74,7 @@
         <category>technology</category>
       </categories>
       <tags>
-        <tag>java</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -74,7 +85,7 @@
         <category>technology</category>
       </categories>
       <tags>
-        <tag>devOps</tag>
+        <tag>DevOps</tag>
       </tags>
   </entry>
   <entry>
@@ -96,7 +107,7 @@
         <category>technology</category>
       </categories>
       <tags>
-        <tag>devOps</tag>
+        <tag>DevOps</tag>
       </tags>
   </entry>
   <entry>
@@ -107,7 +118,7 @@
         <category>technology</category>
       </categories>
       <tags>
-        <tag>mysql</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -173,7 +184,7 @@
         <category>technology</category>
       </categories>
       <tags>
-        <tag>linux</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -184,7 +195,7 @@
         <category>hello</category>
       </categories>
       <tags>
-        <tag>hello</tag>
+        <tag>Hello</tag>
       </tags>
   </entry>
 </search>
