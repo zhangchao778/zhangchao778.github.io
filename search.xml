@@ -78,6 +78,28 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[Redis主从部署]]></title>
+    <url>%2F2018%2F12%2F14%2FRedis%E4%B8%BB%E4%BB%8E%E9%83%A8%E7%BD%B2%2F</url>
+    <content type="text"><![CDATA[Redis主从部署 配置 redis目录下创建master、slave1、slave2三个目录，每个目录下分别创建一个redis.conf 修改slave的redis配置文件 12slaveof ip port(映射到主服务器上)masterauth pwd 分表启动master、slave1、slave2三个服务 在三个服务下分别执行info命令 master显示如下 slave显示如下 ​ 则三个服务启动成功 哨兵监控–可以自动切换故障主从 redis目录下创建sentinel1.conf、sentinel2.conf、sentinel3.conf、sentinel1.log、sentinel2.log、sentinel3.log sentinel.conf配置如下 12345678910111213141516#端口port **#后端启动daemonize yes #日志文件路径logfile &quot;/install/redis/redis-3.2.1/sentinel.log” #唯一id，选举时用到sentinel myid a36dd6517a54a4fb8f0e1024c3acaa16417652d0 id #监控redis主库sentinel monitor mymaster 127.0.0.1 6384 2#多久不回复心跳反应，则默认服务不可用redis sentinel down-after-milliseconds mymaster 5000#认证密码配置sentinel auth-pass mymaster 123456#保护模式关闭protected-mode no 分表启动三个哨兵sentinel.conf]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>DevOps</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[ES部署]]></title>
+    <url>%2F2018%2F12%2F02%2FES%E9%83%A8%E7%BD%B2%2F</url>
+    <content type="text"><![CDATA[ES部署 下载安装包 https://www.elastic.co/downloads/elasticsearch 解压运行 cd 到安装目录 sudo bin/elasticsearch 验证 浏览器中访问http://localhost:9200/看到一个json结果集，表明安装成功 切换root身份 ES不能以 root身份启动，需要添加用户组chown -R es:es es/ es:es把目录权限给es:es es需要调整参数。/etc/sysctl.conf 最后添加vm.max_map_count=655360 执行sysctl 配置 1234567891011cluster.namenode.namenode.master: true/falsepath.datapath.logsbootstrap.memory_lock: falsebootstrap.system_call_filter: falsehttp.porttransport.tcp.portdiscovery.zen.ping.unicast.hostsnode.max_local_storage_nodes]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>DevOps</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Docker 常用命令]]></title>
     <url>%2F2018%2F11%2F20%2FDocker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%2F</url>
     <content type="text"><![CDATA[查看正在运行的容器 1docker ps 查询项目 1sudo docker ps -a |grep 项目 进入容器 1sudo docker exec -it 项目名 bash 查看本地镜像 1docker images 查看指定容器的某个确定端口映射到宿主机的端口号 1docker port ID/NAMES 查看web应用程序的日志 1docker logs -f ID/NAMES 查看web应用程序容器内部运行的进程 1docker top ID/NAMES 已经停止的容器，可以使用命令 docker start 来启动 1docker start ID/NAMES 停止web应用程序容器 1docker stop ID/NAMES 查询最后一次创建的容器 1docker ps -l 删除不需要的容器 删除容器时，容器必须是停止状态，否则报错 1docker rm ID/NAMES 获取新镜像 1docker pull 名:版本（ubuntu:13.10） 查找镜像 1docker search 名 启动容器并进入容器 1docker run -t -i 名 /bin/bash]]></content>
@@ -189,7 +211,7 @@
   </entry>
   <entry>
     <title><![CDATA[Hello World]]></title>
-    <url>%2F2018%2F03%2F26%2Fhello-world%2F</url>
+    <url>%2F2018%2F03%2F26%2FHello-world%2F</url>
     <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
       <categories>
         <category>hello</category>

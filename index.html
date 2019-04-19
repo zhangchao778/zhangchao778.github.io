@@ -1616,8 +1616,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/20/Docker常用命令/" rel="next" title="Docker 常用命令">
-                <i class="fa fa-chevron-left"></i> Docker 常用命令
+              <a href="/2018/12/14/Redis主从部署/" rel="next" title="Redis主从部署">
+                <i class="fa fa-chevron-left"></i> Redis主从部署
               </a>
             
           </div>
@@ -1628,6 +1628,382 @@
             
               <a href="/2019/03/26/RocketMQ/" rel="prev" title="RocketMQ">
                 RocketMQ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/14/Redis主从部署/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.zhang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/minguo.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis主从部署</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-14T13:13:26+08:00">
+                2018-12-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/technology/" itemprop="url" rel="index">
+                    <span itemprop="name">technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+          
+	  
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Redis主从部署"><a href="#Redis主从部署" class="headerlink" title="Redis主从部署"></a>Redis主从部署</h3><ul>
+<li><p><strong>配置</strong></p>
+<ul>
+<li><p>redis目录下创建<code>master、slave1、slave2</code>三个目录，每个目录下分别创建一个redis.conf</p>
+</li>
+<li><p>修改slave的redis配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">slaveof ip port(映射到主服务器上)</span><br><span class="line">masterauth pwd</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分表启动master、slave1、slave2三个服务</p>
+<p>在三个服务下分别执行info命令</p>
+<p>master显示如下</p>
+<p><img src="http://qiniu.zhangqichao.com//1555642963115.png" alt></p>
+<p>slave显示如下</p>
+</li>
+</ul>
+<p><img src="http://qiniu.zhangqichao.com//1555642994263.png" alt></p>
+<p>​    则三个服务启动成功</p>
+</li>
+<li><p><strong>哨兵监控–可以自动切换故障主从</strong></p>
+<ul>
+<li><p>redis目录下创建sentinel1.conf、sentinel2.conf、sentinel3.conf、sentinel1.log、sentinel2.log、sentinel3.log</p>
+</li>
+<li><p>sentinel.conf配置如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#端口</span><br><span class="line">port **</span><br><span class="line">#后端启动</span><br><span class="line">daemonize yes </span><br><span class="line">#日志文件路径</span><br><span class="line">logfile &quot;/install/redis/redis-3.2.1/sentinel.log”  </span><br><span class="line">#唯一id，选举时用到</span><br><span class="line">sentinel myid a36dd6517a54a4fb8f0e1024c3acaa16417652d0 id </span><br><span class="line">#监控redis主库</span><br><span class="line">sentinel monitor mymaster 127.0.0.1 6384 2</span><br><span class="line">#多久不回复心跳反应，则默认服务不可用</span><br><span class="line">redis sentinel down-after-milliseconds mymaster 5000</span><br><span class="line">#认证密码配置</span><br><span class="line">sentinel auth-pass mymaster 123456</span><br><span class="line">#保护模式关闭</span><br><span class="line">protected-mode no</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分表启动三个哨兵sentinel.conf</p>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DevOps/" rel="tag"># DevOps</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/02/ES部署/" rel="next" title="ES部署">
+                <i class="fa fa-chevron-left"></i> ES部署
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/26/RabbitMQ详解/" rel="prev" title="RabbitMQ 详解">
+                RabbitMQ 详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/02/ES部署/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.zhang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/minguo.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ES部署</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-02T13:13:26+08:00">
+                2018-12-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/technology/" itemprop="url" rel="index">
+                    <span itemprop="name">technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+          
+	  
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="ES部署"><a href="#ES部署" class="headerlink" title="ES部署"></a>ES部署</h3><ul>
+<li><p>下载安装包</p>
+<p><a href="https://link.jianshu.com/?t=https://www.elastic.co/downloads/elasticsearch" target="_blank" rel="noopener">https://www.elastic.co/downloads/elasticsearch</a></p>
+</li>
+<li><p>解压运行</p>
+<ul>
+<li>cd 到安装目录</li>
+<li>sudo bin/elasticsearch</li>
+</ul>
+</li>
+<li><p>验证</p>
+<p>浏览器中访问<a href="https://link.jianshu.com/?t=http://localhost:9200/" target="_blank" rel="noopener">http://localhost:9200/</a>看到一个json结果集，表明安装成功</p>
+<p><img src="http://qiniu.zhangqichao.com//1555642398844.png" alt></p>
+</li>
+<li><p>切换root身份</p>
+<p>ES不能以 root身份启动，需要添加用户组<br><code>chown -R es:es es/ es:es</code>把目录权限给es:es</p>
+<p>es需要调整参数。<code>/etc/sysctl.conf</code></p>
+<p>最后添加vm.max_map_count=655360</p>
+<p>执行<code>sysctl</code></p>
+</li>
+<li><p>配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cluster.name</span><br><span class="line">node.name</span><br><span class="line">node.master: true/false</span><br><span class="line">path.data</span><br><span class="line">path.logs</span><br><span class="line">bootstrap.memory_lock: false</span><br><span class="line">bootstrap.system_call_filter: false</span><br><span class="line">http.port</span><br><span class="line">transport.tcp.port</span><br><span class="line">discovery.zen.ping.unicast.hosts</span><br><span class="line">node.max_local_storage_nodes</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DevOps/" rel="tag"># DevOps</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/20/Docker常用命令/" rel="next" title="Docker 常用命令">
+                <i class="fa fa-chevron-left"></i> Docker 常用命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/14/Redis主从部署/" rel="prev" title="Redis主从部署">
+                Redis主从部署 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -1831,373 +2207,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/26/RabbitMQ详解/" rel="prev" title="RabbitMQ 详解">
-                RabbitMQ 详解 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/16/Jar debug启动/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mr.zhang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/minguo.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">Jar debug 启动</h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T13:27:26+08:00">
-                2018-10-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/technology/" itemprop="url" rel="index">
-                    <span itemprop="name">technology</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-          
-	  
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h2 id="debug启动脚本"><a href="#debug启动脚本" class="headerlink" title="debug启动脚本"></a>debug启动脚本</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=<span class="number">5005</span> ***.jar debug</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Java/" rel="tag"># Java</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/09/19/Jenkins 安装/" rel="next" title="Jenkins 安装">
-                <i class="fa fa-chevron-left"></i> Jenkins 安装
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/11/20/Docker常用命令/" rel="prev" title="Docker 常用命令">
-                Docker 常用命令 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/19/Jenkins 安装/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mr.zhang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/minguo.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">Jenkins 安装</h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T13:27:26+08:00">
-                2018-09-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/technology/" itemprop="url" rel="index">
-                    <span itemprop="name">technology</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-          
-	  
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h2 id="Jenkins-安装步骤"><a href="#Jenkins-安装步骤" class="headerlink" title="Jenkins 安装步骤"></a>Jenkins 安装步骤</h2><blockquote>
-<p>安装步骤</p>
-</blockquote>
-<p>1.Install JDK</p>
-<p>2.安装 Jenkins 仓库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo</span><br><span class="line">rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key</span><br></pre></td></tr></table></figure>
-<p>3.安装 Jenkins</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install jenkins -y</span><br><span class="line">配置文件地址 /etc/sysconfig/jenkins</span><br></pre></td></tr></table></figure>
-<p>4.启动 jenkins</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start jenkins</span><br></pre></td></tr></table></figure>
-<p>5.查看初始化密码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /var/lib/jenkins/secrets/initialAdminPassword</span><br></pre></td></tr></table></figure>
-<p>6.访问地址</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://10.0.96.102:8080/</span><br></pre></td></tr></table></figure>
-<p>7.配置Jdk、Maven</p>
-<p>​    配置JDK、Maven地址</p>
-<p>​    安装maven Integration 插件</p>
-<p>8.安装Git</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install git</span><br></pre></td></tr></table></figure>
-<p>​    配置Git地址以及安装Git-Client插件</p>
-<p>9.安装GitLab、GitLab Hook插件</p>
-<p>10.配置全局凭据（拉取代码私钥）</p>
-<p>11.shell启动springboot jar脚本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># jenkins工作目录</span><br><span class="line">project_path=/var/lib/jenkins/workspace/eureka</span><br><span class="line">cd $&#123;project_path&#125;</span><br><span class="line"># 打包</span><br><span class="line">mvn clean package -Dmaven.test.skip=true </span><br><span class="line"></span><br><span class="line">jar_path=/var/lib/jenkins/workspace/eureka/target/</span><br><span class="line"></span><br><span class="line">jar_name=eureka-server-0.0.1-SNAPSHOT.jar</span><br><span class="line"></span><br><span class="line">cd $&#123;jar_path&#125;</span><br><span class="line"># 杀死进程</span><br><span class="line">ps -ef|grep eureka |grep -v grep |awk &apos;&#123;print $2&#125;&apos;|xargs kill -9</span><br><span class="line"></span><br><span class="line"># 启动服务</span><br><span class="line">BUILD_ID=dontKillMe nohup java -jar $&#123;jar_name&#125; &amp;</span><br></pre></td></tr></table></figure>
-<hr>
-<blockquote>
-<p>War部署</p>
-</blockquote>
-<p>1.下载jenkins.war文件,官网地址:<a href="http://jenkins-ci.org/" target="_blank" rel="noopener">http://jenkins-ci.org/</a> 注意选择最新版本Long-Term Support Release</p>
-<p>2.访问地址<a href="http://IP:8080/jenkins/" target="_blank" rel="noopener">http://IP:8080/jenkins/</a></p>
-<p>3.查看初始密码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /root/.jenkins/secrets/initialAdminPassword</span><br></pre></td></tr></table></figure>
-<p>4.配置Jdk、Maven</p>
-<p>​    配置JDK、Maven地址</p>
-<p>​    安装maven Integration 插件</p>
-<p>5.安装Git</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install git</span><br></pre></td></tr></table></figure>
-<p>​    配置Git地址以及安装Git-Client插件</p>
-<p>6.安装GitLab、GitLab Hook插件</p>
-<p>7.配置全局凭据（拉取代码私钥）</p>
-<p>8.shell启动springboot jar脚本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># jenkins工作目录</span><br><span class="line">project_path=/root/.jenkins/workspace/eureka</span><br><span class="line">cd $&#123;project_path&#125;</span><br><span class="line"># 打包</span><br><span class="line">mvn clean package -Dmaven.test.skip=true </span><br><span class="line"></span><br><span class="line">jar_path=/root/.jenkins/workspace/eureka/target/</span><br><span class="line"></span><br><span class="line">jar_name=eureka-server-0.0.1-SNAPSHOT.jar</span><br><span class="line"></span><br><span class="line">cd $&#123;jar_path&#125;</span><br><span class="line"># 杀死进程</span><br><span class="line">ps -ef|grep eureka |grep -v grep |awk &apos;&#123;print $2&#125;&apos;|xargs kill -9</span><br><span class="line"></span><br><span class="line"># 启动服务</span><br><span class="line">BUILD_ID=dontKillMe nohup java -jar $&#123;jar_name&#125; &amp;</span><br><span class="line"># 注意 BUILD_ID=dontKillMe  不加的话 会启动完成直接关闭服务</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/DevOps/" rel="tag"># DevOps</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/09/03/Mysql-emoji表情/" rel="next" title="Mysql-emoji表情">
-                <i class="fa fa-chevron-left"></i> Mysql-emoji表情
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/10/16/Jar debug启动/" rel="prev" title="Jar debug 启动">
-                Jar debug 启动 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/02/ES部署/" rel="prev" title="ES部署">
+                ES部署 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -2267,7 +2278,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
