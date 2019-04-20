@@ -14,7 +14,7 @@
   <entry>
     <title><![CDATA[Docker 私服]]></title>
     <url>%2F2019%2F04%2F15%2FDocker%20%20%E7%A7%81%E6%9C%8D%2F</url>
-    <content type="text"><![CDATA[Harbor搭建Docker 私服 https://blog.51cto.com/11093860/2117805 1.安装docker-compose 1sudo pip install docker-compose 2.下载Harbor包 https://github.com/vmware/harbor/releases 安装有两种方式，一种是off-line ，一种是on-line，即离线和在线安装，离线安装需要下载的安装包较大，在线安装下载的安装包很小，课题根据自己的情况选择 3.解压，进入安装包 12tar -zxvf harbor*.tgzcd harbor 4.修改配置文件 1vim docker-compose.yml 1vim harbor.cfg 5.执行./prepare,更新一下配置文件 1sudo ./prepare 6.执行./install.sh，开始安装并启动 1sudo ./install.sh 7.在火狐浏览器中访问测试，此处的用户名默认为admin，密码在habor.cfg中，可以自己设 地址 IP/harbor/sign-in/]]></content>
+    <content type="text"><![CDATA[Harbor搭建Docker 私服https://blog.51cto.com/11093860/2117805 1.安装docker-compose 1sudo pip install docker-compose 2.下载Harbor包 https://github.com/vmware/harbor/releases 安装有两种方式，一种是off-line ，一种是on-line，即离线和在线安装，离线安装需要下载的安装包较大，在线安装下载的安装包很小，课题根据自己的情况选择 3.解压，进入安装包 12tar -zxvf harbor*.tgzcd harbor 4.修改配置文件 1vim docker-compose.yml 1vim harbor.cfg 5.执行./prepare,更新一下配置文件 1sudo ./prepare 6.执行./install.sh，开始安装并启动 1sudo ./install.sh 7.在火狐浏览器中访问测试，此处的用户名默认为admin，密码在habor.cfg中，可以自己设 地址 IP/harbor/sign-in/]]></content>
       <categories>
         <category>technology</category>
       </categories>
@@ -56,9 +56,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[RocketMQ]]></title>
-    <url>%2F2019%2F03%2F26%2FRocketMQ%2F</url>
-    <content type="text"><![CDATA[rocketmq java 客户端调用No route info of this topic错误(原因版本不一致)https://blog.csdn.net/whhwkm/article/details/81783322]]></content>
+    <title><![CDATA[RabbitMQ 详解]]></title>
+    <url>%2F2019%2F03%2F26%2FRabbitMQ%E8%AF%A6%E8%A7%A3%2F</url>
+    <content type="text"><![CDATA[分布式消息中间件场景介绍 ​ 背景 ​ 使用过分布式中间件的人都知道，程序员使用起来并不复杂，常用的客户端 API 就那么几个，比我们日常编写程序时用到的 API 要少得多。但是分布式中间件在中小研发团队中使用得并不多，为什么会这样呢？ ​ 原因是中间件的职责相对单一，客户端的使用虽然简单，但整个环境搭起来却不容易。 ​ 场景介绍 ​ 1、业务系统往往要求响应能力特别强，能够起到削峰填谷的作用 ​ 2、解耦：如果一个系统挂了，则不会影响另外个系统的继续运行 ​ 3、业务系统往往有对消息的高可靠要求，以及有对复杂功能如 Ack 的要求 ​ 4、增强业务系统的异步处理能力，减少甚至几乎不可能出现并发现象 使用消息队列，就好比为了防汛而建葛洲坝，有大量数据的堆积能力，然后可靠地进行异步输出 ​ RabbitMQ介绍 ​ RabbitMQ 是基于 AMQP 实现的一个开源消息组件，主要用于在分布式系统中存储转发消息，由因高性能、高可用以及高扩展而出名的 Erlang 语言写成 ​ 其中，AMQP（Advanced Message Queuing Protocol，即高级消息队列协议），是一个异步消息传递所使用的应用层协议规范，为面向消息的中间件设计 ​ RabbitMQ 特点 ​ 高可靠：RabbitMQ 提供了多种多样的特性让你在可靠性和性能之间做出权衡，包括持久化、发送应答、发布确认以及高可用性。 ​ 高可用队列：支持跨机器集群，支持队列安全镜像备份，消息的生产者与消费者不论哪一方出现问题，均不会影响消息的正常发出与接收。 ​ 灵活的路由：所有的消息都会通过路由器转发到各个消息队列中，RabbitMQ 内建了几个常用的路由器，并且可以通过路由器的组合以及自定义路由器插件来完成复杂的路由功能。 ​ 支持多客户端：对主流开发语言（如：Python、Ruby、.NET、Java、C、PHP、ActionScript 等）都有客户端实现。 ​ 集群：本地网络内的多个 Server 可以聚合在一起，共同组成一个逻辑上的 broker。 ​ 扩展性：支持负载均衡，动态增减服务器简单方便。 ​ 权限管理：灵活的用户角色权限管理，Virtual Host 是权限控制的最小粒度。 ​ 插件系统：支持各种丰富的插件扩展，同时也支持自定义插件，其中最常用的插件是 Web 管理工具 RabbitMQ_Management RabbitMQ 5种用法介绍 ​ RabbitMQ共有5种使用方式，即单对单、单对多、发布订阅模式、按路由规则发送接收、主题 ​ 1、单对单：单发送，单接收 ​ 适用于一个生产者，一个消费者的情况 ​ 2、单对多：单发送，多接收 ​ 适用于只有一个生产者，多个消费者，如分布式的任务派发 ​ 3、发布订阅模式：单发送，多接收 ​ 一个生产者发送消息，多个消费者获取消息（同样的消息），包括一个生产者，一个交换机，多个队列，多个消费者。 ​ 思路解读 ​ &gt; 一个生产者，多个消费者 ​ &gt; 每一个消费者都有自己的一个队列 ​ &gt; 生产者没有直接发消息到队列中，而是发送到交换机 ​ &gt; 每个消费者的队列都绑定到交换机上 ​ &gt; 消息通过交换机到达每个消费者的队列 ​ 注意：交换机没有存储消息功能，如果消息发送到没有绑定消费队列的交换机，消息则丢失 ​ 4、按路由规则发送接收： ​ 生产者发送消息到交换机并指定一个路由key，消费者队列绑定到交换机时要制定路由key（key匹配就能接受消息，key不匹配就不能接受消息），例如：我们可以把路由key设置为insert ，那么消费者队列key指定包含insert才可以接收消息，消费者队列key定义为update或者delete就不能接收消息。很好的控制了更新，插入和删除的操作。 ​ 5、主题： ​ Exchange Type 为 topic，发送消息时，需要指定交换机及Routing Key，消费者的消息队列绑定到该交换机并匹配到Routing Key实现消息的订阅，订阅后则可接收消息。只有消费者队列绑定到该交换机且指定的Routing Key符合匹配规则，才能收到消息。 ​ 其中Routing Key可以设置成通配符，如：* 或 #（* 表示匹配Routing Key中的某个单词，# 表示任意的Routing Key的消息都能被收到）。如果Routing Key由多个单词组成，则单词之间用 . 来分隔。 ​ 命名规范 ​ 交换机名的命名建议 ​ Ex{AppID}.{自定义 ExchangeName}，队列名的命名建议：MQ{AppID}.{自定义 QueueName} ​]]></content>
       <categories>
         <category>technology</category>
       </categories>
@@ -67,9 +67,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[RabbitMQ 详解]]></title>
-    <url>%2F2019%2F03%2F26%2FRabbitMQ%E8%AF%A6%E8%A7%A3%2F</url>
-    <content type="text"><![CDATA[分布式消息中间件场景介绍 ​ 背景 ​ 使用过分布式中间件的人都知道，程序员使用起来并不复杂，常用的客户端 API 就那么几个，比我们日常编写程序时用到的 API 要少得多。但是分布式中间件在中小研发团队中使用得并不多，为什么会这样呢？ ​ 原因是中间件的职责相对单一，客户端的使用虽然简单，但整个环境搭起来却不容易。 ​ 场景介绍 ​ 1、业务系统往往要求响应能力特别强，能够起到削峰填谷的作用 ​ 2、解耦：如果一个系统挂了，则不会影响另外个系统的继续运行 ​ 3、业务系统往往有对消息的高可靠要求，以及有对复杂功能如 Ack 的要求 ​ 4、增强业务系统的异步处理能力，减少甚至几乎不可能出现并发现象 使用消息队列，就好比为了防汛而建葛洲坝，有大量数据的堆积能力，然后可靠地进行异步输出 ​ RabbitMQ介绍 ​ RabbitMQ 是基于 AMQP 实现的一个开源消息组件，主要用于在分布式系统中存储转发消息，由因高性能、高可用以及高扩展而出名的 Erlang 语言写成 ​ 其中，AMQP（Advanced Message Queuing Protocol，即高级消息队列协议），是一个异步消息传递所使用的应用层协议规范，为面向消息的中间件设计 ​ RabbitMQ 特点 ​ 高可靠：RabbitMQ 提供了多种多样的特性让你在可靠性和性能之间做出权衡，包括持久化、发送应答、发布确认以及高可用性。 ​ 高可用队列：支持跨机器集群，支持队列安全镜像备份，消息的生产者与消费者不论哪一方出现问题，均不会影响消息的正常发出与接收。 ​ 灵活的路由：所有的消息都会通过路由器转发到各个消息队列中，RabbitMQ 内建了几个常用的路由器，并且可以通过路由器的组合以及自定义路由器插件来完成复杂的路由功能。 ​ 支持多客户端：对主流开发语言（如：Python、Ruby、.NET、Java、C、PHP、ActionScript 等）都有客户端实现。 ​ 集群：本地网络内的多个 Server 可以聚合在一起，共同组成一个逻辑上的 broker。 ​ 扩展性：支持负载均衡，动态增减服务器简单方便。 ​ 权限管理：灵活的用户角色权限管理，Virtual Host 是权限控制的最小粒度。 ​ 插件系统：支持各种丰富的插件扩展，同时也支持自定义插件，其中最常用的插件是 Web 管理工具 RabbitMQ_Management RabbitMQ 5种用法介绍 ​ RabbitMQ共有5种使用方式，即单对单、单对多、发布订阅模式、按路由规则发送接收、主题 ​ 1、单对单：单发送，单接收 ​ 适用于一个生产者，一个消费者的情况 ​ 2、单对多：单发送，多接收 ​ 适用于只有一个生产者，多个消费者，如分布式的任务派发 ​ 3、发布订阅模式：单发送，多接收 ​ 一个生产者发送消息，多个消费者获取消息（同样的消息），包括一个生产者，一个交换机，多个队列，多个消费者。 ​ 思路解读 ​ &gt; 一个生产者，多个消费者 ​ &gt; 每一个消费者都有自己的一个队列 ​ &gt; 生产者没有直接发消息到队列中，而是发送到交换机 ​ &gt; 每个消费者的队列都绑定到交换机上 ​ &gt; 消息通过交换机到达每个消费者的队列 ​ 注意：交换机没有存储消息功能，如果消息发送到没有绑定消费队列的交换机，消息则丢失 ​ 4、按路由规则发送接收： ​ 生产者发送消息到交换机并指定一个路由key，消费者队列绑定到交换机时要制定路由key（key匹配就能接受消息，key不匹配就不能接受消息），例如：我们可以把路由key设置为insert ，那么消费者队列key指定包含insert才可以接收消息，消费者队列key定义为update或者delete就不能接收消息。很好的控制了更新，插入和删除的操作。 ​ 5、主题： ​ Exchange Type 为 topic，发送消息时，需要指定交换机及Routing Key，消费者的消息队列绑定到该交换机并匹配到Routing Key实现消息的订阅，订阅后则可接收消息。只有消费者队列绑定到该交换机且指定的Routing Key符合匹配规则，才能收到消息。 ​ 其中Routing Key可以设置成通配符，如：* 或 #（* 表示匹配Routing Key中的某个单词，# 表示任意的Routing Key的消息都能被收到）。如果Routing Key由多个单词组成，则单词之间用 . 来分隔。 ​ 命名规范 ​ 交换机名的命名建议 ​ Ex{AppID}.{自定义 ExchangeName}，队列名的命名建议：MQ{AppID}.{自定义 QueueName} ​]]></content>
+    <title><![CDATA[RocketMQ]]></title>
+    <url>%2F2019%2F03%2F26%2FRocketMQ%2F</url>
+    <content type="text"><![CDATA[rocketmq java 客户端调用No route info of this topic错误(原因版本不一致)https://blog.csdn.net/whhwkm/article/details/81783322]]></content>
       <categories>
         <category>technology</category>
       </categories>
@@ -102,7 +102,7 @@
   <entry>
     <title><![CDATA[Docker 常用命令]]></title>
     <url>%2F2018%2F11%2F20%2FDocker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%2F</url>
-    <content type="text"><![CDATA[查看正在运行的容器 1docker ps 查询项目 1sudo docker ps -a |grep 项目 进入容器 1sudo docker exec -it 项目名 bash 查看本地镜像 1docker images 查看指定容器的某个确定端口映射到宿主机的端口号 1docker port ID/NAMES 查看web应用程序的日志 1docker logs -f ID/NAMES 查看web应用程序容器内部运行的进程 1docker top ID/NAMES 已经停止的容器，可以使用命令 docker start 来启动 1docker start ID/NAMES 停止web应用程序容器 1docker stop ID/NAMES 查询最后一次创建的容器 1docker ps -l 删除不需要的容器 删除容器时，容器必须是停止状态，否则报错 1docker rm ID/NAMES 获取新镜像 1docker pull 名:版本（ubuntu:13.10） 查找镜像 1docker search 名 启动容器并进入容器 1docker run -t -i 名 /bin/bash]]></content>
+    <content type="text"><![CDATA[Docker 常用命令 查看正在运行的容器 1docker ps 查询项目 1sudo docker ps -a |grep 项目 进入容器 1sudo docker exec -it 项目名 bash 查看本地镜像 1docker images 查看指定容器的某个确定端口映射到宿主机的端口号 1docker port ID/NAMES 查看web应用程序的日志 1docker logs -f ID/NAMES 查看web应用程序容器内部运行的进程 1docker top ID/NAMES 已经停止的容器，可以使用命令 docker start 来启动 1docker start ID/NAMES 停止web应用程序容器 1docker stop ID/NAMES 查询最后一次创建的容器 1docker ps -l 删除不需要的容器 删除容器时，容器必须是停止状态，否则报错 1docker rm ID/NAMES 获取新镜像 1docker pull 名:版本（ubuntu:13.10） 查找镜像 1docker search 名 启动容器并进入容器 1docker run -t -i 名 /bin/bash]]></content>
       <categories>
         <category>technology</category>
       </categories>
