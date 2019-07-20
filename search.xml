@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[AWS总结]]></title>
+    <url>%2F2019%2F07%2F17%2FAWS%E6%80%BB%E7%BB%93%2F</url>
+    <content type="text"><![CDATA[EC2 EC2实例类型选择考虑因素 核心数量 内存大小 存储大小和类型 网络性能 CPU技术 实例 实例系列 部分使用案例 通用型（T2、T3、M5、M4） 低流量网站和Web应用程序中小型数据库 计算优化型（C5、C4） 高性能Web服务器视频编码 内存优化型（X1e、X1、R4） 高性能数据库份额不是内存缓存 存储优化型（H1、I3、D2） 数据仓库日志或数据处理应用程序 加速计算型（P3、P2、G3、F1） 3D可视化机器学习 S3 ​ 面向Internet的存储服务，原生在线、Http访问，随时从Web的任何位置存储和检索任意数量的数据。高度可扩展、可靠、快速且持久。 使用场景 一次写多次读的场景 存储和备份 访问控制 默认访问(只能自己访问) 公有访问(自己以及其他人可以访问) 特点 S3将数据以对象的形式存储在存储桶中 设计为99.999999999%的持久性 可以控制对存储桶及其对象的访问 对象由文件和元数组组成 每个账户最多可以包含100个存储桶 （桶是为了管理） 存储桶内对象个数没有限制 可启用静态加密和动态加密 （信封加密 ） 对象可以提供URL访问 http://johnsmith.s3.amazonaws.com/photos/puppy.jpg johnsmith —存储桶 puppy–对象主键 存储桶 在最高级别组织Amazon S3命令空间 识别负责存储和数据传输计费的账户 在访问控制方面发挥作用 用作使用率报告的汇总单位 存储桶名称是全球唯一的 S3存储类 存储类 持久性 可用性 其他注意事项 Amazon S3标准 99.999999999% 99.99% 存贵，取便宜 Amazon S3标准-不频繁访问(IA) 99.999999999% 99.9% 对象具有检索费用最适合不频繁访问的数据存便宜,取贵 Glacier 99.999999999% 99.99%(还原后) 无法进行实时访问必须先还原对象,然后才能访问对象还原对象需要花费1分钟到12小时 弹性（高可用）和恢复能力 Auto Scaling 场景 自动扩展EC2容量，非常适用使用率不断变化的应用程序 三重服务 Auto Scaling组Auto Scaling组中的实例被视为一个逻辑组以便进行实例扩展和管理 Auto Scaling基本生命周期 ELB(Elastic Load Balance) 功能 在多个实例间分配流量 支持运行状况检查,可检测出运行不正常的Amazon EC2实例 支持Amazon EC2实例的HTTP、HTTPS和TCP流量的路由和负载均衡 工作原理 CloudWatch 功能 适用于AWS云资源和AWS上运行的应用程序的监控服务,提供图形化的统计数据,设置报警 了解资源利用率、运行性能和整体需求模式 自定义自己的应用程序特定指标 可通过AWS管理控制台、API、软件开发工具包或CLI访问 架构]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>DevOps</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[IDEA激活]]></title>
     <url>%2F2019%2F07%2F01%2FIDEA%E6%BF%80%E6%B4%BB%2F</url>
     <content type="text"><![CDATA[IDEA激活 1.补丁网盘自取 链接: https://pan.baidu.com/s/16rQPgO0ypNAvAamxYtS5ww 提取码: k25q 2.配置 补丁copy至idea安装目录的bin目录下 bin目录中找到idea.exe.vmoptions和idea64.exe.vmoptions两个文件,在文件最后追加一行内容：-javaagent:idea安装路径\bin\JetbrainsCrack-release-enc.jar 3.激活 打开IDEA，选择激活码激活,激活码如下 123456789101112131415161718192021222324ThisCrackLicenseId-&#123;“licenseId”:”11011”,“licenseeName”:”Wechat”,“assigneeName”:”tree-deep-see-deer”,“assigneeEmail”:”2378437815@qq.com”,“licenseRestriction”:””,“checkConcurrentUse”:false,“products”:[&#123;“code”:”II”,”paidUpTo”:”2099-12-31”&#125;,&#123;“code”:”DM”,”paidUpTo”:”2099-12-31”&#125;,&#123;“code”:”AC”,”paidUpTo”:”2099-12-31”&#125;,&#123;“code”:”RS0”,”paidUpTo”:”2099-12-31”&#125;,&#123;“code”:”WS”,”paidUpTo”:”2099-12-31”&#125;,&#123;“code”:”DPN”,”paidUpTo”:”2099-12-31”&#125;,&#123;“code”:”RC”,”paidUpTo”:”2099-12-31”&#125;,&#123;“code”:”PS”,”paidUpTo”:”2099-12-31”&#125;,&#123;“code”:”DC”,”paidUpTo”:”2099-12-31”&#125;,&#123;“code”:”RM”,”paidUpTo”:”2099-12-31”&#125;,&#123;“code”:”CL”,”paidUpTo”:”2099-12-31”&#125;,&#123;“code”:”PC”,”paidUpTo”:”2099-12-31”&#125;],“hash”:”2911276/0”,“gracePeriodDays”:7,“autoProlongated”:false&#125;]]></content>
@@ -67,9 +78,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[RabbitMQ 详解]]></title>
-    <url>%2F2019%2F03%2F26%2FRabbitMQ%E8%AF%A6%E8%A7%A3%2F</url>
-    <content type="text"><![CDATA[分布式消息中间件场景介绍 ​ 背景 ​ 使用过分布式中间件的人都知道，程序员使用起来并不复杂，常用的客户端 API 就那么几个，比我们日常编写程序时用到的 API 要少得多。但是分布式中间件在中小研发团队中使用得并不多，为什么会这样呢？ ​ 原因是中间件的职责相对单一，客户端的使用虽然简单，但整个环境搭起来却不容易。 ​ 场景介绍 ​ 1、业务系统往往要求响应能力特别强，能够起到削峰填谷的作用 ​ 2、解耦：如果一个系统挂了，则不会影响另外个系统的继续运行 ​ 3、业务系统往往有对消息的高可靠要求，以及有对复杂功能如 Ack 的要求 ​ 4、增强业务系统的异步处理能力，减少甚至几乎不可能出现并发现象 使用消息队列，就好比为了防汛而建葛洲坝，有大量数据的堆积能力，然后可靠地进行异步输出 ​ RabbitMQ介绍 ​ RabbitMQ 是基于 AMQP 实现的一个开源消息组件，主要用于在分布式系统中存储转发消息，由因高性能、高可用以及高扩展而出名的 Erlang 语言写成 ​ 其中，AMQP（Advanced Message Queuing Protocol，即高级消息队列协议），是一个异步消息传递所使用的应用层协议规范，为面向消息的中间件设计 ​ RabbitMQ 特点 ​ 高可靠：RabbitMQ 提供了多种多样的特性让你在可靠性和性能之间做出权衡，包括持久化、发送应答、发布确认以及高可用性。 ​ 高可用队列：支持跨机器集群，支持队列安全镜像备份，消息的生产者与消费者不论哪一方出现问题，均不会影响消息的正常发出与接收。 ​ 灵活的路由：所有的消息都会通过路由器转发到各个消息队列中，RabbitMQ 内建了几个常用的路由器，并且可以通过路由器的组合以及自定义路由器插件来完成复杂的路由功能。 ​ 支持多客户端：对主流开发语言（如：Python、Ruby、.NET、Java、C、PHP、ActionScript 等）都有客户端实现。 ​ 集群：本地网络内的多个 Server 可以聚合在一起，共同组成一个逻辑上的 broker。 ​ 扩展性：支持负载均衡，动态增减服务器简单方便。 ​ 权限管理：灵活的用户角色权限管理，Virtual Host 是权限控制的最小粒度。 ​ 插件系统：支持各种丰富的插件扩展，同时也支持自定义插件，其中最常用的插件是 Web 管理工具 RabbitMQ_Management RabbitMQ 5种用法介绍 ​ RabbitMQ共有5种使用方式，即单对单、单对多、发布订阅模式、按路由规则发送接收、主题 ​ 1、单对单：单发送，单接收 ​ 适用于一个生产者，一个消费者的情况 ​ 2、单对多：单发送，多接收 ​ 适用于只有一个生产者，多个消费者，如分布式的任务派发 ​ 3、发布订阅模式：单发送，多接收 ​ 一个生产者发送消息，多个消费者获取消息（同样的消息），包括一个生产者，一个交换机，多个队列，多个消费者。 ​ 思路解读 ​ &gt; 一个生产者，多个消费者 ​ &gt; 每一个消费者都有自己的一个队列 ​ &gt; 生产者没有直接发消息到队列中，而是发送到交换机 ​ &gt; 每个消费者的队列都绑定到交换机上 ​ &gt; 消息通过交换机到达每个消费者的队列 ​ 注意：交换机没有存储消息功能，如果消息发送到没有绑定消费队列的交换机，消息则丢失 ​ 4、按路由规则发送接收： ​ 生产者发送消息到交换机并指定一个路由key，消费者队列绑定到交换机时要制定路由key（key匹配就能接受消息，key不匹配就不能接受消息），例如：我们可以把路由key设置为insert ，那么消费者队列key指定包含insert才可以接收消息，消费者队列key定义为update或者delete就不能接收消息。很好的控制了更新，插入和删除的操作。 ​ 5、主题： ​ Exchange Type 为 topic，发送消息时，需要指定交换机及Routing Key，消费者的消息队列绑定到该交换机并匹配到Routing Key实现消息的订阅，订阅后则可接收消息。只有消费者队列绑定到该交换机且指定的Routing Key符合匹配规则，才能收到消息。 ​ 其中Routing Key可以设置成通配符，如：* 或 #（* 表示匹配Routing Key中的某个单词，# 表示任意的Routing Key的消息都能被收到）。如果Routing Key由多个单词组成，则单词之间用 . 来分隔。 ​ 命名规范 ​ 交换机名的命名建议 ​ Ex{AppID}.{自定义 ExchangeName}，队列名的命名建议：MQ{AppID}.{自定义 QueueName} ​]]></content>
+    <title><![CDATA[RocketMQ]]></title>
+    <url>%2F2019%2F03%2F26%2FRocketMQ%2F</url>
+    <content type="text"><![CDATA[rocketmq java 客户端调用No route info of this topic错误(原因版本不一致)https://blog.csdn.net/whhwkm/article/details/81783322]]></content>
       <categories>
         <category>technology</category>
       </categories>
@@ -78,9 +89,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[RocketMQ]]></title>
-    <url>%2F2019%2F03%2F26%2FRocketMQ%2F</url>
-    <content type="text"><![CDATA[rocketmq java 客户端调用No route info of this topic错误(原因版本不一致)https://blog.csdn.net/whhwkm/article/details/81783322]]></content>
+    <title><![CDATA[RabbitMQ 详解]]></title>
+    <url>%2F2019%2F03%2F26%2FRabbitMQ%E8%AF%A6%E8%A7%A3%2F</url>
+    <content type="text"><![CDATA[分布式消息中间件场景介绍 ​ 背景 ​ 使用过分布式中间件的人都知道，程序员使用起来并不复杂，常用的客户端 API 就那么几个，比我们日常编写程序时用到的 API 要少得多。但是分布式中间件在中小研发团队中使用得并不多，为什么会这样呢？ ​ 原因是中间件的职责相对单一，客户端的使用虽然简单，但整个环境搭起来却不容易。 ​ 场景介绍 ​ 1、业务系统往往要求响应能力特别强，能够起到削峰填谷的作用 ​ 2、解耦：如果一个系统挂了，则不会影响另外个系统的继续运行 ​ 3、业务系统往往有对消息的高可靠要求，以及有对复杂功能如 Ack 的要求 ​ 4、增强业务系统的异步处理能力，减少甚至几乎不可能出现并发现象 使用消息队列，就好比为了防汛而建葛洲坝，有大量数据的堆积能力，然后可靠地进行异步输出 ​ RabbitMQ介绍 ​ RabbitMQ 是基于 AMQP 实现的一个开源消息组件，主要用于在分布式系统中存储转发消息，由因高性能、高可用以及高扩展而出名的 Erlang 语言写成 ​ 其中，AMQP（Advanced Message Queuing Protocol，即高级消息队列协议），是一个异步消息传递所使用的应用层协议规范，为面向消息的中间件设计 ​ RabbitMQ 特点 ​ 高可靠：RabbitMQ 提供了多种多样的特性让你在可靠性和性能之间做出权衡，包括持久化、发送应答、发布确认以及高可用性。 ​ 高可用队列：支持跨机器集群，支持队列安全镜像备份，消息的生产者与消费者不论哪一方出现问题，均不会影响消息的正常发出与接收。 ​ 灵活的路由：所有的消息都会通过路由器转发到各个消息队列中，RabbitMQ 内建了几个常用的路由器，并且可以通过路由器的组合以及自定义路由器插件来完成复杂的路由功能。 ​ 支持多客户端：对主流开发语言（如：Python、Ruby、.NET、Java、C、PHP、ActionScript 等）都有客户端实现。 ​ 集群：本地网络内的多个 Server 可以聚合在一起，共同组成一个逻辑上的 broker。 ​ 扩展性：支持负载均衡，动态增减服务器简单方便。 ​ 权限管理：灵活的用户角色权限管理，Virtual Host 是权限控制的最小粒度。 ​ 插件系统：支持各种丰富的插件扩展，同时也支持自定义插件，其中最常用的插件是 Web 管理工具 RabbitMQ_Management RabbitMQ 5种用法介绍 ​ RabbitMQ共有5种使用方式，即单对单、单对多、发布订阅模式、按路由规则发送接收、主题 ​ 1、单对单：单发送，单接收 ​ 适用于一个生产者，一个消费者的情况 ​ 2、单对多：单发送，多接收 ​ 适用于只有一个生产者，多个消费者，如分布式的任务派发 ​ 3、发布订阅模式：单发送，多接收 ​ 一个生产者发送消息，多个消费者获取消息（同样的消息），包括一个生产者，一个交换机，多个队列，多个消费者。 ​ 思路解读 ​ &gt; 一个生产者，多个消费者 ​ &gt; 每一个消费者都有自己的一个队列 ​ &gt; 生产者没有直接发消息到队列中，而是发送到交换机 ​ &gt; 每个消费者的队列都绑定到交换机上 ​ &gt; 消息通过交换机到达每个消费者的队列 ​ 注意：交换机没有存储消息功能，如果消息发送到没有绑定消费队列的交换机，消息则丢失 ​ 4、按路由规则发送接收： ​ 生产者发送消息到交换机并指定一个路由key，消费者队列绑定到交换机时要制定路由key（key匹配就能接受消息，key不匹配就不能接受消息），例如：我们可以把路由key设置为insert ，那么消费者队列key指定包含insert才可以接收消息，消费者队列key定义为update或者delete就不能接收消息。很好的控制了更新，插入和删除的操作。 ​ 5、主题： ​ Exchange Type 为 topic，发送消息时，需要指定交换机及Routing Key，消费者的消息队列绑定到该交换机并匹配到Routing Key实现消息的订阅，订阅后则可接收消息。只有消费者队列绑定到该交换机且指定的Routing Key符合匹配规则，才能收到消息。 ​ 其中Routing Key可以设置成通配符，如：* 或 #（* 表示匹配Routing Key中的某个单词，# 表示任意的Routing Key的消息都能被收到）。如果Routing Key由多个单词组成，则单词之间用 . 来分隔。 ​ 命名规范 ​ 交换机名的命名建议 ​ Ex{AppID}.{自定义 ExchangeName}，队列名的命名建议：MQ{AppID}.{自定义 QueueName} ​]]></content>
       <categories>
         <category>technology</category>
       </categories>
