@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[满月记录]]></title>
+    <url>%2F2020%2F03%2F01%2FUntitled%2F</url>
+    <content type="text"><![CDATA[1闹闹照片]]></content>
+      <categories>
+        <category>Anniversary</category>
+      </categories>
+      <tags>
+        <tag>Anniversary</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[AWS总结]]></title>
     <url>%2F2019%2F07%2F17%2FAWS%E6%80%BB%E7%BB%93%2F</url>
     <content type="text"><![CDATA[EC2 EC2实例类型选择考虑因素 核心数量 内存大小 存储大小和类型 网络性能 CPU技术 实例 实例系列 部分使用案例 通用型（T2、T3、M5、M4） 低流量网站和Web应用程序中小型数据库 计算优化型（C5、C4） 高性能Web服务器视频编码 内存优化型（X1e、X1、R4） 高性能数据库份额不是内存缓存 存储优化型（H1、I3、D2） 数据仓库日志或数据处理应用程序 加速计算型（P3、P2、G3、F1） 3D可视化机器学习 S3 ​ 面向Internet的存储服务，原生在线、Http访问，随时从Web的任何位置存储和检索任意数量的数据。高度可扩展、可靠、快速且持久。 使用场景 一次写多次读的场景 存储和备份 访问控制 默认访问(只能自己访问) 公有访问(自己以及其他人可以访问) 特点 S3将数据以对象的形式存储在存储桶中 设计为99.999999999%的持久性 可以控制对存储桶及其对象的访问 对象由文件和元数组组成 每个账户最多可以包含100个存储桶 （桶是为了管理） 存储桶内对象个数没有限制 可启用静态加密和动态加密 （信封加密 ） 对象可以提供URL访问 http://johnsmith.s3.amazonaws.com/photos/puppy.jpg johnsmith —存储桶 puppy–对象主键 存储桶 在最高级别组织Amazon S3命令空间 识别负责存储和数据传输计费的账户 在访问控制方面发挥作用 用作使用率报告的汇总单位 存储桶名称是全球唯一的 S3存储类 存储类 持久性 可用性 其他注意事项 Amazon S3标准 99.999999999% 99.99% 存贵，取便宜 Amazon S3标准-不频繁访问(IA) 99.999999999% 99.9% 对象具有检索费用最适合不频繁访问的数据存便宜,取贵 Glacier 99.999999999% 99.99%(还原后) 无法进行实时访问必须先还原对象,然后才能访问对象还原对象需要花费1分钟到12小时 弹性（高可用）和恢复能力 Auto Scaling 场景 自动扩展EC2容量，非常适用使用率不断变化的应用程序 三重服务 Auto Scaling组Auto Scaling组中的实例被视为一个逻辑组以便进行实例扩展和管理 Auto Scaling基本生命周期 ELB(Elastic Load Balance) 功能 在多个实例间分配流量 支持运行状况检查,可检测出运行不正常的Amazon EC2实例 支持Amazon EC2实例的HTTP、HTTPS和TCP流量的路由和负载均衡 工作原理 CloudWatch 功能 适用于AWS云资源和AWS上运行的应用程序的监控服务,提供图形化的统计数据,设置报警 了解资源利用率、运行性能和整体需求模式 自定义自己的应用程序特定指标 可通过AWS管理控制台、API、软件开发工具包或CLI访问 架构]]></content>

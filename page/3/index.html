@@ -295,6 +295,215 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/02/JVM垃圾回收机制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.zhang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/minguo.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JVM垃圾回收机制</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-02T13:27:26+08:00">
+                2018-06-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/technology/" itemprop="url" rel="index">
+                    <span itemprop="name">technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+          
+	  
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><strong>垃圾回收机制</strong></p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>堆分为 <strong>新生代(Young)</strong> 与 <strong>老年代(Old)</strong></p>
+</blockquote>
+</blockquote>
+<ul>
+<li><p><strong>Young区</strong> 分为<strong>Eden区</strong>和<strong>两个Survivor区</strong></p>
+<p>​    新创建的对象都在Eden区,当Eden区满后会触发<strong>Minor GC</strong>,把Eden区回收后仍然存活的对象复制到其中一个空的Survivor区; 同时,另一个Survivor区中存活的对象也复制到这个Survivor中,保证总有一个Survivor区是空的 </p>
+</li>
+<li><p><strong>Old区</strong></p>
+<p>​    Young的Eden区满后会触发Minor GC,把Eden区回收后仍存活的对象放到Survivor区中,如果此时Survivor区仍然存不下这些存活的对象,GC收集器会把这些对象直接存放到Old区;如果在Survivor区中的对象足够老,也直接放到Old区.如果Old区也满了,则触发<strong>Full GC</strong>,回收整个堆内存 </p>
+</li>
+<li><p><strong>Perm区</strong></p>
+</li>
+</ul>
+<p>​          存放的主要是类的Class对象,   <strong>垃圾回收</strong>也是由<strong>Full GC触发</strong> </p>
+<blockquote>
+<blockquote>
+<p>垃圾回收算法</p>
+</blockquote>
+</blockquote>
+<ul>
+<li><p><strong>标记-清除算法</strong></p>
+<p>​    对于每个存活的对象,进行标记.标记完成,开始进行清理(未标记)不再存活的对象</p>
+<p>​    缺点:产生过多碎片,导致内存不连续,分配大对象时,无法找到足够的内存触发gc，效率不是太高</p>
+</li>
+<li><p><strong>复制算法</strong></p>
+<p>​    用于生存率较低的场景</p>
+<pre><code>把内存分为若干个区域,每次只使用其中一部分,对于存货的对象,copy到另一个区域,对于剩余的对象进行垃圾回收
+</code></pre><p>​    缺点:造成内存浪费</p>
+<p>​       优点: 无碎片</p>
+</li>
+<li><p><strong>标记-整理算法</strong></p>
+<p>​    类似于标记清理,后续不是直接对对象进行清理,而是进行移动存活对象,边界外进行清除</p>
+</li>
+</ul>
+<blockquote>
+<blockquote>
+<p>JVM采用分代的垃圾回收算法</p>
+</blockquote>
+</blockquote>
+<ul>
+<li><code>新生代    死的快,存活率低 采用 复制算法  Minor GC</code></li>
+<li><code>老年代    存活长  采用标记清理  Full GC</code></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/26/vi编辑器/" rel="next" title="vi编辑器">
+                <i class="fa fa-chevron-left"></i> vi编辑器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/21/JVM类加载机制/" rel="prev" title="JVM类加载机制">
+                JVM类加载机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/26/vi编辑器/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -733,7 +942,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -744,7 +953,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -755,7 +964,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
